@@ -1,3 +1,9 @@
 \section{Introduction}
 
-The introduction.
+Deployments of the Transport Layer Security (TLS~\cite{rfc8446}) protocol
+expose the name of the server (e.g. the web site DNS name) via the Server Name
+Indication (SNI) field in the first message sent (the ClientHello).  The
+Encrypted Client Hello (ECH)~\cite{draft-ietf-tls-esni} extension to TLS is a
+privacy-enhancing scheme that aims to address this leak.
+
+This report describes the current state of ECH interoperability.

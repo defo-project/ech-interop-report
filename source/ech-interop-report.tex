@@ -1,9 +1,9 @@
-%\documentclass[twocolumn,10pt]{article}
+%\documentclass[journal,onecolumn,10pt]{article}
 %\documentclass[12pt,doublespace]{sigcomm-alternate}
-%\documentclass[12pt,draftclsnofoot,onecolumn]{IEEEtran}
+\documentclass[12pt,draftclsnofoot,onecolumn]{IEEEtran}
 %\documentclass[twocolumn]{sigcomm-alternate}
 
-\documentclass[10pt,final,journal,twoside,pdftex]{IEEEtran}
+%\documentclass[10pt,final,journal,twoside,pdftex]{IEEEtran}
 \usepackage{graphicx,amsmath,amssymb,url,subfigure}
 %%\usepackage{hyperref}
 \usepackage{float}
@@ -14,6 +14,8 @@
 %\usepackage{subcaption}
 \usepackage{datetime}
 \usepackage{mdframed}
+\usepackage{graphicx}
+
 
 %% \newcommand{\todo}[1]{\marginnote{\fbox{\bfseries TODO: #1}}}%
 \newcommand{\todo}[1]{\fbox{\bfseries TODO: #1}}%
@@ -44,20 +46,21 @@
 
 \begin{document}
 
-\title{
-		ECH Interop Report
-}
+% \includegraphics[width=4cm,keepaspectratio]{defologo.png}
 
+\title{
+\includegraphics[width=\textwidth]{defologo.png}
+ECH Interoperability Report}
 
 \author{
 \thanks{
 Stephen Farrell is with Trinity College, Dublin 2, Ireland (email: stephen.farrell@cs.tcd.ie, https://www.cs.tcd.ie/Stephen.Farrell/)
 }
 
-\IEEEauthorblockN{Stephen Farrell,}
+\IEEEauthorblockN{Stephen Farrell}
 \IEEEauthorblockA{
 \\
-	Trinity College Dublin\\
+	Trinity College Dublin/Tolerant Networks Ltd.\\
 	stephen.farrell@cs.tcd.ie\\
 	work-in-progress
 }
@@ -89,6 +92,6 @@ Encrypted Client Hello (ECH), Interoperability
 \input acks
 
 \bibliographystyle{IEEEtran}
-\bibliography{IEEEabrv,bib,rfc,i-d}
+\bibliography{IEEEabrv,bib,ietf}
 
 \end{document}
