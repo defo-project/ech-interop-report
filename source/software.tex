@@ -5,17 +5,15 @@ This section describes libraries, clients and servers that support ECH.
 \subsection{Libraries}
 
 The libraries listed in Table \ref{tab:echlibs} have some support for ECH.
-Still to add: rustls, python, libcurl.
 
 \small
 \begin{longtblr} [
         caption = {Libraries with ECH},
         label = {tab:echlibs}
     ] {
-        colspec = {| l | p{0.7\linewidth}|},
+        colspec = {| l | p{0.7\linewidth} |},
         rowhead = 1
     }
-    %\begin{tabular}{| l | p{0.7\linewidth}|}
 
     \hline
         Name & Details\\
@@ -69,17 +67,27 @@ Still to add: rustls, python, libcurl.
         & ECH support: client only, server coming in 1.24 (server code is merged)\\
         & Comment:\\
         & - golang tests are a work-in-progress, basic interop seems ok, we're adding to our smokeping tests\\
-        & - install via `sudo snap install go  --classic`\\
 
     \hline
         rustls & Source: \url{https://github.com/rustls/rustls/}\\
-        & Version: \\
+        & Version: 1.83.0 \\
         & ECH support: client basically works\\
         & Comment:\\
         & - rustls tests are a work-in-progress, basic interop seems ok, we're adding to our smokeping tests\\
 
     \hline
-    %\end{tabular}
+        python & Source: \url{https://github.com/defo-project/cpython}\\
+        & Version: python 3.13/3.14 source\\
+        & ECH support: TLS client only \\
+        & Comment:\\
+
+    \hline
+        libcurl & Source: part of \url{https://github.com/curl/curl}\\
+        & Version:  8.10.0-DEV \\
+        & ECH support: TLS client only \\
+        & Comment: not well tested other than via command line curl\\
+
+    \hline
 
 \end{longtblr}
 \normalsize
