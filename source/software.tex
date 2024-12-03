@@ -63,17 +63,17 @@ The libraries listed in Table \ref{tab:echlibs} have some support for ECH.
 
     \hline
         golang & Source: \url{https://go.googlesource.com/go} or \url{https://github.com/golang/go/}\\
-        & Version: 1.23\\
+        & Version: 1.23 or later required\\
         & ECH support: client only, server coming in 1.24 (server code is merged)\\
         & Comment:\\
-        & - golang tests are a work-in-progress, basic interop seems ok, we're adding to our smokeping tests\\
+        & - golang tests were just (2024-12-02) added to our smokeping tests\\
 
     \hline
         rustls & Source: \url{https://github.com/rustls/rustls/}\\
-        & Version: 1.83.0 \\
-        & ECH support: client basically works\\
+        & Version: 0.23.19 \\
+        & ECH support: client only\\
         & Comment:\\
-        & - rustls tests are a work-in-progress, basic interop seems ok, we're adding to our smokeping tests\\
+        & - rustls tests were just (2024-12-03) added to our smokeping tests\\
 
     \hline
         python & Source: \url{https://github.com/defo-project/cpython}\\
