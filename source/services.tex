@@ -21,18 +21,18 @@ DEfO project.
         defo.ie & \url{https://defo.ie/ech-check.php} is often used to check ECH\\
         & ECH keys are rotated hourly, private usable for 3 hours, ECHConfigList in DNS contains only latest public\\
     \hline
-        draft-13.esni.defo.ie & different server technology instances on different ports as listed at \url{https://defo.ie/}, e.g., \url{https://draft-13.esni.defo.ie:10413} is served by nginx\\
+        draft-13.esni.defo.ie & different server technology (as listed in Table \ref{tab:servers}) instances on different ports as listed at \url{https://defo.ie/}, e.g., \url{https://draft-13.esni.defo.ie:10413} is served by nginx\\
         & ECH keys are rotated hourly, private usable for 3 hours, ECHConfigList in DNS contains only latest public\\
     \hline
         test.defo.ie & hosts a number of ECH server setups with good and variously bad configurations - see
-        \url{https://test.defo.ie/iframes_tests} describes those and allows a browser to attempt connections to
+        \url{https://test.defo.ie/iframes_tests} which describes those and allows a browser to attempt connections to
         each via Iframes\\
         & ECH keys/configs are static for these setups\\
     \hline
         foo.ie & \url{https://foo.ie/ech-check.php} was setup used to check the defo.ie setup was easily replicated\\
         & ECH keys are rotated hourly, private usable for 3 hours, ECHConfigList in DNS contains only latest public\\
     \hline
-        my-own.net & this was test the impact of having the same ECH keys on
+        my-own.net & this was to test the impact of having the same ECH keys on
         port 443 (\url{https://my-own.net/ech-check.php}) and another port  
         (\url{https://my-own.net:8443/ech-check.php})  - at one point that made a difference to browsers\\
         & ECH keys are rotated hourly, private usable for 3 hours, ECHConfigList in DNS contains only latest public\\
@@ -93,7 +93,8 @@ We can use this data to get some further insight into services for which ECH
 is enabled. For now, we are not publishing the raw data - while data for the most
 recent 50 queries is shown on the web page, if we wanted to publish the raw
 data, we'd have to enable some form of consent for users, and it's not clear
-that'd be a) easy or b) worthwhile.
+that'd be a) easy or b) worthwhile. (We currently take no steps to try record
+who made which requests to this page.)
 
 Figure \ref{fig:qtimes} shows the (small) numbers of queries made since August
 2024. We can see a noticeable uptick in accesses just-before and after Russia

@@ -1,3 +1,69 @@
 \section{Interoperability}
 
-Describe interop
+Our primary interoperability testing is based on our ``smokeping''-like tests.
+While smokeping measures latency for names/addreses, our tests aim to establish
+whether and which ECH configurations interoperate or fail to do so.
+
+We mainly do this via a set of hourly cronjobs running on the test.defo.ie VM
+that attempt to access 67 URLs (some deliberately with broken configurations)
+from six different clients (described in Table \ref{tab:smclients}. We report
+results for the most recent 6 runs at
+\url{https://test.defo.ie/smokeping-summary.php}.
+
+\small
+\begin{longtblr} [
+        caption = {Smokeping clients},
+        label = {tab:smclients}
+    ] {
+        colspec = {| l | p{0.7\linewidth} |},
+        rowhead = 1
+    }
+    \hline
+        Name & Details\\
+    \hline
+        chromium & headless browser tests via selenium\\
+        & Version: 131.0.6778.85 \\
+        & Python script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/selenium_test.py}\\
+        & ECH implementation based on boringssl\\
+
+    \hline
+        firefox & headless browser tests via selenium\\
+        & Version: 133.0\\
+        & Python script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/selenium_test.py}\\
+        & ECH implementation based on NSS\\
+
+    \hline
+        curl & bash script using curl\\
+        & Version: 8.11.1-DEV\\
+        & Bash script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_curl.sh}\\
+        & curl currently only pays attention the the first HTTPS resource record seen in DNS answers\\
+        & ECH implementation based on OpenSSL\\
+
+    \hline
+        golang & custom golang programme and bash script\\
+        & Version: golang 1.23\\
+        & Golang programme: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/ech_url.go}\\
+        & Bash script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_go.sh}\\
+        & ECH implementation developed for golang\\
+
+    \hline
+        rustls & custom rustls programme and bash script\\
+        & Version: rustls 0.23.19\\
+        & Rustls programme: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/ech_url.rs}\\
+        & Bash script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_rs.sh}\\
+        & ECH implementation developed for rustls\\
+
+    \hline
+        python & custom Cpython build and python script\\
+        & Version: python 3.13\\
+        & Python script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/ech_url.py}\\
+        & Bash script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_py.sh}\\
+        & ECH implementation based on OpenSSL\\
+
+    \hline
+
+\end{longtblr}
+\normalsize
+
+We can characterise the different kinds of test URLs used according to the server technology used (basically
+one of the servers listed in Table \ref{tab:servers}).
