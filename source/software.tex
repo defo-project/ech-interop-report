@@ -5,6 +5,8 @@ This section describes libraries, clients and servers that support ECH.
 \subsection{Libraries}
 
 The libraries listed in Table \ref{tab:echlibs} have some support for ECH.
+Of the libraries listed, all of the OpenSSL variants, python and libcurl
+were developed by the DEfO project.
 
 \small
 \begin{longtblr} [
@@ -14,7 +16,6 @@ The libraries listed in Table \ref{tab:echlibs} have some support for ECH.
         colspec = {| l | p{0.7\linewidth} |},
         rowhead = 1
     }
-
     \hline
         Name & Details\\
     \hline
@@ -77,9 +78,10 @@ The libraries listed in Table \ref{tab:echlibs} have some support for ECH.
 
     \hline
         python & Source: \url{https://github.com/defo-project/cpython}\\
-        & Version: python 3.13/3.14 source\\
+        & Version: python 3.13/3.14 \\
         & ECH support: TLS client only \\
         & Comment:\\
+        & - python tests were just (2024-12-05) added to our smokeping tests\\
 
     \hline
         libcurl & Source: part of \url{https://github.com/curl/curl}\\
@@ -94,16 +96,80 @@ The libraries listed in Table \ref{tab:echlibs} have some support for ECH.
 
 \subsection{Clients}
 
-\subsubsection{Browsers}
+Current versions of firefox (e.g. 133.0, used in our smokeping tests) and
+chromium (version 131.0.6778.85 is used in our tests) support ECH by default.
+Other chromium-derived browsers also support ECH, while we don't include them
+in our ongoing tests described below, we have manually verified that current
+versions of vivaldi, brave and opera also have ECH support.  The Tor browser (a
+firefox derivative) doesn't seem to support ECH by default.
+To test if a browser supports ECH one can visit \url{https://test.defo.ie/}
+or, for much more detail \url{https://test.defo.ie/iframe_tests.html}.
 
-firefox, chromium, brave, vivaldi
+Browsers in general are still somewhat quirky in terms of whether or not
+ECH will succeed, even when ECH is properly setup. This seems at least
+partly due to the delay that can inherently occur between the browser
+receiving DNS answers for A/AAAA records, and the time at which the
+browser receives a DNS answer for an HTTPS record (containging ECH
+information). It seems to be the case that browsers may be "impatient"
+in that they start the TLS session without attempting ECH if that
+delay is too long, and that that happens sufficiently often to be
+noticeable.
+\todo{Characterise browser oddities via some JS?}.
 
-\subsubsection{Command Line Tools}
+The only command line tool supporting ECH of which we're aware is curl. The
+DEfO project
+contributed ECH code as an experimental feature for curl that was merged to the
+master branch in April 2024. As an experimental feature, ECH is not built by
+default nor part of a release, so is only currently available to those who
+build from source. Curl supports using OpenSSL, boringssl or Wolfssl libraries
+for ECH.  Build instrucftions are at
+\url{https://github.com/curl/curl/blob/master/docs/ECH.md}.
 
-curl
+As a scripting tool, often used as part of a TLS client, Python also fits here.
+The DEfO project Cpython build adds ECH support to python via the OpenSSl
+library.  That build is available at
+\url{https://github.com/defo-project/cpython} with the new APIs required for
+ECH described at
+\url{https://irl.github.io/cpython/library/ssl.html#encrypted-client-hello}.
 
 \subsection{Servers}
 
-ours: nginx, apache, lighttpd, haproxy
+The servers listed in Table \ref{tab:servers} support ECH. In each case,
+the ECH integration, using OpenSSL, was developed as part of the DEfO
+project.
 
+\small
+\begin{longtblr} [
+        caption = {Servers supporting ECH},
+        label = {tab:servers}
+    ] {
+        colspec = {| l | p{0.7\linewidth} |},
+        rowhead = 1
+    }
+    \hline
+        Name & Details\\
 
+    \hline
+        lighttpd & Source: \url{https://github.com/defo-project/lighttpd}\\
+        & Version: 1.4.76.81\\
+        & Comment: only shared-mode ECH\\
+
+    \hline
+        nginx & Source: \url{https://github.com/defo-project/nginx}\\
+        & Version: 1.27.3.4\\
+        & Comment: both shared-mode and split-mode ECH\\
+
+    \hline
+        apache2 & Source: \url{https://github.com/defo-project/apache-httpd}\\
+        & Version: 2.5.0.ech.351\\
+        & Comment: only shared-mode ECH\\
+
+    \hline
+        haproxy & Source: \url{https://github.com/defo-project/haproxy}\\
+        & Version: 3.2.dev0.62\\
+        & Comment: both shared-mode and split-mode ECH\\
+
+    \hline
+
+\end{longtblr}
+\normalsize

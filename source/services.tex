@@ -1,3 +1,69 @@
 \section{Services}
 
-Describe services
+We can separate services into test and operational services.
+Table \ref{tab:testservers} lists known test services supporting
+ECH. All of those below .ie and my-own.net were setup by the 
+DEfO project.
+
+\small
+\begin{longtblr} [
+        caption = {Test Services with ECH},
+        label = {tab:testservers}
+    ] {
+        colspec = {| l | p{0.7\linewidth} |},
+        rowhead = 1
+    }
+    \hline
+        Name & Details\\
+    \hline
+        defo.ie & \url{https://defo.ie/ech-check.php} is often used to check ECH\\
+        & ECH keys are rotated hourly, private usable for 3 hours, ECHConfigList in DNS contains only latest public\\
+    \hline
+        draft-13.esni.defo.ie & different server technology instances on different ports as listed at \url{https://defo.ie/}, e.g., \url{https://draft-13.esni.defo.ie:10413} is served by nginx\\
+        & ECH keys are rotated hourly, private usable for 3 hours, ECHConfigList in DNS contains only latest public\\
+    \hline
+        test.defo.ie & hosts a number of ECH server setups with good and variously bad configurations - see
+        \url{https://test.defo.ie/iframes_tests} describes those and allows a browser to attempt connections to
+        each via Iframes\\
+        & ECH keys/configs are static for these setups\\
+    \hline
+        foo.ie & \url{https://foo.ie/ech-check.php} was setup used to check the defo.ie setup was easily replicated\\
+        & ECH keys are rotated hourly, private usable for 3 hours, ECHConfigList in DNS contains only latest public\\
+    \hline
+        my-own.net & this was test the impact of having the same ECH keys on
+        port 443 (\url{https://my-own.net/ech-check.php}) and another port  
+        (\url{https://my-own.net:8443/ech-check.php})  - at one point that made a difference to browsers\\
+        & ECH keys are rotated hourly, private usable for 3 hours, ECHConfigList in DNS contains only latest public\\
+    \hline
+        tls-ech.dev & \url{https://tls-ech.dev/} was setup by the boringssl developers as a test server that uses
+        boringssl\\ 
+        & \todo{Check ECH key rotation}\\
+    \hline
+        Cloudflare & \url{https://cloudflare-ech.com/cdn-cgi/trace} is a test page
+           setup by cloudflare that reports on ECH success/failure\\
+        & apparently, the server implementation and infrastucrure are part of Cloudflare's normal setup\\
+        & a similar test service used to be available at \url{https://crypto.cloudflare.com/cdn-cgi/trace} but
+        that was turned off around the time that ECH was re-enabled for Cloudflare customers\\
+        & ECH keys are rotated hourly, private usable for N hours, ECHConfigList in DNS contains only latest public\\
+        & \todo{Check what N for private key usability}\\
+
+    \hline
+        rfc5746.mywaifu.best & this ECH-enabled web page (\url{https://rfc5746.mywaifu.best/}) seems to have been setup 
+        as an ECH test site by someone using DEfO artefacts (nginx and documentation) but without any contact
+        having happened between the person who set that up and any of the DEfO-project participants\\
+        & the person who set this up documented some of that at \url{https://ckcr4lyf.github.io/tech-notes/services/nginx/nginx-ech.html}\\
+
+    \hline
+\end{longtblr}
+\normalsize
+
+The only operational ECH services we know of is Cloudflare's deployment.
+However, that is non-negligible. Cloudflare briefly enabled ECH in 2022
+but soon disabled that again as it caused some back-end issues. They
+finally re-enabled ECH in October 2024.
+
+As part of our DEfO test setup, we have a web page where you can enter a DNS
+name and port and a script on our server will check if ECH is enabled for a web
+server at the name and port. (That's at
+\url{https://test.defo.ie/domainechprobe.php}.)
+\todo{Add info from that data.}
