@@ -53,7 +53,7 @@ were developed by the DEfO project.
         & Version: 5.7.4\\
         & ECH support: ECH client and server, ECH for TLS (unsure of DTLS/QUIC)\\
         & Comment: \\
-        & - ECH not built by default (needs "--enable-ech")\\
+        & - ECH not built by default (needs ``--enable-ech'')\\
         & - fails when HelloRetryRequest seen - \url{https://github.com/wolfSSL/wolfssl/issues/6802}\\
 
     \hline
@@ -110,7 +110,7 @@ ECH will succeed, even when ECH is properly setup. This seems at least
 partly due to the delay that can inherently occur between the browser
 receiving DNS answers for A/AAAA records, and the time at which the
 browser receives a DNS answer for an HTTPS record (containging ECH
-information). It seems to be the case that browsers may be "impatient"
+information). It seems to be the case that browsers may be ``impatient''
 in that they start the TLS session without attempting ECH if that
 delay is too long, and that that happens sufficiently often to be
 noticeable.

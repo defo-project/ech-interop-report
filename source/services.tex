@@ -39,7 +39,7 @@ DEfO project.
     \hline
         tls-ech.dev & \url{https://tls-ech.dev/} was setup by the boringssl developers as a test server that uses
         boringssl\\ 
-        & \todo{Check ECH key rotation}\\
+        & ECH keys/configs seem to be static for this setup\\
     \hline
         Cloudflare & \url{https://cloudflare-ech.com/cdn-cgi/trace} is a test page
            setup by cloudflare that reports on ECH success/failure\\
@@ -67,7 +67,7 @@ it soon after in
 October 2023~\footnote{\url{https://community.cloudflare.com/t/early-hints-and-encrypted-client-hello-ech-are-currently-disabled-globally/567730}}
 as it caused some back-end issues. They then re-enabled ECH in October 2024.
 Our understanding of Cloudflare's deployment is that ECH is enabled by 
-default for their "free" tier customers, but that paying customers have to
+default for their ``free'' tier customers, but that paying customers have to
 take action to enable ECH.
 
 In contrast, non-paying customers are not provided with a control to disable
@@ -78,13 +78,13 @@ Cloudflare.~\footnote{\url{https://betanews.com/2024/11/20/encrypted-client-hell
 
 \subsection{Domain Probe Data}
 
-As part of our DEfO test setup, we have a web page where you can enter a DNS
+As part of our DEfO test setup, we have a web page where one can enter a host
 name and port and a script on our server will check if ECH is enabled for a web
 server at the name and port. (That's at
 \url{https://test.defo.ie/domainechprobe.php}.) Data is only stored if there is
 an HTTPS resource record for the name and port, if there is not we store
 nothing. In cases where this is an HTTPS resource record, we only store the
-name and port, whether the HTTPS value includes an "ech=" field, if there is,
+name and port, whether the HTTPS value includes an ``ech='' field, if there is,
 whether or not ECH worked using our ECH-enabled curl as the client. We also
 store the HTTPS resource record value, unless there are CNAMES or other
 kinds of re-direction involved.
@@ -97,11 +97,11 @@ that'd be a) easy or b) worthwhile.
 
 Figure \ref{fig:qtimes} shows the (small) numbers of queries made since August
 2024. We can see a noticeable uptick in accesses just-before and after Russia
-block Cloudflare's ECH service. We also see some usage (at least 15 cases) that
-appear to indicate Russian web site owners may be using this service to check
-whether or not they have successfully disable ECH. (The pattern is two quick
+blocked Cloudflare's ECH service. We also see some usage (at least 15 cases) that
+appear to indicate some web site owners may be using this service to check
+whether or not they have successfully disabled ECH. (The pattern is two quick
 accesses to the same name/port, the first of which indicates ECH worked, and
-the second that the HTTPS RR no longer contains an "ech=" value.)
+the second that the HTTPS RR no longer contains an ``ech='' value.)
 
 \begin{figure}
 	\centering
@@ -112,8 +112,21 @@ the second that the HTTPS RR no longer contains an "ech=" value.)
 	\label{fig:qtimes}
 \end{figure}
 
-The 1244 queries involved 517 unique domain names (117 of which are under
-the ".ru" ccTLD). The most commonly queried name is "youtube.com" (131 times),
+The 1244 queries involved 517 unique names (117 of which are under
+the ``.ru'' ccTLD). The most commonly queried name is ``youtube.com'' (131 times),
 for which ECH is not currently enabled. Some 354 names were only queried 
 once, and 86 were queried twice.
 
+Of the 1244 queries, 660 referred to a name that had an ``ech='' in
+the relevant HTTPS record, referring to 298 unique names.  Within the 660 HTTPS 
+values that contain an ``ech='' value, we see 276 unique ECHConfigList values (4 of which are
+corrupt values published for our DEfO test services).  Of the 298 unique
+names, 271 seem to be served by Cloudflare (based on the relevant name server
+names), 15 relate to test services described in Table \ref{tab:testservers}. At
+the time of writing, 10 of the names result in an NXDOMAIN or SERVFAIL
+response, 1 seems to correspond to a possible hobbyist site and 2 seem to (now)
+be parked domains or part of some advertising campaign. None of of those last
+3 currently publish an HTTPS record.
+
+So at least for the names entered to our domain probe page, we can seemingly
+conclude that Cloudflare have the only operational service at present.
