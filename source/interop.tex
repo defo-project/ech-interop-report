@@ -101,7 +101,8 @@ The set of ``interesting'' things arising from Table \ref{tab:itests} include
     entries - the first an x25519 key and the second a p256 key - and the same ECHConfigList 
     value is published for both ports. The error here however is in the configuration - the
     targetName for the port 15443 RR is ``.'' rather than the hostname, so chromium here
-        is correct and our test setup is wrong.
-    \todo{fix after checking if that's systemic!}
+    is correct and our test setup is wrong. We fixed a bug in 
+    \url{https://github.com/defo-project/ech-dev-utils/blob/main/test-cases/test_cases_gen.py}
+        addressing this on 20241208. \todo{re-generate Table \ref{tab:itests} in 48 hours}
     \todo{publish a ``bad'' config like that as a specific test}
 \end{itemize}
