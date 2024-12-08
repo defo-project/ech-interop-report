@@ -65,5 +65,29 @@ results for the most recent 6 runs at
 \end{longtblr}
 \normalsize
 
-We can characterise the different kinds of test URLs used according to the server technology used (basically
-one of the servers listed in Table \ref{tab:servers}).
+The set of 67 test URLs covers all of the server technologies listed in Table
+\ref{tab:servers}) though as all of those use OpenSSL for ECH, we direct most
+of the URLs towards one nginx instance, typically both (via a haproxy instance
+on) port 443 and direct to the nginx instance on port 15443. The set also
+include URLs for the test services listed in Table \ref{tab:testservers}.  Some
+test URLs have ``broken'' configurations, e.g. with badly encoded HTTPS
+resource records, or have specification-conformant configurations that we
+expect may not work.
+
+We have 6 clients testing hourly against 67 URLs, giving us 402 measurements
+per hour. The full set of URLs are too long to explain in detail here so
+we'll just show current results and describe a few cases where those results
+are more ``interesting''. The full set of URLs and the last 6 hours of test
+outcomes at \url{https://test.defo.ie/smokeping-summary.php} or 
+web pages with (most of) the test URLs loaded via an Iframe can be accessed at
+\url{https://test.defo.ie/iframe_tests_sort.html}. That web page also includes
+some explanatory text about each test URL.
+
+Table \ref{tab:itests} below shows, for each test URL and each client,
+the percentage of expected and total results for a recent two day
+interval.~\footnote{Table \ref{tab:itests} is produced
+using \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smokeping-summary-report.py}.}
+
+\todo{Check expected values and sort out any self-caused anomalies.}
+
+\input tt
