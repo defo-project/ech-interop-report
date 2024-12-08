@@ -91,3 +91,17 @@ using \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke
 \todo{Check expected values and sort out any self-caused anomalies.}
 
 \input tt
+
+The set of ``interesting'' things arising from Table \ref{tab:itests} include
+
+\begin{itemize}
+\item Line 2 - \url{https://2thenp-ng.test.defo.ie:15443/echstat.php?format=json} works for all
+    clients except chromium where it never works, yet the same configuration on port 443 works
+    100\% of the time on all clients. That configuration has an ECHConfigList with two
+    entries - the first an x25519 key and the second a p256 key - and the same ECHConfigList 
+    value is published for both ports. The error here however is in the configuration - the
+    targetName for the port 15443 RR is ``.'' rather than the hostname, so chromium here
+        is correct and our test setup is wrong.
+    \todo{fix after checking if that's systemic!}
+    \todo{publish a ``bad'' config like that as a specific test}
+\end{itemize}
