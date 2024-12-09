@@ -78,6 +78,16 @@ reproduce them:
         same VM (``test.defo.ie``) so we have to set the hostname on the VM to something
         ``peculiar'' for tests to run as expected. (That of course causes ``sudo'' to 
         complain which could disturb logs.)
+    \item In the course of testing ECH in recent years, we have repeatedly made one
+        misconfiguration error: using ``.'' as the target name in HTTPS RRs for ports other
+        then 443, when the correct thing do is to include the origin as the target name
+        in such cases. That is when making an HTTPS RR for \url{https://example.com:12345/}
+        one needs to publish an HTTPS RR at ``\_12345.\_https.example.com'' and the 
+        (presentation) value of that record needs to start with ``1 example.com ...''
+        where 1 is the priority and example.com is that targetName. So simply copying the
+        value of the HTTPS RR for port 443 and re-publishing that for another port is
+        not sufficient for interoperability. (But also does work for some clients in
+        some cases, making it easier to accidentally do this and not notice.)
 \end{itemize}
 
 \subsection{Results}
@@ -143,6 +153,10 @@ The set of ``interesting'' things arising from Table \ref{tab:itests} include
     \item Line 20 and similar - our python test client needed a tweak to not fail
         for tests not using the ``echstat.php'' server side script - fix was pushed
         on 20241209
+    \item Line 32 - somehow certbot was no longer installed on test.defo.ie so we
+        got a cert expiry for hidden.hoba.ie - re-instaled certbot to fix, which
+        leads to some redundancy as we end up with >1 cert for some names (more or
+        less all other name on that VM are below *.test.defo.ie)
     \item Line 35 - out python test client hits a certificate validation error for
         this one:
         \begin{verbatim}
