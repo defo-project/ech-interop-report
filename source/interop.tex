@@ -131,6 +131,9 @@ The set of ``interesting'' things arising from Table \ref{tab:itests} include
     \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/selenium_test.py} where
         expected failures from tests using the ``echstat\_stat()'' handler were being logged as 
         test failures when they should be logged as expected.
+    \item Line 13 - our ``cf\_check'' result handler hadn't been changed to be applied 
+        with the change in Cloudflare's ECH test URL from ``crypto.cloudflare.com'' to
+        ``cloudflare-ech.com'' which caused erroneous failure reports.
 \end{itemize}
 
 \todo{based on the above, re-generate Table \ref{tab:itests} in some hours}
