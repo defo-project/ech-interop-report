@@ -134,11 +134,12 @@ The set of ``interesting'' things arising from Table \ref{tab:itests} include
     \item Line 13 - our ``cf\_check'' result handler hadn't been changed to be applied 
         with the change in Cloudflare's ECH test URL from ``crypto.cloudflare.com'' to
         ``cloudflare-ech.com'' which caused erroneous failure reports.
-    \item Line 12 - our python test client is throwing an exception for this URL
+    \item Line 13 - our python test client is throwing an exception for the Cloudflare
+        test URL:
         \begin{verbatim}
 [SSL: SSLV3_ALERT_ILLEGAL_PARAMETER] ssl/tls alert illegal parameter (_ssl.c:1024)
         \end{verbatim}
-        being investigated
+        being investigated...
     \item Line 20 and similar - our python test client needed a tweak to not fail
         for tests not using the ``echstat.php'' server side script - fix was pushed
         on 20241209
