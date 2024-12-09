@@ -72,7 +72,7 @@ reproduce them:
     \item Some of the headless browser tests (e.g. with badly encoded ECHConfigList values)
         will cause selenium to throw exceptions, so test scripts need to catch those in order
         to properly determine that we got an expected failure
-    \item Firefox will not attempt ECH to a name when the hostmame of the test machine/VM is
+    \item Firefox will not attempt ECH to a name when the hostname of the test machine/VM is
         beneath the 2LD for that name, this causing unexpected failures if that hostname matches
         the origin of a test URL. In our case, we run both servers and test clients on the
         same VM (``test.defo.ie``) so we have to set the hostname on the VM to something
