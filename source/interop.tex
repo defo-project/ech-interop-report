@@ -115,11 +115,59 @@ the percentage of expected and total results for a recent two day
 interval.~\footnote{Table \ref{tab:itests} is produced
 using \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smokeping-summary-report.py}.}
 
-\todo{Check expected values and sort out any self-caused anomalies.}
 
 \input tt
 
-The set of ``interesting'' things arising from Table \ref{tab:itests} include
+The set of ``interesting'' things arising from Table \ref{tab:itests} include:
+
+\todo{Check text still applies after we've updated Table \ref{tab:itests}}
+
+\begin{itemize}
+\item Lines 5 and 6 - \url{https://badalpn-ng.test.defo.ie/echstat.php?format=json} and
+    it's equivalent off port 443, work fine with all clients except Firefox and never work
+    for firefox. The relevant DNS RR has an illegal alpn value (a '+' character). Hard to
+    see this as other than firefox being over-fussy, though there could of course be some
+    good reason to reject such alpn values.
+\item Lines 13 and 57 - our python test client throws an exception for these (the
+    Cloudflare operational, and boringssl test, servers)
+        \begin{verbatim}
+[SSL: SSLV3_ALERT_ILLEGAL_PARAMETER] ssl/tls alert illegal parameter (_ssl.c:1024)
+        \end{verbatim}
+        This is being investigated.
+    \item Line 14 - \url{https://curves1-ng.test.defo.ie/echstat.php?format=json}
+        has two HTTPS RRs published with the same priority, one that contains an
+        x25519 public value and another that only have a p256 public value. This
+        seems to cause failure for our rustls client about 50\% of the time as
+        that client only supports x25519 (presumably). Browsers, while similarly
+        not supporting NIST curves, presumably either select the ``working'' HTTPS 
+        RR value, and/or use the retry-configs fallback and manage to connect with ECH.
+    \item Line 15 becomes a puzzle given line 14 - seemingly our rustls client does
+        always work when not on port 443! We have verified that the HTTPS RRs published
+        for curves1-ng.test.defo.ie and \_15443.\_https.curves1-ng.test.defo.ie are
+        as expected. Being investigated.
+    \item Lines 18 and 19 may behave similarly to the above, being alike except that
+        the HTTPS RR value priority for the p256 case is lower than for the 25519
+        one.
+    \item Line 23 - browsers seem to dislike \url{https://draft-13.esni.defo.ie:12413/}.
+        We suspect that's due to our test result handlers. That test case is an 
+        ECH shared-mode hapoxy instance with lighttpd as the backend. As lighttpd
+        is the backend it doesn't produce an HTTP response indicates ECH worked as
+        ECH was terminated with TLS at the haproxy intance. It's unclear how we
+        can handle this test case when browsers don't indicate ECH success or
+        failure. (Between haproxy and lighttpd we may be able to engineer some
+        HTTP response header that indicates ECH success or failure - that'd not
+        be secure but would be fine for testing. That's not been attempted yet.)
+    \item Line 37 - it's not clear why publishing many (20) identical HTTPS RRs would work
+        for port 443 for browsers but not off port 443. To be investigated.
+
+\end{itemize}
+
+\todo{based on the above, re-generate Table \ref{tab:itests} in some hours}
+
+\subsection{Recently Fixed Issues with Test Setup}
+
+It may be illustrative to describe some self-caused test failures recently
+seen, as we were preparing this report, and how those were resolved:
 
 \begin{itemize}
 \item Line 2 - \url{https://2thenp-ng.test.defo.ie:15443/echstat.php?format=json} works for all
@@ -157,13 +205,11 @@ The set of ``interesting'' things arising from Table \ref{tab:itests} include
         got a cert expiry for hidden.hoba.ie - re-instaled certbot to fix, which
         leads to some redundancy as we end up with >1 cert for some names (more or
         less all other name on that VM are below *.test.defo.ie)
-    \item Line 35 - out python test client hits a certificate validation error for
-        this one:
-        \begin{verbatim}
-[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1024)
-        \end{verbatim}
-        being investigated...
-        
+    \item Line 35 - our python test client hits a certificate validation error for
+        this lighttpd server - a change to the server configuration seems to fix this, the
+        change being to send the full cert chain to clients (browsers don't need
+        that but our other test client do).
+    \item Lines 51 and 52: these needed an edit for the expected values, which were
+        wrong.
 \end{itemize}
 
-\todo{based on the above, re-generate Table \ref{tab:itests} in some hours}
