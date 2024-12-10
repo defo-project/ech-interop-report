@@ -34,7 +34,7 @@ libcurl were developed by the DEfO project.
         OpenSSL-feature-branch & Source: \url{https://github.com/openssl/openssl/tree/feature/ech}\\
         & Version: 3.5.0-dev feature branch in upstream repo\\
         & ECH support: stub APIs so far, next PR will have ECH client, then server after\\
-        & Comment: this is the DEfO-project's target for ECH PRs, and is where ECH code will end up prior to eventually being merged to master\\
+        & Comment: this is the OpenSSL project's target for ECH PRs, and is where ECH code will end up prior to eventually being merged to master\\
 
     \hline
         boringssl & Source: \url{https://boringssl.googlesource.com/boringssl}\\
@@ -113,7 +113,8 @@ browser receives a DNS answer for an HTTPS record (containging ECH
 information). It seems to be the case that browsers may be ``impatient''
 in that they start the TLS session without attempting ECH if that
 delay is too long, and that that happens sufficiently often to be
-noticeable.
+noticeable. (Note however, that this report does not in itself yet
+justify that claim, but work is ongoing.)
 
 The only command line tool supporting ECH of which we're aware is curl. The
 DEfO project

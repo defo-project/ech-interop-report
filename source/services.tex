@@ -46,9 +46,9 @@ DEfO project.
         & apparently, the server implementation and infrastucrure are part of Cloudflare's normal setup\\
         & a similar test service used to be available at \url{https://crypto.cloudflare.com/cdn-cgi/trace} but
         that was turned off around the time that ECH was re-enabled for Cloudflare customers\\
-        & ECH keys are rotated hourly, private usable for N hours, ECHConfigList in DNS contains only latest public\\
-        & \todo{Check what N for private key usability}\\
-
+        & based on one test on 2024-12-09, new ECH keys are published roughly hourly with a 300 second TTL;
+            old ECH public values seem usable for approximately 4 or up to 5 hours;
+            and the ECHConfigList published in DNS contains only one public value\\
     \hline
         rfc5746.mywaifu.best & this ECH-enabled web page (\url{https://rfc5746.mywaifu.best/}) seems to have been setup 
         as an ECH test site by someone using DEfO artefacts (nginx and documentation) but without any contact

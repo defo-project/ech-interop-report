@@ -1,6 +1,7 @@
-%\documentclass[journal,onecolumn,10pt]{article}
+\documentclass[journal,onecolumn,10pt,s4paper]{article}
+%\documentclass[a4paper]{article}
 %\documentclass[12pt,doublespace]{sigcomm-alternate}
-\documentclass[12pt,draftclsnofoot,onecolumn]{IEEEtran}
+%\documentclass[12pt,draftclsnofoot,onecolumn]{IEEEtran}
 %\documentclass[twocolumn]{sigcomm-alternate}
 
 %\documentclass[10pt,final,journal,twoside,pdftex]{IEEEtran}
@@ -55,15 +56,12 @@ ECH Interoperability Report
 }
 
 \author{
-\IEEEauthorblockN{Stephen Farrell}
-\IEEEauthorblockA{
-\\
-	Trinity College Dublin/Tolerant Networks Ltd.\\
-	stephen.farrell@cs.tcd.ie\\
-	\small
-    work-in-progress {\yyyymmdddate\today}:{\currenttime} UTC\\
-    \normalsize
-}
+Stephen Farrell\\
+Trinity College Dublin/Tolerant Networks Ltd.\\
+\small
+stephen.farrell@cs.tcd.ie\\
+%work-in-progress {\yyyymmdddate\today}:{\currenttime} UTC\\
+\normalsize
 }
 
 %%\numberofauthors{1}
@@ -81,13 +79,11 @@ ECH Interoperability Report
 %%\IEEEpubid{0000--0000/00\$00.00~\copyright~2016 IEEE}
 \maketitle
 
-
 \input abstract
-\begin{IEEEkeywords}
-Encrypted Client Hello (ECH), Interoperability
-\end{IEEEkeywords}
-\input introduction
 
+Keywords: Encrypted Client Hello (ECH), Interoperability
+
+\input introduction
 \input software
 \input services
 \input interop
