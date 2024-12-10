@@ -1,4 +1,4 @@
-\documentclass[journal,onecolumn,10pt,s4paper]{article}
+\documentclass[journal,onecolumn,10pt,a4paper]{article}
 %\documentclass[a4paper]{article}
 %\documentclass[12pt,doublespace]{sigcomm-alternate}
 %\documentclass[12pt,draftclsnofoot,onecolumn]{IEEEtran}
@@ -17,7 +17,7 @@
 \usepackage{datetime}
 \usepackage{mdframed}
 \usepackage{graphicx}
-
+\usepackage{a4wide}
 
 %% \newcommand{\todo}[1]{\marginnote{\fbox{\bfseries TODO: #1}}}%
 \newcommand{\todo}[1]{\fbox{\bfseries TODO: #1}}%
@@ -51,7 +51,9 @@
 % \includegraphics[width=4cm,keepaspectratio]{defologo.png}
 
 \title{
-\includegraphics[width=\textwidth]{defologo.png}
+    \begin{center}
+\includegraphics[width=0.6\textwidth]{defologo.png}
+    \end{center}
 ECH Interoperability Report
 }
 

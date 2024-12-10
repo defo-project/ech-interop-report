@@ -27,17 +27,17 @@ results for the most recent 6 runs at
         & ECH implementation based on boringssl\\
 
     \hline
-        firefox & headless browser tests via selenium\\
-        & Version: 133.0\\
-        & Python script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/selenium_test.py}\\
-        & ECH implementation based on NSS\\
-
-    \hline
         curl & bash script using curl\\
         & Version: 8.11.1-DEV\\
         & Bash script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_curl.sh}\\
         & curl currently only pays attention the the first HTTPS resource record seen in DNS answers\\
         & ECH implementation based on OpenSSL\\
+
+    \hline
+        firefox & headless browser tests via selenium\\
+        & Version: 133.0\\
+        & Python script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/selenium_test.py}\\
+        & ECH implementation based on NSS\\
 
     \hline
         golang & custom golang programme and bash script\\
@@ -69,25 +69,35 @@ There are some notes on these tests worth calling out in case someone wants to
 reproduce them:
 
 \begin{itemize}
-    \item Some of the headless browser tests (e.g. with badly encoded ECHConfigList values)
-        will cause selenium to throw exceptions, so test scripts need to catch those in order
-        to properly determine that we got an expected failure
-    \item Firefox will not attempt ECH to a name when the hostname of the test machine/VM is
-        beneath the 2LD for that name, this causing unexpected failures if that hostname matches
-        the origin of a test URL. In our case, we run both servers and test clients on the
-        same VM (``test.defo.ie``) so we have to set the hostname on the VM to something
-        ``peculiar'' for tests to run as expected. (That of course causes ``sudo'' to 
-        complain which could disturb logs.)
-    \item In the course of testing ECH in recent years, we have repeatedly made one
-        misconfiguration error: using ``.'' as the target name in HTTPS RRs for ports other
-        then 443, when the correct thing do is to include the origin as the target name
-        in such cases. That is when making an HTTPS RR for \url{https://example.com:12345/}
-        one needs to publish an HTTPS RR at ``\_12345.\_https.example.com'' and the 
-        (presentation) value of that record needs to start with ``1 example.com ...''
-        where 1 is the priority and example.com is that targetName. So simply copying the
-        value of the HTTPS RR for port 443 and re-publishing that for another port is
-        not sufficient for interoperability. (But also does work for some clients in
-        some cases, making it easier to accidentally do this and not notice.)
+
+    \item Some of the headless browser tests (e.g. with badly encoded
+        ECHConfigList values) will cause selenium to throw exceptions, so test
+        scripts need to catch those in order to properly determine that we got
+        an expected failure
+
+    \item Firefox will not attempt ECH to a name when the hostname of the test
+        machine/VM is beneath the ``second level domain''\footnote{Or 2LD, as
+        defined e.g. at
+        \url{https://en.wikipedia.org/wiki/Second-level_domain}.} for that
+        name, thus causing unexpected failures if that hostname matches the
+        origin of a test URL. In our case, we run both servers and test clients
+        on the same VM (``test.defo.ie'') so we have to set the hostname on the
+        VM to something ``peculiar'' for tests to run as expected. (That of
+        course causes ``sudo'' to complain which could disturb logs.)
+
+    \item In the course of testing ECH in recent years, we have repeatedly made
+        one misconfiguration error: using ``.'' as the target name in HTTPS RRs
+        for ports other then 443, when the correct thing do is to include the
+        origin as the target name in such cases. That is, when making an HTTPS
+        RR for \url{https://example.com:12345/} one needs to publish an HTTPS
+        RR at ``\_12345.\_https.example.com'' and the (presentation) value of
+        that record needs to start with ``1 example.com ...'' where 1 is the
+        priority and example.com is that targetName. So simply copying the
+        value of the HTTPS RR for port 443 and re-publishing that for another
+        port is not sufficient for interoperability. (But also does work for
+        some clients in some cases, making it easier to accidentally do this
+        and not notice.)
+
 \end{itemize}
 
 \subsection{Results}
@@ -126,7 +136,9 @@ interval.~\footnote{Table \ref{tab:itests} is produced
 using \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smokeping-summary-report.py}.}
 
 
+\begin{center}
 \input tt
+\end{center}
 
 The set of ``interesting'' things arising from Table \ref{tab:itests} include:
 
@@ -185,8 +197,6 @@ The set of ``interesting'' things arising from Table \ref{tab:itests} include:
         investigated.
 
 \end{itemize}
-
-\todo{based on the above, re-generate Table \ref{tab:itests} in some hours}
 
 \subsection{Recently Fixed Issues with Test Setup}
 
