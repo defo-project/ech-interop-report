@@ -109,7 +109,7 @@ Browsers in general are still somewhat quirky in terms of whether or not
 ECH will succeed, even when ECH is properly setup. This seems at least
 partly due to the delay that can inherently occur between the browser
 receiving DNS answers for A/AAAA records, and the time at which the
-browser receives a DNS answer for an HTTPS record (containging ECH
+browser receives a DNS answer for an HTTPS record (containing ECH
 information). It seems to be the case that browsers may be ``impatient''
 in that they start the TLS session without attempting ECH if that
 delay is too long, and that that happens sufficiently often to be
@@ -122,7 +122,7 @@ contributed ECH code as an experimental feature for curl that was merged to the
 master branch in April 2024. As an experimental feature, ECH is not built by
 default nor part of a release, so is only currently available to those who
 build from source. Curl supports using OpenSSL, boringssl or Wolfssl libraries
-for ECH.  Build instrucftions are at
+for ECH.  Build instructions are at
 \url{https://github.com/curl/curl/blob/master/docs/ECH.md}.
 
 As a scripting tool, often used as part of a TLS client, Python also fits here.
