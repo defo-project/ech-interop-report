@@ -94,12 +94,22 @@ reproduce them:
 
 The set of 67 test URLs covers all of the server technologies listed in Table
 \ref{tab:servers}) though as all of those use OpenSSL for ECH, we direct most
-of the URLs towards one nginx instance, typically both (via a haproxy instance
-on) port 443 and direct to the nginx instance on port 15443. The set also
-include URLs for the test services listed in Table \ref{tab:testservers}.  Some
-test URLs have ``broken'' configurations, e.g. with badly encoded HTTPS
-resource records, or have specification-conformant configurations that we
-expect may not work.
+of the URLs towards one nginx instance. On our test VM, we have an haproxy
+instance (not doing an ECH) listening on port 443, that routes TLS sessions to
+the ECH-enabled web servers, namely, nginx (port 15443), apache (15444),
+lighttpd (15445) and two instances of ``openssl s\_server'', one with a
+standard configuration on port 15447, and one, that only supports the p-384
+curve for TLS key exchange on port 15448. That last server's configuration will
+trigger TLS HelloRetryRequest for many TLS clients. The back-end ports for all
+servers (e.g. 15443 for nginx) are also open. Our test URLs and associated
+HTTPS RRs can therefore be exercised both for port 443 and the relevant
+back-end port, but in most cases we have only set those up for the nginx
+back-end instance as testing the same setup on different web server instances
+wouldn't be likely to reveal much new information.  The test set also include
+URLs for the test services listed in Table \ref{tab:testservers}.  Some test
+URLs have ``broken'' configurations, e.g. with badly encoded HTTPS resource
+records, or have specification-conformant configurations that we expect may not
+work.
 
 We have 6 clients testing hourly against 67 URLs, giving us 402 measurements
 per hour. The full set of URLs are too long to explain in detail here so
@@ -111,7 +121,7 @@ web pages with (most of) the test URLs loaded via an Iframe can be accessed at
 some explanatory text about each test URL.
 
 Table \ref{tab:itests} below shows, for each test URL and each client,
-the percentage of expected and total results for a recent two day
+the ratio of expected and total results for a recent 
 interval.~\footnote{Table \ref{tab:itests} is produced
 using \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smokeping-summary-report.py}.}
 
@@ -197,14 +207,6 @@ were preparing this report, and how those were resolved:
         wrong. We fixed a bug in
         \url{https://github.com/defo-project/ech-dev-utils/blob/main/test-cases/test_cases_gen.py}
         addressing this on 20241208.\\
-
-    \item Lines 5 and 6 -
-        \url{https://badalpn-ng.test.defo.ie/echstat.php?format=json} and it's
-        equivalent off port 443, work fine with all clients except Firefox and
-        never work for firefox. The relevant DNS RR has an illegal alpn value
-        (a '+' character). Hard to see this as other than firefox being
-        over-fussy, though there could of course be some good reason to reject
-        such alpn values.
 
     \item Line 7 and elsewhere - fixed a bug in
         \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/selenium_test.py}
