@@ -212,6 +212,14 @@ were preparing this report, and how those were resolved:
         handler were being logged as test failures when they should be logged
         as expected.
 
+    \item Line 7 and elsewhere - fixed same bug in both
+        \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_py.sh}
+        and
+        \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_rs.sh}
+        where we were assuming all non-zero returns were errors, which didn't match with
+        the configured expected values. (Also tweaked a few of those expected values for
+        rustls and python too.)
+
     \item Line 13 - our ``cf\_check'' result handler hadn't been changed to be
         applied with the change in Cloudflare's ECH test URL from
         ``crypto.cloudflare.com'' to ``cloudflare-ech.com'' which caused
