@@ -1,3 +1,50 @@
 \section{Conclusions}
 
-Conclude
+Based on all the above, we can reach some conclusions:
+
+\begin{itemize}
+
+    \item
+        At the ECH protocol level, interoperability, ignoring broad ECH
+        ciphersuite support, is very good. The (real) issues in getting
+        interoperable wide deployment of ECH revolve around complexity in HTTPS
+        RR processing.
+
+    \item
+        If deploying ECH: Keep it simple, because ECH ciphersuite handling is
+        not at all flexible in many clients. Only publish a ``singleton''
+        ECHConfigList in one HTTPS RR and use x25519/HKDF-SHA256/AES128 for
+        that one ECHConfig. If rotating ECH keys, do keep ``old'' private
+        value usable at servers for a time that is a multiple (e.g. 3x or
+        5x) of the duration for which the ``current'' ECH public value is
+        to be used. It's probably wise to also have a shorter TTL on 
+        HTTPS RR values, perhaps half of the key rotation duration or less.
+
+    \item
+        It is very non-trivial for non-browser clients to fully handle HTTPS
+        RRs.  For typical non-browser clients HTTPS requires a change from the
+        very simple situation of using the system resolver for A/AAAA RRs to a
+        new situation where far more comlpex HTTPS processing may be needed. We
+        expect a possibly long transition period where such clients have very
+        simplistic processing of HTTPS RRs for ECH, likely just processing a
+        single HTTPS RR value. Again: deployers will need to keep it simple,
+        and possibly for an extended period.
+
+    \item
+        Browsers are complex beasts. It is very likely that real browser
+        behaviour will be better than indicated in our test results above,
+        which all involve ``cold'' caches. Nonetheless, it seems at this time,
+        that one could not be 100\% confident that ECH will always be used, and
+        always succeed, for browser users, even with the most conservative
+        deployment. However, one can likely be confident that in such
+        scenarios, ECH will typically be used and will typically succeed.
+
+\end{itemize}
+
+As a last word, the author is happy to speculate that had a far simpler
+form of ECH been developed as a first version, with no options at all,
+and had that design been deployed and iterated upon, we would be much
+closer to seeing ECH widely deployed today with excellent interoperability.
+The lesson there however, is for protocol designers, and not for those
+implementing and deploying the current ECH specification, who are the
+main target for this document.

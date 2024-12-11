@@ -4,13 +4,15 @@ Our primary interoperability testing is based on our ``smokeping''-like tests.
 While smokeping measures latency for names/addreses, our tests aim to establish
 whether and which ECH configurations interoperate or fail to do so.
 
+\subsection{Test Clients}
+
 We mainly do this via a set of hourly cronjobs running on the test.defo.ie VM
 that attempt to access 67 URLs (some deliberately with broken configurations)
 from six different clients (described in Table \ref{tab:smclients}. We report
 results for the most recent 6 runs at
 \url{https://test.defo.ie/smokeping-summary.php}.
 
-\small
+\tiny
 \begin{longtblr} [
         caption = {Smokeping clients},
         label = {tab:smclients}
@@ -19,7 +21,7 @@ results for the most recent 6 runs at
         rowhead = 1
     }
     \hline
-        Name & Details\\
+        Test Client Name & Details\\
     \hline
         chromium & headless browser tests via selenium\\
         & Version: 131.0.6778.85 \\
@@ -122,11 +124,12 @@ records, or have specification-conformant configurations that we expect may not
 work.
 
 We have 6 clients testing hourly against 67 URLs, giving us 402 measurements
-per hour. The full set of URLs are too long to explain in detail here so
-we'll just show current results and describe a few cases where those results
-are more ``interesting''. The full set of URLs and the last 6 hours of test
-outcomes at \url{https://test.defo.ie/smokeping-summary.php} or 
-web pages with (most of) the test URLs loaded via an Iframe can be accessed at
+per hour. The test setup underlying these URLs are further described in
+Appendix~\ref{app:testdescriptions}.  we'll just show current results and
+describe a few cases where those results are more ``interesting''. The full set
+of URLs and the last 6 hours of test outcomes at
+\url{https://test.defo.ie/smokeping-summary.php} or web pages with (most of)
+the test URLs loaded via an Iframe can be accessed at
 \url{https://test.defo.ie/iframe_tests_sort.html}. That web page also includes
 some explanatory text about each test URL.
 
@@ -135,14 +138,13 @@ the ratio of expected and total results for a recent
 interval.~\footnote{Table \ref{tab:itests} is produced
 using \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smokeping-summary-report.py}.}
 
+\todo{Update Table \ref{tab:itests} having left things running a week or so.}
 
 \begin{center}
 \input tt
 \end{center}
 
 The set of ``interesting'' things arising from Table \ref{tab:itests} include:
-
-\todo{Check text still applies after we've updated Table \ref{tab:itests}}
 
 \begin{itemize}
 
@@ -196,64 +198,13 @@ The set of ``interesting'' things arising from Table \ref{tab:itests} include:
         would work for port 443 for browsers but not off port 443. To be
         investigated.
 
-\end{itemize}
-
-\subsection{Recently Fixed Issues with Test Setup}
-
-It may be illustrative to describe some self-caused test failures seen as we
-were preparing this report, and how those were resolved:
-
-\begin{itemize}
-
-\item Line 2 -
-    \url{https://2thenp-ng.test.defo.ie:15443/echstat.php?format=json} works
-        for all clients except chromium where it never works, yet the same
-        configuration on port 443 works 100\% of the time on all clients. That
-        configuration has an ECHConfigList with two entries - the first an
-        x25519 key and the second a p256 key - and the same ECHConfigList value
-        is published for both ports. The error here however is in the
-        configuration - the targetName for the port 15443 RR is ``.'' rather
-        than the hostname, so chromium here is correct and our test setup is
-        wrong. We fixed a bug in
-        \url{https://github.com/defo-project/ech-dev-utils/blob/main/test-cases/test_cases_gen.py}
-        addressing this on 20241208.\\
-
-    \item Line 7 and elsewhere - fixed a bug in
-        \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/selenium_test.py}
-        where expected failures from tests using the ``echstat\_stat()''
-        handler were being logged as test failures when they should be logged
-        as expected.
-
-    \item Line 7 and elsewhere - fixed same bug in both
-        \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_py.sh}
-        and
-        \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_rs.sh}
-        where we were assuming all non-zero returns were errors, which didn't match with
-        the configured expected values. (Also tweaked a few of those expected values for
-        rustls and python too.)
-
-    \item Line 13 - our ``cf\_check'' result handler hadn't been changed to be
-        applied with the change in Cloudflare's ECH test URL from
-        ``crypto.cloudflare.com'' to ``cloudflare-ech.com'' which caused
-        erroneous failure reports.
-
-    \item Line 20 and similar - our python test client needed a tweak to not
-        fail for tests not using the ``echstat.php'' server side script - fix
-        was pushed on 20241209
-
-    \item Line 32 - somehow certbot was no longer installed on test.defo.ie so
-        we got a cert expiry for hidden.hoba.ie - re-instaled certbot to fix,
-        which leads to some redundancy as we end up with more than one cert for
-        some names (more or less all other name on that VM are below
-        *.test.defo.ie)
-
-    \item Line 35 - our python test client hits a certificate validation error
-        for this lighttpd server - a change to the server configuration seems
-        to fix this, the change being to send the full cert chain to clients
-        (browsers don't need that but our other test client do).
-
-    \item Lines 51 and 52: these needed an edit for the expected values, which were
-        wrong.
+    \item Line 46 - as \url{https://myechtest.site} returns variously malformed
+        retry-configs, sometimes the malformedness is not detected by clients.
+        Our test code does correctly interpret some situations but not all.
+        To be further investigated.
 
 \end{itemize}
+
+Some additional issues encountered in validating test results are described
+in Appendix~\ref{app:alongtheway}.
 

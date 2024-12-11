@@ -2,12 +2,11 @@
 
 \subsection{Test Services}
 
-We can separate services into test and operational services.
-Table \ref{tab:testservers} lists known test services supporting
-ECH. All of those below .ie and my-own.net were setup by the 
-DEfO project.
+We can separate services into test and operational services.  Table
+\ref{tab:testservers} lists known test services supporting ECH. All of those
+below .ie, myechtest.site and my-own.net were setup by the DEfO project.
 
-\small
+\tiny
 \begin{longtblr} [
         caption = {Test Services with ECH},
         label = {tab:testservers}
@@ -16,30 +15,44 @@ DEfO project.
         rowhead = 1
     }
     \hline
-        Name & Details\\
+        Service Name & Details\\
+
     \hline
         defo.ie & \url{https://defo.ie/ech-check.php} is often used to check ECH\\
         & ECH keys are rotated hourly, private usable for 3 hours, ECHConfigList in DNS contains only latest public\\
+
     \hline
         draft-13.esni.defo.ie & different server technology (as listed in Table \ref{tab:servers}) instances on different ports as listed at \url{https://defo.ie/}, e.g., \url{https://draft-13.esni.defo.ie:10413} is served by nginx\\
         & ECH keys are rotated hourly, private usable for 3 hours, ECHConfigList in DNS contains only latest public\\
+
     \hline
         test.defo.ie & hosts a number of ECH server setups with good and variously bad configurations - see
         \url{https://test.defo.ie/iframes_tests} which describes those and allows a browser to attempt connections to
         each via Iframes\\
         & ECH keys/configs are static for these setups\\
+
     \hline
         foo.ie & \url{https://foo.ie/ech-check.php} was setup used to check the defo.ie setup was easily replicated\\
         & ECH keys are rotated hourly, private usable for 3 hours, ECHConfigList in DNS contains only latest public\\
+
     \hline
         my-own.net & this was to test the impact of having the same ECH keys on
         port 443 (\url{https://my-own.net/ech-check.php}) and another port  
         (\url{https://my-own.net:8443/ech-check.php})  - at one point that made a difference to browsers\\
         & ECH keys are rotated hourly, private usable for 3 hours, ECHConfigList in DNS contains only latest public\\
+
+    \hline 
+        myechtest.site & this server always treats ECH as if it were GREASE and, in addition
+        always returns malformed values in retry-configs to enable some fuzzing of client handling of
+        retry-configs\\
+        & the ``malformed-ness'' varies randomly, so if testing against this try record the values received as
+        we don't (currently) have comprehensive logging of client accesses and the fuzzed values returned\\
+
     \hline
         tls-ech.dev & \url{https://tls-ech.dev/} was setup by the boringssl developers as a test server that uses
         boringssl\\ 
         & ECH keys/configs seem to be static for this setup\\
+
     \hline
         Cloudflare & \url{https://cloudflare-ech.com/cdn-cgi/trace} is a test page
            setup by cloudflare that reports on ECH success/failure\\
@@ -49,6 +62,7 @@ DEfO project.
         & based on one test on 2024-12-09, new ECH keys are published roughly hourly with a 300 second TTL;
             old ECH public values seem usable for approximately 4 or up to 5 hours;
             and the ECHConfigList published in DNS contains only one public value\\
+
     \hline
         rfc5746.mywaifu.best & this ECH-enabled web page (\url{https://rfc5746.mywaifu.best/}) seems to have been setup 
         as an ECH test site by someone using DEfO artefacts (nginx and documentation) but without any contact
@@ -109,7 +123,7 @@ the second that the HTTPS RR no longer contains an ``ech='' value.)
 	\includegraphics[width=0.8\textwidth,keepaspectratio]{domainprobequeries.png}
 		\caption[clustediag]{Cumulative number of queries seen at 
         \url{https://test.defo.ie/domainechprobe.php} versus time. 
-        The total number of queries is 1244.} 
+        The total number of queries was 1244 as of 2024-12-05.} 
 	\label{fig:qtimes}
 \end{figure}
 
@@ -124,7 +138,7 @@ values that contain an ``ech='' value, we see 276 unique ECHConfigList values (4
 corrupt values published for our DEfO test services).  Of the 298 unique
 names, 271 seem to be served by Cloudflare (based on the relevant name server
 names), 15 relate to test services described in Table \ref{tab:testservers}. At
-the time of writing, 10 of the names result in an NXDOMAIN or SERVFAIL
+the time of writing, 9 of the names result in an NXDOMAIN or SERVFAIL
 response, 1 seems to correspond to a possible hobbyist site and 2 seem to (now)
 be parked domains or part of some advertising campaign. None of of those last
 3 currently publish an HTTPS record.

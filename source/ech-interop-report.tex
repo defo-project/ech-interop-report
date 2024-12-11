@@ -1,5 +1,5 @@
-\documentclass[journal,onecolumn,10pt,a4paper]{article}
-%\documentclass[a4paper]{article}
+%\documentclass[journal,onecolumn,10pt,a4paper]{article}
+\documentclass[a4paper]{article}
 %\documentclass[12pt,doublespace]{sigcomm-alternate}
 %\documentclass[12pt,draftclsnofoot,onecolumn]{IEEEtran}
 %\documentclass[twocolumn]{sigcomm-alternate}
@@ -13,14 +13,17 @@
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.4} 
 \usepackage{caption}
-%\usepackage{subcaption}
+\usepackage{subcaption}
 \usepackage{datetime}
 \usepackage{mdframed}
 \usepackage{graphicx}
 \usepackage{a4wide}
+\usepackage[toc,page,title]{appendix}
 
 %% \newcommand{\todo}[1]{\marginnote{\fbox{\bfseries TODO: #1}}}%
 \newcommand{\todo}[1]{\fbox{\bfseries TODO: #1}}%
+
+\input appstuff
 
 %\usepackage{mascots04,epsfig,amsmath,amssymb,url,bibspacing,tweaklist,subfigure}
 %\usepackage{graphicx,amsmath,amssymb,url,tweaklist}
@@ -62,7 +65,6 @@ Stephen Farrell\\
 Trinity College Dublin/Tolerant Networks Ltd.\\
 \small
 stephen.farrell@cs.tcd.ie\\
-%work-in-progress {\yyyymmdddate\today}:{\currenttime} UTC\\
 \normalsize
 }
 
@@ -80,8 +82,16 @@ stephen.farrell@cs.tcd.ie\\
 
 %%\IEEEpubid{0000--0000/00\$00.00~\copyright~2016 IEEE}
 \maketitle
+\begin{center}
+\small
+work-in-progress: build time {\currenttime} UTC\\
+\normalsize
+\end{center}
 
 \input abstract
+
+\clearpage
+\tableofcontents
 
 Keywords: Encrypted Client Hello (ECH), Interoperability
 
@@ -96,5 +106,9 @@ Keywords: Encrypted Client Hello (ECH), Interoperability
 
 \bibliographystyle{IEEEtran}
 \bibliography{IEEEabrv,bib,ietf}
+
+\appendices
+\input testdescriptions
+\input alongtheway
 
 \end{document}
