@@ -102,6 +102,14 @@ reproduce them:
 
 \end{itemize}
 
+We also have a standalone test suite on Android to run our ECH-enabled
+Conscrypt build against a number of domains
+(\url{https://github.com/defo-project/EchInteropTest}).  This manually-run test
+passes on all of the draft-12.esni.defo.ie test servers, defo.ie iteself,
+Google's tls-ech.dev, and two Cloudflare domains that support ECH. (Running
+that with the full set of test URLs from Table~\ref{tab:itests} is a
+work-in-progres.)
+
 \subsection{Results}
 
 The set of 67 test URLs covers all of the server technologies listed in Table
@@ -125,13 +133,12 @@ work.
 
 We have 6 clients testing hourly against 67 URLs, giving us 402 measurements
 per hour. The test setup underlying these URLs are further described in
-Appendix~\ref{app:testdescriptions}.  we'll just show current results and
-describe a few cases where those results are more ``interesting''. The full set
-of URLs and the last 6 hours of test outcomes at
-\url{https://test.defo.ie/smokeping-summary.php} or web pages with (most of)
-the test URLs loaded via an Iframe can be accessed at
-\url{https://test.defo.ie/iframe_tests_sort.html}. That web page also includes
-some explanatory text about each test URL.
+Appendix~\ref{app:testdescriptions} and the list of URLs and expected outcomes
+is shown in Appendix~\ref{app:urls}.  The full set of URLs and the last 6 hours
+of test outcomes are also at \url{https://test.defo.ie/smokeping-summary.php}
+or web pages with (most of) the test URLs loaded via an Iframe can be accessed
+at \url{https://test.defo.ie/iframe_tests_sort.html}. That web page also
+includes some explanatory text about each test URL.
 
 Table \ref{tab:itests} below shows, for each test URL and each client,
 the ratio of expected and total results for a recent 
@@ -144,7 +151,15 @@ using \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke
 \input tt
 \end{center}
 
-The set of ``interesting'' things arising from Table \ref{tab:itests} include:
+Note that the numbers in Table~\ref{tab:itests} are not a direct measure of the
+``quality'' of the client - they are counts of how often we see expected
+outcomes for the specific test setting, and the failure to see that outcome is
+sometimes due to imperfection in the test setup, or even network conditions,
+and not the client.  Nonetheless, the numbers are useful in terms of pointing
+us at where we can look for improvement - to help with that, cells in the table
+where we see fewer than 90\% of the results being as expected are in
+\textbf{bold}.  Based on that, the set of ``interesting'' things arising from
+Table \ref{tab:itests} include:
 
 \begin{itemize}
 
@@ -181,6 +196,14 @@ The set of ``interesting'' things arising from Table \ref{tab:itests} include:
     \item Lines 18 and 19 may behave similarly to the above, being alike except
         that the HTTPS RR value priority for the p256 case is lower than for
         the 25519 one.
+
+    \item Lines 14-19 and 64/65 are roughly 50:50 likely as our rustls test
+        client is affected by the order of HTTPS RR answers, and we get a panic
+        when some of the badly formed ECHConfigList values are being ingested.
+        This may be due to test client code or could be due to the rustls ECH
+        implementation. We opened an issue
+        \url{https://github.com/rustls/rustls/issues/2276} with the rust
+        developers to explore the reasons/fix for this.
 
     \item Line 23 - browsers seem to dislike
         \url{https://draft-13.esni.defo.ie:12413/}.  We suspect that's due to

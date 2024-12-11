@@ -5,17 +5,15 @@ expose the name of the server (e.g. the web site DNS name) via the Server Name
 Indication (SNI) field in the first message sent (the ClientHello).  The
 Encrypted Client Hello (ECH)~\cite{draft-ietf-tls-esni} extension to TLS is a
 privacy-enhancing scheme that aims to address this leak.
-
-The Open Technology Fund (OTF)~\footnote{\url{https://www.opentech.fund/}} have
-funded the DEfO project~\footnote{\url{https://defo.ie}} to develop 
-ECH implementations for OpenSSL, and to otherwise encourage implementation
-and deployment of ECH.  This report is a deliverable for the DEfO project
-and describes the current state of ECH interoperability.
-
+This report describes the current state of ECH interoperability.
 The primary audience for this document are those implementing and
 deploying ECH. Secondarily, there may be lessons to learn for those
 designing protocols like ECH.
 
+The Open Technology Fund (OTF, \url{https://www.opentech.fund/}) have
+funded the DEfO project ({\url{https://defo.ie}) to develop 
+ECH implementations for OpenSSL, and to otherwise encourage implementation
+and deployment of ECH.
 As we expect the implementation and deployment environment for ECH to change
 over time, this report will be updated as events warrant and is currently
 versioned based on the build-time of this PDF. The latest version can be found

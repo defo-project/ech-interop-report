@@ -5,8 +5,8 @@ This section describes libraries, clients and servers that support ECH.
 \subsection{Libraries}
 
 The libraries listed in Table \ref{tab:echlibs} have some support for ECH.  Of
-the libraries listed, ECH support for all of the OpenSSL variants, python and
-libcurl were developed by the DEfO project.
+the libraries listed, ECH support for all of the OpenSSL variants, python,
+libcurl and conscrypt, were developed by the DEfO project.
 
 \tiny
 \begin{longtblr} [
@@ -90,6 +90,12 @@ libcurl were developed by the DEfO project.
         & Comment: not well tested other than via command line curl\\
 
     \hline
+        Conscrypt-GP & Source: https://github.com/guardianproject/conscrypt\\
+        & Version: 2.6-alpha\\
+        & ECH support: only ECH client is relevant\\
+        & Comment: This is based on boringssl and only runs on Android\\
+
+    \hline
 
 \end{longtblr}
 \normalsize
@@ -131,6 +137,13 @@ library.  That build is available at
 \url{https://github.com/defo-project/cpython} with the new APIs required for
 ECH described at
 \url{https://irl.github.io/cpython/library/ssl.html#encrypted-client-hello}.
+
+Conscrypt is Android's library for TLS. It is used in three forms: built into
+Android OS, a system-wide standalone TLS provider, and a library to provide TLS
+in an app. Our fork of that has ECH support via from Google in our fork
+which implements the Android side. Since it is quite unlikely that a
+multi-domain web service would ever run on Android, only the ECH client side is
+relevant.
 
 \subsection{Servers}
 
