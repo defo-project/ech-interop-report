@@ -100,6 +100,13 @@ reproduce them:
         some clients in some cases, making it easier to accidentally do this
         and not notice.)
 
+    \item Tests are run hourly, with curl tests at the top of the hour,
+        CPython tests at :05, Firefox at :10, Chromium at :20, golang at :30
+        and rustls at :40. The test summary page is generated at :45.
+        The TTLs for DNS records below test.defo.ie are all set to 10 seconds.
+        For our other DEfO test services (e.g. draft-13.esni.defo.ie cases)
+        TTLs are set to 1800 seconds.
+
 \end{itemize}
 
 We also have a standalone test suite on Android to run our ECH-enabled
