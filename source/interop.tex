@@ -23,7 +23,7 @@ results for the most recent 6 runs at
     \hline
         Test Client Name & Details\\
     \hline
-        chromium & headless browser tests via selenium\\
+        Chromium & headless browser tests via Selenium\\
         & Version: 131.0.6778.85 \\
         & Python script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/selenium_test.py}\\
         & ECH implementation based on boringssl\\
@@ -36,7 +36,7 @@ results for the most recent 6 runs at
         & ECH implementation based on OpenSSL\\
 
     \hline
-        firefox & headless browser tests via selenium\\
+        Firefox & headless browser tests via Selenium\\
         & Version: 133.0\\
         & Python script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/selenium_test.py}\\
         & ECH implementation based on NSS\\
@@ -56,8 +56,8 @@ results for the most recent 6 runs at
         & ECH implementation developed for rustls\\
 
     \hline
-        python & custom Cpython build and python script\\
-        & Version: python 3.13\\
+        Python & custom CPython build and python script\\
+        & Version: CPython 3.13\\
         & Python script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/ech_url.py}\\
         & Bash script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_py.sh}\\
         & ECH implementation based on OpenSSL\\
@@ -73,7 +73,7 @@ reproduce them:
 \begin{itemize}
 
     \item Some of the headless browser tests (e.g. with badly encoded
-        ECHConfigList values) will cause selenium to throw exceptions, so test
+        ECHConfigList values) will cause Selenium to throw exceptions, so test
         scripts need to catch those in order to properly determine that we got
         an expected failure
 
@@ -166,12 +166,12 @@ Table \ref{tab:itests} include:
     \item Lines 5 and 6 -
         \url{https://badalpn-ng.test.defo.ie/echstat.php?format=json} and it's
         equivalent off port 443, work fine with all clients except Firefox and
-        never work for firefox. The relevant DNS RR has an illegal alpn value
-        (a '+' character). Hard to see this as other than firefox being
+        never work for Firefox. The relevant DNS RR has an illegal alpn value
+        (a '+' character). Hard to see this as other than Firefox being
         over-fussy, though there could of course be some good reason to reject
         such alpn values.
 
-    \item Lines 13 and 57 - our python test client throws an exception for
+    \item Lines 13 and 57 - our CPython test client throws an exception for
         these (the Cloudflare operational, and boringssl test, servers)
         \begin{verbatim} [SSL: SSLV3_ALERT_ILLEGAL_PARAMETER] ssl/tls alert
         illegal parameter (_ssl.c:1024) \end{verbatim} This is being

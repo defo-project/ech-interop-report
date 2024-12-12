@@ -11,13 +11,13 @@ seen as we were preparing this report, and how those were resolved:
 
 \item Line 2 -
     \url{https://2thenp-ng.test.defo.ie:15443/echstat.php?format=json} works
-        for all clients except chromium where it never works, yet the same
+        for all clients except Chromium where it never works, yet the same
         configuration on port 443 works 100\% of the time on all clients. That
         configuration has an ECHConfigList with two entries - the first an
         x25519 key and the second a p256 key - and the same ECHConfigList value
         is published for both ports. The error here however is in the
         configuration - the targetName for the port 15443 RR is ``.'' rather
-        than the hostname, so chromium here is correct and our test setup is
+        than the hostname, so Chromium here is correct and our test setup is
         wrong. We fixed a bug in
         \url{https://github.com/defo-project/ech-dev-utils/blob/main/test-cases/test_cases_gen.py}
         addressing this on 20241208.\\
@@ -34,14 +34,14 @@ seen as we were preparing this report, and how those were resolved:
         \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_rs.sh}
         where we were assuming all non-zero returns were errors, which didn't match with
         the configured expected values. (Also tweaked a few of those expected values for
-        rustls and python too.)
+        rustls and CPython too.)
 
     \item Line 13 - our ``cf\_check'' result handler hadn't been changed to be
         applied with the change in Cloudflare's ECH test URL from
         ``crypto.cloudflare.com'' to ``cloudflare-ech.com'' which caused
         erroneous failure reports.
 
-    \item Line 20 and similar - our python test client needed a tweak to not
+    \item Line 20 and similar - our CPython test client needed a tweak to not
         fail for tests not using the ``echstat.php'' server side script - fix
         was pushed on 20241209
 
@@ -51,7 +51,7 @@ seen as we were preparing this report, and how those were resolved:
         some names (more or less all other name on that VM are below
         *.test.defo.ie)
 
-    \item Line 35 - our python test client hits a certificate validation error
+    \item Line 35 - our CPython test client hits a certificate validation error
         for this lighttpd server - a change to the server configuration seems
         to fix this, the change being to send the full cert chain to clients
         (browsers don't need that but our other test client do).

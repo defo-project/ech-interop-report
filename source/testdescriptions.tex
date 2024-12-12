@@ -9,11 +9,11 @@ these test cases we also publish a TXT RR at the relevant name that has a very
 short description of the test.
 
 We have a mostly-automated way of producing the set of artefacts needed for
-adding new tests to this list. That's a python script that reads in a
+adding new tests to this list. That's a Python script that reads in a
 description (similar to the text below, but in JSON) and produces the set of
 ECH keys needed (if new ones are needed), haproxy and web-server configuration
 stanzas. The JSON inputs can include e.g. badly formed ECHConfigList values.
-The python script also produces a bash script that can be run on an
+The Python script also produces a bash script that can be run on an
 authoritative name server to clear/populate the relevant DNS records (using
 bind's ``nsupdate'').  That code and further  details can be found at
 \url{https://github.com/defo-project/ech-dev-utils/tree/main/test-cases}.

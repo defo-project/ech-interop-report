@@ -5,8 +5,8 @@ This section describes libraries, clients and servers that support ECH.
 \subsection{Libraries}
 
 The libraries listed in Table \ref{tab:echlibs} have some support for ECH.  Of
-the libraries listed, ECH support for all of the OpenSSL variants, python,
-libcurl and conscrypt, were developed by the DEfO project.
+the libraries listed, ECH support for all of the OpenSSL variants, Python,
+libcurl and Conscrypt, were developed by the DEfO project.
 
 \tiny
 \begin{longtblr} [
@@ -40,13 +40,13 @@ libcurl and conscrypt, were developed by the DEfO project.
         boringssl & Source: \url{https://boringssl.googlesource.com/boringssl}\\
         & Version: boringssl doesn't do versions, last local build 2024-11-29\\
         & ECH support: ECH client and server, ECH for TLS, QUIC and (possibly) DTLS\\
-        & Comment: in production use (chromium et al), a little more limited in HPKE suites than OpenSSL - only KEMs are x25519 and p256\\
+        & Comment: in production use (Chromium, et al), a little more limited in HPKE suites than OpenSSL - only KEMs are x25519 and p256\\
 
     \hline
         NSS & Source: \url{https://github.com/nss-dev/nss.git}\\
         & Version: NSS 3.108\\
         & ECH support: ECH client and server, ECH for TLS (unsure of DTLS/QUIC)\\
-        & Comment: in production use (firefox), a little more limited in HPKE suites than OpenSSL - only KEM is x25519\\
+        & Comment: in production use (Firefox), a little more limited in HPKE suites than OpenSSL - only KEM is x25519\\
 
     \hline
         WolfSSL & Source: \url{https://github.com/wolfSSL/wolfssl.git}\\
@@ -77,11 +77,11 @@ libcurl and conscrypt, were developed by the DEfO project.
         & - rustls tests were just (2024-12-03) added to our smokeping tests\\
 
     \hline
-        python & Source: \url{https://github.com/defo-project/cpython}\\
-        & Version: python 3.13/3.14 \\
+        CPython & Source: \url{https://github.com/defo-project/cpython}\\
+        & Version: CPython 3.13/3.14 \\
         & ECH support: TLS client only \\
         & Comment:\\
-        & - python tests were just (2024-12-05) added to our smokeping tests\\
+        & - CPython tests were just (2024-12-05) added to our smokeping tests\\
 
     \hline
         libcurl & Source: part of \url{https://github.com/curl/curl}\\
@@ -102,14 +102,26 @@ libcurl and conscrypt, were developed by the DEfO project.
 
 \subsection{Clients}
 
-Current versions of firefox (e.g. 133.0, used in our smokeping tests) and
-chromium (version 131.0.6778.85 is used in our tests) support ECH by default.
-Other chromium-derived browsers also support ECH, while we don't include them
-in our ongoing tests described below, we have manually verified that current
-versions of vivaldi, brave and opera also have ECH support.  The Tor browser (a
-firefox derivative) doesn't seem to support ECH by default.
+Current versions of Firefox (e.g. 133.0, used in our smokeping tests) support
+ECH by default.
+Firefox does, however, automatically disable ECH when it detects the presence
+of ``family safety" software
+\footnote{https://support.mozilla.org/en-US/kb/faq-encrypted-client-hello}.
+We have received anecdotal evidence that this detection mechanism also
+triggers when detecting ISP-level and state-imposed censorship, preventing
+the use of ECH in those situations.
+The Tor Browser (a Firefox derivative) doesn't support ECH by default, as it
+is currently built from an older ``Extended Support Release" that only
+enables ECH when DNS-over-HTTPS (DoH) is enabled and Tor Browser prevents
+enabling DoH to prevent that being used as a user fingerprinting vector.
 To test if a browser supports ECH one can visit \url{https://test.defo.ie/}
 or, for much more detail \url{https://test.defo.ie/iframe_tests.html}.
+
+Current versions of Chromium (version 131.0.6778.85 is used in our tests)
+also support ECH by default.
+Other Chromium-derived browsers also support ECH, while we don't include them
+in our ongoing tests described below, we have manually verified that current
+versions of Vivaldi, Brave and Opera also have ECH support.
 
 Browsers in general are still somewhat quirky in terms of whether or not
 ECH will succeed, even when ECH is properly setup. This seems at least
@@ -132,7 +144,7 @@ for ECH.  Build instructions are at
 \url{https://github.com/curl/curl/blob/master/docs/ECH.md}.
 
 As a scripting tool, often used as part of a TLS client, Python also fits here.
-The DEfO project Cpython build adds ECH support to python via the OpenSSL
+The DEfO project CPython build adds ECH support to Python via the OpenSSL
 library.  That build is available at
 \url{https://github.com/defo-project/cpython} with the new APIs required for
 ECH described at
