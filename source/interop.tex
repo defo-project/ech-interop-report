@@ -27,6 +27,7 @@ results for the most recent 6 runs at
         & Version: 131.0.6778.85 \\
         & Python script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/selenium_test.py}\\
         & ECH implementation based on boringssl\\
+        & Uses DoH to \url{https://chrome.cloudflare-dns.com/dns-query}\\
 
     \hline
         curl & bash script using curl\\
@@ -34,12 +35,14 @@ results for the most recent 6 runs at
         & Bash script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_curl.sh}\\
         & curl currently only pays attention the the first HTTPS resource record seen in DNS answers\\
         & ECH implementation based on OpenSSL\\
+        & Uses DoH to \url{https://one.one.one.one/dns-query}\\
 
     \hline
         Firefox & headless browser tests via Selenium\\
         & Version: 133.0\\
         & Python script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/selenium_test.py}\\
         & ECH implementation based on NSS\\
+        & Uses DoH to \url{https://one.one.one.one/dns-query}\\
 
     \hline
         golang & custom golang programme and bash script\\
@@ -47,6 +50,7 @@ results for the most recent 6 runs at
         & Golang programme: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/ech_url.go}\\
         & Bash script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_go.sh}\\
         & ECH implementation developed for golang\\
+        & Uses DoH to \url{https://cloudflare-dns.com/dns-query} using GET\\
 
     \hline
         rustls & custom rustls programme and bash script\\
@@ -54,6 +58,7 @@ results for the most recent 6 runs at
         & Rustls programme: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/ech_url.rs}\\
         & Bash script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_rs.sh}\\
         & ECH implementation developed for rustls\\
+        & Uses DoH to Google DNS (8.8.8.8/8.8.4.4) via Hickory DNS\\
 
     \hline
         Python & custom CPython build and python script\\
@@ -61,6 +66,7 @@ results for the most recent 6 runs at
         & Python script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/ech_url.py}\\
         & Bash script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_py.sh}\\
         & ECH implementation based on OpenSSL\\
+        & Uses Do53 to system resolver\\
 
     \hline
 
