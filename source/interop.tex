@@ -206,16 +206,18 @@ Table \ref{tab:itests} include:
         developers to explore the reasons/fix for this.
 
     \item Line 23 - browsers seem to dislike
-        \url{https://draft-13.esni.defo.ie:12413/}.  We suspect that's due to
-        our test result handlers. That test case is an ECH shared-mode hapoxy
-        instance with lighttpd as the backend. As lighttpd is the backend it
-        doesn't produce an HTTP response indicates ECH worked as ECH was
-        terminated with TLS at the haproxy intance. It's unclear how we can
-        handle this test case when browsers don't indicate ECH success or
-        failure. (Between haproxy and lighttpd we may be able to engineer some
-        HTTP response header that indicates ECH success or failure - that'd not
-        be secure but would be fine for testing. That's not been attempted
-        yet.)
+        \url{https://draft-13.esni.defo.ie:12413/}.  That's due to our test
+        result handlers and is not a failure in the servers. That test case is
+        an ECH shared-mode haproxy instance with lighttpd as the backend. As
+        lighttpd is the backend it can't produce an HTTP response that
+        indicates ECH worked as ECH was terminated with TLS at the haproxy
+        instance. It's unclear how we can handle this test case when browsers
+        don't themselves indicate ECH success or failure. (Between haproxy and
+        lighttpd we should be able to engineer some HTTP response header that
+        indicates ECH success or failure - that'd not be secure but would be
+        fine for testing. We can have haproxy add a request header to indicate
+        that ECH decryption worked or failed and then have lighttpd reflect
+        that in the HTTP response. That's not been done yet.)
 
     \item Line 37 - it's not clear why publishing many (20) identical HTTPS RRs
         would work for port 443 for browsers but not off port 443. To be
