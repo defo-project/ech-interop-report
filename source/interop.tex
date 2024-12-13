@@ -190,16 +190,6 @@ Table \ref{tab:itests} include:
         illegal parameter (_ssl.c:1024) \end{verbatim} This is being
         investigated.
 
-    \item Line 14 -
-        \url{https://curves1-ng.test.defo.ie/echstat.php?format=json} has two
-        HTTPS RRs published with the same priority, one that contains an x25519
-        public value and another that only have a p256 public value. This seems
-        to cause failure for our rustls client about 50\% of the time as that
-        client only supports x25519 (presumably). Browsers, while similarly not
-        supporting NIST curves, presumably either select the ``working'' HTTPS
-        RR value, and/or use the retry-configs fallback and manage to connect
-        with ECH.
-
     \item Line 15 becomes a puzzle given line 14 - seemingly our rustls client
         does always work when not on port 443! We have verified that the HTTPS
         RRs published for curves1-ng.test.defo.ie and
