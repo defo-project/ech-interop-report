@@ -176,12 +176,12 @@ Table \ref{tab:itests} include:
 
 \begin{itemize}
 
-    \item Column 3 - Chromium seems to currently suffer relatively more badly from the
-        ``impatiance'' problem with HTTPS RR DNS answer arrival times than
-        other clients. For other clients, unexpected test outcomes seem to be
-        more commonly due to inherent, but easily fixed, client limitations,
-        such as not handling some ECH ciphersuites. (Again though: this
-        requires further investigation.)
+    \item Columns 3 and 5 - browsers seems to currently suffer relatively more
+        badly from the ``impatiance'' problem with HTTPS RR DNS answer arrival
+        times than other clients. For other clients, unexpected test outcomes
+        seem to be more commonly due to inherent, but easily fixed, client
+        limitations, such as not handling some ECH ciphersuites. (Again though:
+        this requires further investigation.)
 
     \item Lines 5 and 6 -
         \url{https://badalpn-ng.test.defo.ie/echstat.php?format=json} and it's
@@ -209,7 +209,7 @@ Table \ref{tab:itests} include:
 
     \item Line 23 - browsers seem to dislike
         \url{https://draft-13.esni.defo.ie:12413/}.  That's due to our test
-        result handlers and is not a failure in the servers. That test case is
+        result handlers and is not a failure in the clients or servers. That test case is
         an ECH shared-mode haproxy instance with lighttpd as the backend. As
         lighttpd is the backend it can't produce an HTTP response that
         indicates ECH worked as ECH was terminated with TLS at the haproxy
