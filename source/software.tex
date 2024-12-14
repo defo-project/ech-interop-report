@@ -22,37 +22,36 @@ libcurl and Conscrypt, were developed by the DEfO project.
         OpenSSL-sftcd & Source: \url{https://github.com/sftcd/openssl/tree/ECH-draft-13c}\\
         & Version: 3.4.0-dev fork of master\\
         & ECH support: client and server, TLS only (no DTLS, no QUIC)\\
-        & Comment: this is the DEfO project's main development branch\\
+        & this is the DEfO project's main development branch\\
 
     \hline
         OpenSSL-defo & Source: \url{https://github.com/defo-project/openssl/}\\
         & Version: 3.5.0-dev fork of master, same ECH code as OpenSSL-sftcd\\
         & ECH support: client and server, TLS only (no DTLS, no QUIC)\\
-        & Comment: this is used for DEfO project CI builds and tests\\
+        & this is used for DEfO project CI builds and tests\\
 
     \hline
         OpenSSL-feature-branch & Source: \url{https://github.com/openssl/openssl/tree/feature/ech}\\
         & Version: 3.5.0-dev feature branch in upstream repo\\
         & ECH support: stub APIs so far, next PR will have ECH client, then server after\\
-        & Comment: this is the OpenSSL project's target for ECH PRs, and is where ECH code will end up prior to eventually being merged to master\\
+        & this is the OpenSSL project's target for ECH PRs, and is where ECH code will end up prior to eventually being merged to master\\
 
     \hline
         boringssl & Source: \url{https://boringssl.googlesource.com/boringssl}\\
         & Version: boringssl doesn't do versions, last local build 2024-11-29\\
         & ECH support: ECH client and server, ECH for TLS, QUIC and (possibly) DTLS\\
-        & Comment: in production use (Chromium, et al), a little more limited in HPKE suites than OpenSSL - only KEMs are x25519 and p256\\
+        & in production use (Chromium, et al), a little more limited in HPKE suites than OpenSSL - only KEMs are x25519 and p256\\
 
     \hline
         NSS & Source: \url{https://github.com/nss-dev/nss.git}\\
         & Version: NSS 3.108\\
         & ECH support: ECH client and server, ECH for TLS (unsure of DTLS/QUIC)\\
-        & Comment: in production use (Firefox), a little more limited in HPKE suites than OpenSSL - only KEM is x25519\\
+        & in production use (Firefox), a little more limited in HPKE suites than OpenSSL - only KEM is x25519\\
 
     \hline
         WolfSSL & Source: \url{https://github.com/wolfSSL/wolfssl.git}\\
         & Version: 5.7.4\\
         & ECH support: ECH client and server, ECH for TLS (unsure of DTLS/QUIC)\\
-        & Comment: \\
         & - ECH not built by default (needs ``--enable-ech'')\\
         & - fails when HelloRetryRequest seen - \url{https://github.com/wolfSSL/wolfssl/issues/6802}\\
 
@@ -60,13 +59,12 @@ libcurl and Conscrypt, were developed by the DEfO project.
         gnuTLS & Source: \url{https://gitlab.com/gnutls/gnutls/blob/master/README.md}\\
         & Version: work-in-progress\\
         & ECH support: interop untested (by DEfO-project) at this time\\
-        & Comment: an ECH merge request exists but has yet to be merged \url{https://gitlab.com/gnutls/gnutls/-/merge_requests/1748}\\
+        & an ECH merge request exists but has yet to be merged \url{https://gitlab.com/gnutls/gnutls/-/merge_requests/1748}\\
 
     \hline
         golang & Source: \url{https://go.googlesource.com/go} or \url{https://github.com/golang/go/}\\
         & Version: 1.23 or later required\\
         & ECH support: client only, server coming in 1.24 (server code is merged)\\
-        & Comment:\\
         & - golang tests were just (2024-12-02) added to our smokeping tests\\
 
     \hline

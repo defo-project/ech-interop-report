@@ -118,7 +118,7 @@ reproduce them:
 We also have a standalone test suite on Android to run our ECH-enabled
 Conscrypt build against a number of domains
 (\url{https://github.com/defo-project/EchInteropTest}).  This manually-run test
-passes on all of the draft-12.esni.defo.ie test servers, defo.ie iteself,
+passes on all of the draft-13.esni.defo.ie test servers, defo.ie iteself,
 Google's tls-ech.dev, and two Cloudflare domains that support ECH. (Running
 that with the full set of test URLs from Table~\ref{tab:itests} is a
 work-in-progres.)
@@ -165,16 +165,23 @@ using \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke
 \end{center}
 
 Note that the numbers in Table~\ref{tab:itests} are not a direct measure of the
-``quality'' of the client - they are counts of how often we see expected
+``quality'' of the client - they are a snapshot of counts of how often we see expected
 outcomes for the specific test setting, and the failure to see that outcome is
 sometimes due to imperfection in the test setup, or even network conditions,
 and not the client.  Nonetheless, the numbers are useful in terms of pointing
 us at where we can look for improvement - to help with that, cells in the table
-where we see fewer than 90\% of the results being as expected are in
+where we see fewer than 95\% of the results being as expected are in
 \textbf{bold}.  Based on that, the set of ``interesting'' things arising from
 Table \ref{tab:itests} include:
 
 \begin{itemize}
+
+    \item Column 3 - Chromium seems to currently suffer relatively more badly from the
+        ``impatiance'' problem with HTTPS RR DNS answer arrival times than
+        other clients. For other clients, unexpected test outcomes seem to be
+        more commonly due to inherent, but easily fixed, client limitations,
+        such as not handling some ECH ciphersuites. (Again though: this
+        requires further investigation.)
 
     \item Lines 5 and 6 -
         \url{https://badalpn-ng.test.defo.ie/echstat.php?format=json} and it's
@@ -189,16 +196,6 @@ Table \ref{tab:itests} include:
         \begin{verbatim} [SSL: SSLV3_ALERT_ILLEGAL_PARAMETER] ssl/tls alert
         illegal parameter (_ssl.c:1024) \end{verbatim} This is being
         investigated.
-
-    \item Line 15 becomes a puzzle given line 14 - seemingly our rustls client
-        does always work when not on port 443! We have verified that the HTTPS
-        RRs published for curves1-ng.test.defo.ie and
-        \_15443.\_https.curves1-ng.test.defo.ie are as expected. Being
-        investigated.
-
-    \item Lines 18 and 19 may behave similarly to the above, being alike except
-        that the HTTPS RR value priority for the p256 case is lower than for
-        the 25519 one.
 
     \item Lines 14-19 and 64/65 are roughly 50:50 likely as our rustls test
         client is affected by the order of HTTPS RR answers, and we get a panic
