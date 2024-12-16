@@ -228,9 +228,26 @@ Table \ref{tab:itests} include:
         Our test code does correctly interpret some situations but not all.
         To be further investigated.
 
-    \item Lines 51/52 - the situation seems to be that curl and CPython sypport
-        use of P256, Chromium, Firefox and golang do not, and the rustls
-        situation is being investigated by upstream developers.
+    \item The test setup for lines 51/52 calls for use of P256-HKDF-SHA256 for
+        the KEM, a KDF of HKDF-SHA384 and the CHACHA20-POLY-1305 AEAD.  It's
+        seems that some implementations (including rustls) don't support that
+        combination as they are compiled/configured on a per-HPKE suite basis
+        so don't support this combination even though they support all the
+        component algorithms.  In addition, neither the ECH nor HPKE
+        specifications nominate one or a small number of HPKE suites as
+        mandatory-to-implement (MTI).  Sadly, rather than a small set of MTI
+        suites, HPKE defines 96 possibilities in RFC9180 \cite{rfc9180}
+        arguably giving rise to this interoperability issue.  Whether that
+        makes this a good or a bad test case is perhaps a matter of opinion.
+        (The oddball selection is the author's fault.) This is discussed a
+        little in
+        \url{https://github.com/defo-project/ech-interop-report/issues/2}.)
+        \todo{add a less oddball combo}
+
+    \item Lines 51/52 - curl and CPython do work with our oddball P256
+        combination, but Chromium, Firefox, golang and rustls (as expained above)
+        do not support that choice. Whether or not the same issue causes the
+        unexpected outcome for all clients is being investigated.
 
 \end{itemize}
 
