@@ -64,3 +64,7 @@ seen as we were preparing this report, and how those were resolved:
 
 Line numbers above refer to Table~\ref{tab:itests} as before.
 
+On 2025-01-05 we also fixed some issues with temporary files that were being
+left behind. That had resulted in the ``/tmp'' partition filling up on 2024-12-31
+leading to some tests failing and hence skewing results between those dates.
+
