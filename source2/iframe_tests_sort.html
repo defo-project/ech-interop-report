@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<title>DEfO ECH Iframe tests (sorted)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<body bgcolor="#ffffff" width=600>
+<center> <IMG SRC="defologo.png" ALT="DEfO Logo " > </center>
+<center><h1>test.defo.ie iframe based tests</h1></center>
+<p>This page lists the set of ECH tests we currently generate. Each test aims to 
+check whether and how some ECH setup (combination of DNS and web server) works
+with clients. Some tests involve publishing "broken" DNS records, others
+aim to see if clients do/don't support various things allowed in the ECH specification.
+For each test, we have a short description, an (human 
+consumable) expected result, the HTTPS RRs published for that test, the URL(s)
+to use for the test and then an iframe where the URL is de-referenced,
+the URL(s) to use for the test and then an iframe where the URL is de-referenced,
+performing the test. For most (but not all) URLs the test results in a JSON
+HTTP response saying whether or not ECH worked.</p>
+<ol>
+
+<li>
+<p>Test: "nginx server/ECHConfiglist with 2 entries a 25519 one then a p256 one (both good keys)"</p>
+<p>Expected result: success</p>
+<p>HTTPS RR: <pre>1 . ech=AK3+DQBCqQAgACBlm7cfDx/gKuUAwRTe+Y9MExbIyuLpLcgTORIdi69uewAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA/g0AY54AEABBBBYJC5HR0vrc9fD15nWKWAWXShsYwZvljRvQLCjWjgo+G5g27heCsrxxGRo+vlpbNVQXtTl4nq6YxomDhK4jlpwABAACAAMAE3B1YmxpYy50ZXN0LmRlZm8uaWUAAA==</pre></p>
+<p><a href="https://2thenp-ng.test.defo.ie/echstat.php?format=json">https://2thenp-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://2thenp-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe20"></iframe>
+<p><a href="https://2thenp-ng.test.defo.ie:15443/echstat.php?format=json">https://2thenp-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://2thenp-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-20"></iframe>
+</li>
+
+<li>
+<p>Test: "apache server"</p>
+<p>Expected result: success</p>
+<p>HTTPS RR: <pre>1 . ech=AEb+DQBCjQAgACCPS3scOY9usAlr42IN/kwgOt94mhpTlJxaYn/3sXh9cgAEAAEAAQATYXAtcHViLnRlc3QuZGVmby5pZQAA
+</pre></p>
+<p><a href="https://ap.test.defo.ie/echstat.php?format=json">https://ap.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://ap.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe24"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/nominal, HTTPS RR, bad alpn"</p>
+<p>Expected result: client-dependent</p>
+<p>HTTPS RR: <pre>1 . alpn="+" ech=AEb+DQBCqQAgACBlm7cfDx/gKuUAwRTe+Y9MExbIyuLpLcgTORIdi69uewAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA</pre></p>
+<p><a href="https://badalpn-ng.test.defo.ie/echstat.php?format=json">https://badalpn-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://badalpn-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe8"></iframe>
+<p><a href="https://badalpn-ng.test.defo.ie:15443/echstat.php?format=json">https://badalpn-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://badalpn-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-8"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/ECHConfigList with bad alg type (0xcccc) for ech kem"</p>
+<p>Expected result: error</p>
+<p>HTTPS RR: <pre>1 . ech=AEb+DQBCmczMACBrf4D75W04lOLJ4RVtJYz7lFamxDjiETWJA4KLCXeFUAAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA</pre></p>
+<p><a href="https://bk1-ng.test.defo.ie/echstat.php?format=json">https://bk1-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://bk1-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe5"></iframe>
+<p><a href="https://bk1-ng.test.defo.ie:15443/echstat.php?format=json">https://bk1-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://bk1-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-5"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/zero-length ECHConfig within ECHConfigList"</p>
+<p>Expected result: error</p>
+<p>HTTPS RR: <pre>1 . ech=AAT+DQAA</pre></p>
+<p><a href="https://bk2-ng.test.defo.ie/echstat.php?format=json">https://bk2-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://bk2-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe6"></iframe>
+<p><a href="https://bk2-ng.test.defo.ie:15443/echstat.php?format=json">https://bk2-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://bk2-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-6"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/ECHConfigList with bad ECH version (0xcccc)"</p>
+<p>Expected result: error</p>
+<p>HTTPS RR: <pre>1 . ech=AEbMzABCmQAgACBrf4D75W04lOLJ4RVtJYz7lFamxDjiETWJA4KLCXeFUAAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA</pre></p>
+<p><a href="https://bv-ng.test.defo.ie/echstat.php?format=json">https://bv-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://bv-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe7"></iframe>
+<p><a href="https://bv-ng.test.defo.ie:15443/echstat.php?format=json">https://bv-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://bv-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-7"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/two RRVALs one using x25519 and one with p256, same priority"</p>
+<p>Expected result: success, but client-dependent</p>
+<p>HTTPS RRs: <pre>
+1 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+1 . ipv4hint=185.88.140.5 ech=AGf+DQBjngAQAEEEFgkLkdHS+tz18PXmdYpYBZdKGxjBm+WNG9AsKNaOCj4bmDbuF4KyvHEZGj6+Wls1VBe1OXierpjGiYOEriOWnAAEAAIAAwATcHVibGljLnRlc3QuZGVmby5pZQAA ipv6hint=2a00:c6c0:0:134:2::1
+</pre></p>
+<p><a href="https://curves1-ng.test.defo.ie/echstat.php?format=json">https://curves1-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://curves1-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe13"></iframe>
+<p><a href="https://curves1-ng.test.defo.ie:15443/echstat.php?format=json">https://curves1-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://curves1-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-13"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/two RRVALs one using x25519 (priority=1) and one with p256 (priority=2)"</p>
+<p>Expected result: success, but client-dependent</p>
+<p>HTTPS RRs: <pre>
+1 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+2 . ipv4hint=185.88.140.5 ech=AGf+DQBjngAQAEEEFgkLkdHS+tz18PXmdYpYBZdKGxjBm+WNG9AsKNaOCj4bmDbuF4KyvHEZGj6+Wls1VBe1OXierpjGiYOEriOWnAAEAAIAAwATcHVibGljLnRlc3QuZGVmby5pZQAA ipv6hint=2a00:c6c0:0:134:2::1
+</pre></p>
+<p><a href="https://curves2-ng.test.defo.ie/echstat.php?format=json">https://curves2-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://curves2-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe14"></iframe>
+<p><a href="https://curves2-ng.test.defo.ie:15443/echstat.php?format=json">https://curves2-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://curves2-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-14"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/two RRVALs one using x25519 (priority=2) and one with p256 (priority=1)"</p>
+<p>Expected result: success, but client-dependent</p>
+<p>HTTPS RRs: <pre>
+1 . ipv4hint=185.88.140.5 ech=AGf+DQBjngAQAEEEFgkLkdHS+tz18PXmdYpYBZdKGxjBm+WNG9AsKNaOCj4bmDbuF4KyvHEZGj6+Wls1VBe1OXierpjGiYOEriOWnAAEAAIAAwATcHVibGljLnRlc3QuZGVmby5pZQAA ipv6hint=2a00:c6c0:0:134:2::1
+2 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+</pre></p>
+<p><a href="https://curves3-ng.test.defo.ie/echstat.php?format=json">https://curves3-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://curves3-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe15"></iframe>
+<p><a href="https://curves3-ng.test.defo.ie:15443/echstat.php?format=json">https://curves3-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://curves3-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-15"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/alpn is only http/1.1"</p>
+<p>Expected result: success</p>
+<p>HTTPS RR: <pre>1 . alpn="http/1.1" ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1</pre></p>
+<p><a href="https://h1alpn-ng.test.defo.ie/echstat.php?format=json">https://h1alpn-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://h1alpn-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe17"></iframe>
+<p><a href="https://h1alpn-ng.test.defo.ie:15443/echstat.php?format=json">https://h1alpn-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://h1alpn-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-17"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/alpn is only h2"</p>
+<p>Expected result: success</p>
+<p>HTTPS RR: <pre>1 . alpn="h2" ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1</pre></p>
+<p><a href="https://h2alpn-ng.test.defo.ie/echstat.php?format=json">https://h2alpn-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://h2alpn-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe16"></iframe>
+<p><a href="https://h2alpn-ng.test.defo.ie:15443/echstat.php?format=json">https://h2alpn-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://h2alpn-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-16"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/alpn is very long ending with http/1.1,h2"</p>
+<p>Expected result: success</p>
+<p>HTTPS RR: <pre>1 . alpn="bogus0,bogus1,bogus2,bogus3,bogus4,bogus5,bogus6,bogus7,bogus8,bogus9,bogus10,bogus11,bogus12,bogus13,bogus14,bogus15,bogus16,bogus17,bogus18,bogus19,bogus20,bogus21,bogus22,bogus23,bogus24,bogus25,bogus26,bogus27,bogus28,bogus29,bogus30,bogus31,bogus32,bogus33,bogus34,bogus35,bogus36,bogus37,bogus38,bogus39,bogus40,bogus41,bogus42,bogus43,bogus44,bogus45,bogus46,bogus47,bogus48,bogus49,bogus50,bogus51,bogus52,bogus53,bogus54,bogus55,bogus56,bogus57,bogus58,bogus59,bogus60,bogus61,bogus62,bogus63,bogus64,bogus65,bogus66,bogus67,bogus68,bogus69,bogus70,bogus71,bogus72,bogus73,bogus74,bogus75,bogus76,bogus77,bogus78,bogus79,bogus80,bogus81,bogus82,bogus83,bogus84,bogus85,bogus86,bogus87,bogus88,bogus89,bogus90,bogus91,bogus92,bogus93,bogus94,bogus95,bogus96,bogus97,bogus98,bogus99,http/1.1,h2" ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1</pre></p>
+<p><a href="https://longalpn-ng.test.defo.ie/echstat.php?format=json">https://longalpn-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://longalpn-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe19"></iframe>
+<p><a href="https://longalpn-ng.test.defo.ie:15443/echstat.php?format=json">https://longalpn-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://longalpn-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-19"></iframe>
+</li>
+
+<li>
+<p>Test: "lighttpd server"</p>
+<p>Expected result: success</p>
+<p>HTTPS RR: <pre>1 . ech=AEb+DQBC1wAgACDhUNWChDXXfBhwQFySLx7ibTWW12pq0LLZ6+34p32gHwAEAAEAAQATbHktcHViLnRlc3QuZGVmby5pZQAA
+</pre></p>
+<p><a href="https://ly.test.defo.ie/echstat.php?format=json">https://ly.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://ly.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe25"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/20 values in HTTPS RR"</p>
+<p>Expected result: success</p>
+<p>HTTPS RRs: <pre>
+1 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+2 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+3 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+4 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+5 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+6 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+7 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+8 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+9 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+10 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+11 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+12 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+13 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+14 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+15 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+16 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+17 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+18 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+19 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+20 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+</pre></p>
+<p><a href="https://many-ng.test.defo.ie/echstat.php?format=json">https://many-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://many-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe10"></iframe>
+<p><a href="https://many-ng.test.defo.ie:15443/echstat.php?format=json">https://many-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://many-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-10"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/minimal HTTPS RR"</p>
+<p>Expected result: success</p>
+<p>HTTPS RR: <pre>1 . ech=AEb+DQBCqQAgACBlm7cfDx/gKuUAwRTe+Y9MExbIyuLpLcgTORIdi69uewAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA</pre></p>
+<p><a href="https://min-ng.test.defo.ie/echstat.php?format=json">https://min-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://min-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe0"></iframe>
+<p><a href="https://min-ng.test.defo.ie:15443/echstat.php?format=json">https://min-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://min-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-0"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/alpn is http/1.1,foo,bar,bar,bom,h2"</p>
+<p>Expected result: success</p>
+<p>HTTPS RR: <pre>1 . alpn="http/1.1,foo,bar,baz,bom,h2" ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1</pre></p>
+<p><a href="https://mixedalpn-ng.test.defo.ie/echstat.php?format=json">https://mixedalpn-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://mixedalpn-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe18"></iframe>
+<p><a href="https://mixedalpn-ng.test.defo.ie:15443/echstat.php?format=json">https://mixedalpn-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://mixedalpn-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-18"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/AliasMode (0) and ServiceMode (!=0) are not allowed together"</p>
+<p>Expected result: error, but likely ignored</p>
+<p>HTTPS RRs: <pre>
+1 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+0 test.defo.ie
+</pre></p>
+<p><a href="https://mixedmode-ng.test.defo.ie/echstat.php?format=json">https://mixedmode-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://mixedmode-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe11"></iframe>
+<p><a href="https://mixedmode-ng.test.defo.ie:15443/echstat.php?format=json">https://mixedmode-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://mixedmode-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-11"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server"</p>
+<p>Expected result: success</p>
+<p>HTTPS RR: <pre>1 . ech=AEb+DQBCagAgACBzLL6V07+zX4LFRuUpv7JZk3HleJFSSLc/Ut7uJK3XSAAEAAEAAQATbmctcHViLnRlc3QuZGVmby5pZQAA
+</pre></p>
+<p><a href="https://ng.test.defo.ie/echstat.php?format=json">https://ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe23"></iframe>
+<p><a href="https://ng.test.defo.ie:15443/echstat.php?format=json">https://ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-23"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/HTTPS RR, with hints but no A/AAAA"</p>
+<p>Expected result: error</p>
+<p>HTTPS RR: <pre>1 . ipv4hint=185.88.140.5 ech=AEb+DQBCqQAgACBlm7cfDx/gKuUAwRTe+Y9MExbIyuLpLcgTORIdi69uewAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA ipv6hint=2a00:c6c0:0:134:2::1</pre></p>
+<p><a href="https://noaddr-ng.test.defo.ie/echstat.php?format=json">https://noaddr-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://noaddr-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe9"></iframe>
+<p><a href="https://noaddr-ng.test.defo.ie:15443/echstat.php?format=json">https://noaddr-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://noaddr-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-9"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/uses p256, hkdf-385 and chacha"</p>
+<p>Expected result: success, but client-dependent</p>
+<p>HTTPS RR: <pre>1 . ipv4hint=185.88.140.5 ech=AGf+DQBjngAQAEEEFgkLkdHS+tz18PXmdYpYBZdKGxjBm+WNG9AsKNaOCj4bmDbuF4KyvHEZGj6+Wls1VBe1OXierpjGiYOEriOWnAAEAAIAAwATcHVibGljLnRlc3QuZGVmby5pZQAA ipv6hint=2a00:c6c0:0:134:2::1</pre></p>
+<p><a href="https://p256-ng.test.defo.ie/echstat.php?format=json">https://p256-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://p256-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe12"></iframe>
+<p><a href="https://p256-ng.test.defo.ie:15443/echstat.php?format=json">https://p256-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://p256-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-12"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/ECHConfiglist with 2 entries a p256 one then a 25519 one (both good keys)"</p>
+<p>Expected result: success</p>
+<p>HTTPS RR: <pre>1 . ech=AK3+DQBjngAQAEEEFgkLkdHS+tz18PXmdYpYBZdKGxjBm+WNG9AsKNaOCj4bmDbuF4KyvHEZGj6+Wls1VBe1OXierpjGiYOEriOWnAAEAAIAAwATcHVibGljLnRlc3QuZGVmby5pZQAA/g0AQqkAIAAgZZu3Hw8f4CrlAMEU3vmPTBMWyMri6S3IEzkSHYuvbnsABAABAAEAE3B1YmxpYy50ZXN0LmRlZm8uaWUAAA==</pre></p>
+<p><a href="https://pthen2-ng.test.defo.ie/echstat.php?format=json">https://pthen2-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://pthen2-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe21"></iframe>
+<p><a href="https://pthen2-ng.test.defo.ie:15443/echstat.php?format=json">https://pthen2-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://pthen2-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-21"></iframe>
+</li>
+
+<li>
+<p>Test: "OpenSSL s_server"</p>
+<p>Expected result: success</p>
+<p>HTTPS RR: <pre>1 . ech=AEb+DQBCbwAgACCo6aUdA7y16xiWdAOxAy8QYTompl9EZC0XJTgBC/EzEAAEAAEAAQATc3MtcHViLnRlc3QuZGVmby5pZQAA
+</pre></p>
+<p><a href="https://ss.test.defo.ie/stats">https://ss.test.defo.ie/stats</a></p>
+<iframe src="https://ss.test.defo.ie/stats" width="80%" height="120" title="testframe26"></iframe>
+</li>
+
+<li>
+<p>Test: "OpenSSL s_server forcing HRR"</p>
+<p>Expected result: success</p>
+<p>HTTPS RR: <pre>1 . ech=AEn+DQBFKgAgACA6jN+s2Mc+r+cTrJGIO4/ewXbNQ9vv4TRGM89dqL2UegAEAAEAAQAWc3NocnItcHViLnRlc3QuZGVmby5pZQAA
+</pre></p>
+<p><a href="https://sshrr.test.defo.ie/stats">https://sshrr.test.defo.ie/stats</a></p>
+<iframe src="https://sshrr.test.defo.ie/stats" width="80%" height="120" title="testframe27"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/nominal, HTTPS RR"</p>
+<p>Expected result: success</p>
+<p>HTTPS RR: <pre>1 . ipv4hint=185.88.140.5 ech=AEb+DQBCqQAgACBlm7cfDx/gKuUAwRTe+Y9MExbIyuLpLcgTORIdi69uewAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA ipv6hint=2a00:c6c0:0:134:2::1</pre></p>
+<p><a href="https://v1-ng.test.defo.ie/echstat.php?format=json">https://v1-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://v1-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe1"></iframe>
+<p><a href="https://v1-ng.test.defo.ie:15443/echstat.php?format=json">https://v1-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://v1-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-1"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/nominal, HTTPS RR"</p>
+<p>Expected result: success</p>
+<p>HTTPS RR: <pre>1 . alpn="http/1.1,h2" ipv4hint=185.88.140.5 ech=AEb+DQBCqQAgACBlm7cfDx/gKuUAwRTe+Y9MExbIyuLpLcgTORIdi69uewAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA ipv6hint=2a00:c6c0:0:134:2::1</pre></p>
+<p><a href="https://v2-ng.test.defo.ie/echstat.php?format=json">https://v2-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://v2-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe2"></iframe>
+<p><a href="https://v2-ng.test.defo.ie:15443/echstat.php?format=json">https://v2-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://v2-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-2"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/two RRvals for nominal, minimal, HTTPS RR"</p>
+<p>Expected result: success</p>
+<p>HTTPS RRs: <pre>
+1 . ech=AEb+DQBCqQAgACBlm7cfDx/gKuUAwRTe+Y9MExbIyuLpLcgTORIdi69uewAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA
+2 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+</pre></p>
+<p><a href="https://v3-ng.test.defo.ie/echstat.php?format=json">https://v3-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://v3-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe3"></iframe>
+<p><a href="https://v3-ng.test.defo.ie:15443/echstat.php?format=json">https://v3-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://v3-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-3"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/three RRvals, 1st bad, 2nd good, 3rd bad, HTTPS RR"</p>
+<p>Expected result: error, but maybe arguable</p>
+<p>HTTPS RRs: <pre>
+1 . ech=AEb+DQBCmczMACBrf4D75W04lOLJ4RVtJYz7lFamxDjiETWJA4KLCXeFUAAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA
+2 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+3 . ech=AEb+DQBCmczMACBrf4D75W04lOLJ4RVtJYz7lFamxDjiETWJA4KLCXeFUAAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA
+</pre></p>
+<p><a href="https://v4-ng.test.defo.ie/echstat.php?format=json">https://v4-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://v4-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe4"></iframe>
+<p><a href="https://v4-ng.test.defo.ie:15443/echstat.php?format=json">https://v4-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://v4-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-4"></iframe>
+</li>
+
+<li>
+<p>Test: "nginx server/minimal HTTPS RR but with 2 ECHConfig extensions"</p>
+<p>Expected result: success</p>
+<p>HTTPS RR: <pre>1 . ech=ANf+DQDTWwAgACC76HoR3yQax/iwgeViB+vMCfbQ5wG5mT9NOUV26kc+VgAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQCRD8oARjExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMQoPywBDMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyCg==</pre></p>
+<p><a href="https://withext-ng.test.defo.ie/echstat.php?format=json">https://withext-ng.test.defo.ie/echstat.php?format=json</a></p>
+<iframe src="https://withext-ng.test.defo.ie/echstat.php?format=json" width="80%" height="60" title="testframe22"></iframe>
+<p><a href="https://withext-ng.test.defo.ie:15443/echstat.php?format=json">https://withext-ng.test.defo.ie:15443/echstat.php?format=json</a></p>
+<iframe src="https://withext-ng.test.defo.ie:15443/echstat.php?format=json" width="80%" height="60" title="testframe-alt-22"></iframe>
+</li>
+
+</ol>
+<center>
+<br> This fine domain brought to you by <a href="https://defo.ie/">DEfO.ie</a> 
+<br> a <a href="https://tolerantnetworks.com/">Tolerant Networks Limited</a> production.
+<br> Last modified: 2024-12-06, but who cares?</font> 
+</center>
+</body>
+</html>

@@ -1,0 +1,256 @@
+\section{Interoperability}
+
+Our primary interoperability testing is based on our ``smokeping''-like tests.
+While smokeping measures latency for names/addreses, our tests aim to establish
+whether and which ECH configurations interoperate or fail to do so.
+
+\subsection{Test Clients}
+
+We mainly do this via a set of hourly cronjobs running on the test.defo.ie VM
+that attempt to access 67 URLs (some deliberately with broken configurations)
+from six different clients (described in Table \ref{tab:smclients}. We report
+results for the most recent 6 runs at
+\url{https://test.defo.ie/smokeping-summary.php}.
+
+\tiny
+\begin{longtblr} [
+        caption = {Smokeping clients},
+        label = {tab:smclients}
+    ] {
+        colspec = {| l | p{0.7\linewidth} |},
+        rowhead = 1
+    }
+    \hline
+        Test Client Name & Details\\
+    \hline
+        Chromium & headless browser tests via Selenium\\
+        & Version: 131.0.6778.85 \\
+        & Python script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/selenium_test.py}\\
+        & ECH implementation based on boringssl\\
+        & Uses DoH to \url{https://chrome.cloudflare-dns.com/dns-query}\\
+
+    \hline
+        curl & bash script using curl\\
+        & Version: 8.11.1-DEV\\
+        & Bash script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_curl.sh}\\
+        & curl currently only pays attention the the first HTTPS resource record seen in DNS answers\\
+        & ECH implementation based on OpenSSL\\
+        & Uses DoH to \url{https://one.one.one.one/dns-query}\\
+
+    \hline
+        Firefox & headless browser tests via Selenium\\
+        & Version: 133.0\\
+        & Python script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/selenium_test.py}\\
+        & ECH implementation based on NSS\\
+        & Uses DoH to \url{https://one.one.one.one/dns-query}\\
+
+    \hline
+        golang & custom golang programme and bash script\\
+        & Version: golang 1.23\\
+        & Golang programme: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/ech_url.go}\\
+        & Bash script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_go.sh}\\
+        & ECH implementation developed for golang\\
+        & Uses DoH to \url{https://cloudflare-dns.com/dns-query} using GET\\
+
+    \hline
+        rustls & custom rustls programme and bash script\\
+        & Version: rustls 0.23.19\\
+        & Rustls programme: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/ech_url.rs}\\
+        & Bash script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_rs.sh}\\
+        & ECH implementation developed for rustls\\
+        & Uses DoH to Google DNS (8.8.8.8/8.8.4.4) via Hickory DNS\\
+
+    \hline
+        Python & custom CPython build and python script\\
+        & Version: CPython 3.13\\
+        & Python script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/ech_url.py}\\
+        & Bash script: \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_py.sh}\\
+        & ECH implementation based on OpenSSL\\
+        & Uses Do53 to system resolver\\
+
+    \hline
+
+\end{longtblr}
+\normalsize
+
+There are some notes on these tests worth calling out in case someone wants to
+reproduce them:
+
+\begin{itemize}
+
+    \item Some of the headless browser tests (e.g. with badly encoded
+        ECHConfigList values) will cause Selenium to throw exceptions, so test
+        scripts need to catch those in order to properly determine that we got
+        an expected failure
+
+    \item Firefox will not attempt ECH to a name when the hostname of the test
+        machine/VM is beneath the ``second level domain''\footnote{Or 2LD, as
+        defined e.g. at
+        \url{https://en.wikipedia.org/wiki/Second-level_domain}.} for that
+        name, thus causing unexpected failures if that hostname matches the
+        origin of a test URL. In our case, we run both servers and test clients
+        on the same VM (``test.defo.ie'') so we have to set the hostname on the
+        VM to something ``peculiar'' for tests to run as expected. (That of
+        course causes ``sudo'' to complain which could disturb logs.)
+
+    \item In the course of testing ECH in recent years, we have repeatedly made
+        one misconfiguration error: using ``.'' as the target name in HTTPS RRs
+        for ports other then 443, when the correct thing do is to include the
+        origin as the target name in such cases. That is, when making an HTTPS
+        RR for \url{https://example.com:12345/} one needs to publish an HTTPS
+        RR at ``\_12345.\_https.example.com'' and the (presentation) value of
+        that record needs to start with ``1 example.com ...'' where 1 is the
+        priority and example.com is that targetName. So simply copying the
+        value of the HTTPS RR for port 443 and re-publishing that for another
+        port is not sufficient for interoperability. (But also does work for
+        some clients in some cases, making it easier to accidentally do this
+        and not notice.)
+
+    \item Tests are run hourly, with curl tests at the top of the hour,
+        CPython tests at :05, Firefox at :10, Chromium at :20, golang at :30
+        and rustls at :40. The test summary page is generated at :45.
+        The TTLs for DNS records below test.defo.ie are all set to 10 seconds.
+        For our other DEfO test services (e.g. draft-13.esni.defo.ie cases)
+        TTLs are set to 1800 seconds.
+
+\end{itemize}
+
+We also have a standalone test suite on Android to run our ECH-enabled
+Conscrypt build against a number of domains
+(\url{https://github.com/defo-project/EchInteropTest}).  This manually-run test
+passes on all of the draft-13.esni.defo.ie test servers, defo.ie iteself,
+Google's tls-ech.dev, and two Cloudflare domains that support ECH. (Running
+that with the full set of test URLs from Table~\ref{tab:itests} is a
+work-in-progres.)
+
+\subsection{Results}
+
+The set of 67 test URLs covers all of the server technologies listed in Table
+\ref{tab:servers} though as all of those use OpenSSL for ECH, we direct most
+of the URLs towards one nginx instance. On our test VM, we have an haproxy
+instance (not doing an ECH) listening on port 443, that routes TLS sessions to
+the ECH-enabled web servers, namely, nginx (port 15443), apache (15444),
+lighttpd (15445) and two instances of ``openssl s\_server'', one with a
+standard configuration on port 15447, and one, that only supports the p-384
+curve for TLS key exchange on port 15448. That last server's configuration will
+trigger TLS HelloRetryRequest for many TLS clients. The back-end ports for all
+servers (e.g. 15443 for nginx) are also open. Our test URLs and associated
+HTTPS RRs can therefore be exercised both for port 443 and the relevant
+back-end port, but in most cases we have only set those up for the nginx
+back-end instance as testing the same setup on different web server instances
+wouldn't be likely to reveal much new information.  The test set also include
+URLs for the test services listed in Table \ref{tab:testservers}.  Some test
+URLs have ``broken'' configurations, e.g. with badly encoded HTTPS resource
+records, or have specification-conformant configurations that we expect may not
+work.
+
+We have 6 clients testing hourly against 67 URLs, giving us 402 measurements
+per hour. The test setup underlying these URLs are further described in
+Appendix~\ref{app:testdescriptions} and the list of URLs and expected outcomes
+is shown in Appendix~\ref{app:urls}.  The full set of URLs and the last 6 hours
+of test outcomes are also at \url{https://test.defo.ie/smokeping-summary.php}
+or web pages with (most of) the test URLs loaded via an Iframe can be accessed
+at \url{https://test.defo.ie/iframe_tests_sort.html}. That web page also
+includes some explanatory text about each test URL.
+
+Table \ref{tab:itests} below shows, for each test URL and each client,
+the ratio of expected and total results for a recent 
+interval.~\footnote{Table \ref{tab:itests} is produced
+using \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smokeping-summary-report.py}.}
+
+\begin{center}
+    \input{tt}
+\end{center}
+
+Note that the numbers in Table~\ref{tab:itests} are not a direct measure of the
+``quality'' of the client - they are a snapshot of counts of how often we see expected
+outcomes for the specific test setting, and the failure to see that outcome is
+sometimes due to imperfection in the test setup, or even network conditions,
+and not the client.  Nonetheless, the numbers are useful in terms of pointing
+us at where we can look for improvement - to help with that, cells in the table
+where we see fewer than 95\% of the results being as expected are in
+\textbf{bold}.  Based on that, the set of ``interesting'' things arising from
+Table \ref{tab:itests} include:
+
+\begin{itemize}
+
+    \item Columns 3 and 5 - browsers seems to currently suffer relatively more
+        badly from the ``impatiance'' problem with HTTPS RR DNS answer arrival
+        times than other clients. For other clients, unexpected test outcomes
+        seem to be more commonly due to inherent, but easily fixed, client
+        limitations, such as not handling some ECH ciphersuites. (Again though:
+        this requires further investigation.)
+
+    \item Lines 5 and 6 -
+        \url{https://badalpn-ng.test.defo.ie/echstat.php?format=json} and it's
+        equivalent off port 443, work fine with all clients except Firefox and
+        never work for Firefox. The relevant DNS RR has an illegal alpn value
+        (a '+' character). Hard to see this as other than Firefox being
+        over-fussy, though there could of course be some good reason to reject
+        such alpn values.
+
+    \item Lines 13 and 57 - our CPython test client throws an exception for
+        these (the Cloudflare operational, and boringssl test, servers)
+        \begin{verbatim} [SSL: SSLV3_ALERT_ILLEGAL_PARAMETER] ssl/tls alert
+        illegal parameter (_ssl.c:1024) \end{verbatim} This is being
+        investigated.
+
+    \item Lines 14-19 and 64/65 are roughly 50:50 likely as our rustls test
+        client is affected by the order of HTTPS RR answers, and we get a panic
+        when some of the badly formed ECHConfigList values are being ingested.
+        This may be due to test client code or could be due to the rustls ECH
+        implementation. We opened an issue
+        \url{https://github.com/rustls/rustls/issues/2276} with the rust
+        developers to explore the reasons/fix for this, and a fix was developed
+        (\url{https://github.com/rustls/rustls/pull/2278}) We've yet to deploy
+        that fix in our test environment.
+
+    \item Line 23 - browsers seem to dislike
+        \url{https://draft-13.esni.defo.ie:12413/}.  That's due to our test
+        result handlers and is not a failure in the clients or servers. That test case is
+        an ECH shared-mode haproxy instance with lighttpd as the backend. As
+        lighttpd is the backend it can't produce an HTTP response that
+        indicates ECH worked as ECH was terminated with TLS at the haproxy
+        instance. It's unclear how we can handle this test case when browsers
+        don't themselves indicate ECH success or failure. (Between haproxy and
+        lighttpd we should be able to engineer some HTTP response header that
+        indicates ECH success or failure - that'd not be secure but would be
+        fine for testing. We can have haproxy add a request header to indicate
+        that ECH decryption worked or failed and then have lighttpd reflect
+        that in the HTTP response. That's not been done yet.)
+
+    \item Line 37 - it's not clear why publishing many (20) identical HTTPS RRs
+        would work for port 443 for browsers but not off port 443. To be
+        investigated.
+
+    \item Line 46 - as \url{https://myechtest.site} returns variously malformed
+        retry-configs, sometimes the malformedness is not detected by clients.
+        Our test code does correctly interpret some situations but not all.
+        To be further investigated.
+
+    \item The test setup for lines 51/52 calls for use of P256-HKDF-SHA256 for
+        the KEM, a KDF of HKDF-SHA384 and the CHACHA20-POLY-1305 AEAD.  It's
+        seems that some implementations (including rustls) don't support that
+        combination as they are compiled/configured on a per-HPKE suite basis
+        so don't support this combination even though they support all the
+        component algorithms.  In addition, neither the ECH nor HPKE
+        specifications nominate one or a small number of HPKE suites as
+        mandatory-to-implement (MTI).  Sadly, rather than a small set of MTI
+        suites, HPKE defines 96 possibilities in RFC9180 \cite{rfc9180}
+        arguably giving rise to this interoperability issue.  Whether that
+        makes this a good or a bad test case is perhaps a matter of opinion.
+        (The oddball selection is the author's fault.) This is discussed a
+        little in
+        \url{https://github.com/defo-project/ech-interop-report/issues/2}.)
+        \todo{add a less oddball combo}
+
+    \item Lines 51/52 - curl and CPython do work with our oddball P256
+        combination, but Chromium, Firefox, golang and rustls (as expained above)
+        do not support that choice. Whether or not the same issue causes the
+        unexpected outcome for all clients is being investigated.
+
+\end{itemize}
+
+Some additional issues encountered in validating test results are described
+in Appendix~\ref{app:alongtheway}.
+

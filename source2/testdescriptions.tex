@@ -1,0 +1,248 @@
+\section{ECH Test Descriptions}
+\label{app:testdescriptions}
+
+This appendix describes the semantics of the various ``*.test.defo.ie'' test URLs.
+The other test services used are described in section~\ref{sec:testservices}.
+The left-most label for ``*.test.defo.ie'' URLs describes the test-case and server technology,
+for example the ``mixedmode'' test-case when run against an nginx server will
+result in the a URL with an origin of ``mixedmode-ng.test.defo.ie''. For each of
+these test cases we also publish a TXT RR at the relevant name that has a very
+short description of the test.
+
+We have a mostly-automated way of producing the set of artefacts needed for
+adding new tests to this list. That's a Python script that reads in a
+description (similar to the text below, but in JSON) and produces the set of
+ECH keys needed (if new ones are needed), haproxy and web-server configuration
+stanzas. The JSON inputs can include e.g. badly formed ECHConfigList values.
+The Python script also produces a bash script that can be run on an
+authoritative name server to clear/populate the relevant DNS records (using
+bind's ``nsupdate'').  That code and further  details can be found at
+\url{https://github.com/defo-project/ech-dev-utils/tree/main/test-cases}.
+
+Some of the text below overflows the page, but all values are published in the
+DNS, and the same information is visible on our IFrame test page at
+\url{https://test.defo.ie/iframe_tests_sort.html}.  so hopefully this
+presentation is sufficient.
+
+\tiny
+\begin{verbatim}
+    Test: "nginx server/minimal HTTPS RR"
+    Expected result: success
+    HTTPS RR:
+    1 . ech=AEb+DQBCqQAgACBlm7cfDx/gKuUAwRTe+Y9MExbIyuLpLcgTORIdi69uewAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA
+    https://min-ng.test.defo.ie/echstat.php?format=json
+    https://min-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/nominal, HTTPS RR"
+    Expected result: success
+    HTTPS RR:
+    1 . ipv4hint=185.88.140.5 ech=AEb+DQBCqQAgACBlm7cfDx/gKuUAwRTe+Y9MExbIyuLpLcgTORIdi69uewAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA ipv6hint=2a00:c6c0:0:134:2::1
+    https://v1-ng.test.defo.ie/echstat.php?format=json
+    https://v1-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/nominal, HTTPS RR"
+    Expected result: success
+    HTTPS RR:
+    1 . alpn="http/1.1,h2" ipv4hint=185.88.140.5 ech=AEb+DQBCqQAgACBlm7cfDx/gKuUAwRTe+Y9MExbIyuLpLcgTORIdi69uewAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA ipv6hint=2a00:c6c0:0:134:2::1
+    https://v2-ng.test.defo.ie/echstat.php?format=json
+    https://v2-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/two RRvals for nominal, minimal, HTTPS RR"
+    Expected result: success
+    HTTPS RRs:
+    1 . ech=AEb+DQBCqQAgACBlm7cfDx/gKuUAwRTe+Y9MExbIyuLpLcgTORIdi69uewAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA
+    2 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    https://v3-ng.test.defo.ie/echstat.php?format=json
+    https://v3-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/three RRvals, 1st bad, 2nd good, 3rd bad, HTTPS RR"
+    Expected result: error, but maybe arguable
+    HTTPS RRs:
+    1 . ech=AEb+DQBCmczMACBrf4D75W04lOLJ4RVtJYz7lFamxDjiETWJA4KLCXeFUAAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA
+    2 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    3 . ech=AEb+DQBCmczMACBrf4D75W04lOLJ4RVtJYz7lFamxDjiETWJA4KLCXeFUAAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA
+    https://v4-ng.test.defo.ie/echstat.php?format=json
+    https://v4-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/ECHConfigList with bad alg type (0xcccc) for ech kem"
+    Expected result: error
+    HTTPS RR:
+    1 . ech=AEb+DQBCmczMACBrf4D75W04lOLJ4RVtJYz7lFamxDjiETWJA4KLCXeFUAAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA
+    https://bk1-ng.test.defo.ie/echstat.php?format=json
+    https://bk1-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/zero-length ECHConfig within ECHConfigList"
+    Expected result: error
+    HTTPS RR:
+    1 . ech=AAT+DQAA
+    https://bk2-ng.test.defo.ie/echstat.php?format=json
+    https://bk2-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/ECHConfigList with bad ECH version (0xcccc)"
+    Expected result: error
+    HTTPS RR:
+    1 . ech=AEbMzABCmQAgACBrf4D75W04lOLJ4RVtJYz7lFamxDjiETWJA4KLCXeFUAAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA
+    https://bv-ng.test.defo.ie/echstat.php?format=json
+    https://bv-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/nominal, HTTPS RR, bad alpn"
+    Expected result: client-dependent
+    HTTPS RR:
+    1 . alpn="+" ech=AEb+DQBCqQAgACBlm7cfDx/gKuUAwRTe+Y9MExbIyuLpLcgTORIdi69uewAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA
+    https://badalpn-ng.test.defo.ie/echstat.php?format=json
+    https://badalpn-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/HTTPS RR, with hints but no A/AAAA"
+    Expected result: error
+    HTTPS RR:
+    1 . ipv4hint=185.88.140.5 ech=AEb+DQBCqQAgACBlm7cfDx/gKuUAwRTe+Y9MExbIyuLpLcgTORIdi69uewAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA ipv6hint=2a00:c6c0:0:134:2::1
+    https://noaddr-ng.test.defo.ie/echstat.php?format=json
+    https://noaddr-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/20 values in HTTPS RR"
+    Expected result: success
+    HTTPS RRs:
+    1 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    2 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    3 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    4 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    5 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    6 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    7 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    8 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    9 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    10 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    11 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    12 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    13 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    14 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    15 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    16 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    17 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    18 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    19 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    20 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    https://many-ng.test.defo.ie/echstat.php?format=json
+    https://many-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/AliasMode (0) and ServiceMode (!=0) are not allowed together"
+    Expected result: error, but likely ignored
+    HTTPS RRs:
+    1 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    0 test.defo.ie
+    https://mixedmode-ng.test.defo.ie/echstat.php?format=json
+    https://mixedmode-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/uses p256, hkdf-385 and chacha"
+    Expected result: success, but client-dependent
+    HTTPS RR:
+    1 . ipv4hint=185.88.140.5 ech=AGf+DQBjngAQAEEEFgkLkdHS+tz18PXmdYpYBZdKGxjBm+WNG9AsKNaOCj4bmDbuF4KyvHEZGj6+Wls1VBe1OXierpjGiYOEriOWnAAEAAIAAwATcHVibGljLnRlc3QuZGVmby5pZQAA ipv6hint=2a00:c6c0:0:134:2::1
+    https://p256-ng.test.defo.ie/echstat.php?format=json
+    https://p256-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/two RRVALs one using x25519 and one with p256, same priority"
+    Expected result: success, but client-dependent
+    HTTPS RRs:
+    1 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    1 . ipv4hint=185.88.140.5 ech=AGf+DQBjngAQAEEEFgkLkdHS+tz18PXmdYpYBZdKGxjBm+WNG9AsKNaOCj4bmDbuF4KyvHEZGj6+Wls1VBe1OXierpjGiYOEriOWnAAEAAIAAwATcHVibGljLnRlc3QuZGVmby5pZQAA ipv6hint=2a00:c6c0:0:134:2::1
+    https://curves1-ng.test.defo.ie/echstat.php?format=json
+    https://curves1-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/two RRVALs one using x25519 (priority=1) and one with p256 (priority=2)"
+    Expected result: success, but client-dependent
+    HTTPS RRs:
+    1 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    2 . ipv4hint=185.88.140.5 ech=AGf+DQBjngAQAEEEFgkLkdHS+tz18PXmdYpYBZdKGxjBm+WNG9AsKNaOCj4bmDbuF4KyvHEZGj6+Wls1VBe1OXierpjGiYOEriOWnAAEAAIAAwATcHVibGljLnRlc3QuZGVmby5pZQAA ipv6hint=2a00:c6c0:0:134:2::1
+    https://curves2-ng.test.defo.ie/echstat.php?format=json
+    https://curves2-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/two RRVALs one using x25519 (priority=2) and one with p256 (priority=1)"
+    Expected result: success, but client-dependent
+    HTTPS RRs:
+    1 . ipv4hint=185.88.140.5 ech=AGf+DQBjngAQAEEEFgkLkdHS+tz18PXmdYpYBZdKGxjBm+WNG9AsKNaOCj4bmDbuF4KyvHEZGj6+Wls1VBe1OXierpjGiYOEriOWnAAEAAIAAwATcHVibGljLnRlc3QuZGVmby5pZQAA ipv6hint=2a00:c6c0:0:134:2::1
+    2 . ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    https://curves3-ng.test.defo.ie/echstat.php?format=json
+    https://curves3-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/alpn is only h2"
+    Expected result: success
+    HTTPS RR:
+    1 . alpn="h2" ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    https://h2alpn-ng.test.defo.ie/echstat.php?format=json
+    https://h2alpn-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/alpn is only http/1.1"
+    Expected result: success
+    HTTPS RR:
+    1 . alpn="http/1.1" ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    https://h1alpn-ng.test.defo.ie/echstat.php?format=json
+    https://h1alpn-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/alpn is http/1.1,foo,bar,bar,bom,h2"
+    Expected result: success
+    HTTPS RR:
+    1 . alpn="http/1.1,foo,bar,baz,bom,h2" ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    https://mixedalpn-ng.test.defo.ie/echstat.php?format=json
+    https://mixedalpn-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/alpn is very long ending with http/1.1,h2"
+    Expected result: success
+    HTTPS RR:
+    1 . alpn="bogus0,bogus1,bogus2,bogus3,bogus4,bogus5,bogus6,bogus7,bogus8,bogus9,bogus10,bogus11,bogus12,bogus13,bogus14,bogus15,bogus16,bogus17,bogus18,bogus19,bogus20,bogus21,bogus22,bogus23,bogus24,bogus25,bogus26,bogus27,bogus28,bogus29,bogus30,bogus31,bogus32,bogus33,bogus34,bogus35,bogus36,bogus37,bogus38,bogus39,bogus40,bogus41,bogus42,bogus43,bogus44,bogus45,bogus46,bogus47,bogus48,bogus49,bogus50,bogus51,bogus52,bogus53,bogus54,bogus55,bogus56,bogus57,bogus58,bogus59,bogus60,bogus61,bogus62,bogus63,bogus64,bogus65,bogus66,bogus67,bogus68,bogus69,bogus70,bogus71,bogus72,bogus73,bogus74,bogus75,bogus76,bogus77,bogus78,bogus79,bogus80,bogus81,bogus82,bogus83,bogus84,bogus85,bogus86,bogus87,bogus88,bogus89,bogus90,bogus91,bogus92,bogus93,bogus94,bogus95,bogus96,bogus97,bogus98,bogus99,http/1.1,h2" ipv4hint=185.88.140.5 ech=AEv+DQBHdAAgACCCU49qdxKOUXJPs3wlsM06v/t42sMH5xQOL37MAd3HaAAEAAEAAQAYb3RoZXJwdWJsaWMudGVzdC5kZWZvLmllAAA= ipv6hint=2a00:c6c0:0:134:2::1
+    https://longalpn-ng.test.defo.ie/echstat.php?format=json
+    https://longalpn-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/ECHConfiglist with 2 entries a 25519 one then a p256 one (both good keys)"
+    Expected result: success
+    HTTPS RR:
+    1 . ech=AK3+DQBCqQAgACBlm7cfDx/gKuUAwRTe+Y9MExbIyuLpLcgTORIdi69uewAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQAA/g0AY54AEABBBBYJC5HR0vrc9fD15nWKWAWXShsYwZvljRvQLCjWjgo+G5g27heCsrxxGRo+vlpbNVQXtTl4nq6YxomDhK4jlpwABAACAAMAE3B1YmxpYy50ZXN0LmRlZm8uaWUAAA==
+    https://2thenp-ng.test.defo.ie/echstat.php?format=json
+    https://2thenp-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/ECHConfiglist with 2 entries a p256 one then a 25519 one (both good keys)"
+    Expected result: success
+    HTTPS RR:
+    1 . ech=AK3+DQBjngAQAEEEFgkLkdHS+tz18PXmdYpYBZdKGxjBm+WNG9AsKNaOCj4bmDbuF4KyvHEZGj6+Wls1VBe1OXierpjGiYOEriOWnAAEAAIAAwATcHVibGljLnRlc3QuZGVmby5pZQAA/g0AQqkAIAAgZZu3Hw8f4CrlAMEU3vmPTBMWyMri6S3IEzkSHYuvbnsABAABAAEAE3B1YmxpYy50ZXN0LmRlZm8uaWUAAA==
+    https://pthen2-ng.test.defo.ie/echstat.php?format=json
+    https://pthen2-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server/minimal HTTPS RR but with 2 ECHConfig extensions"
+    Expected result: success
+    HTTPS RR:
+    1 . ech=ANf+DQDTWwAgACC76HoR3yQax/iwgeViB+vMCfbQ5wG5mT9NOUV26kc+VgAEAAEAAQATcHVibGljLnRlc3QuZGVmby5pZQCRD8oARjExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMQoPywBDMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyCg==
+    https://withext-ng.test.defo.ie/echstat.php?format=json
+    https://withext-ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "nginx server"
+    Expected result: success
+    HTTPS RR:
+    1 . ech=AEb+DQBCagAgACBzLL6V07+zX4LFRuUpv7JZk3HleJFSSLc/Ut7uJK3XSAAEAAEAAQATbmctcHViLnRlc3QuZGVmby5pZQAA
+    https://ng.test.defo.ie/echstat.php?format=json
+    https://ng.test.defo.ie:15443/echstat.php?format=json
+
+    Test: "apache server"
+    Expected result: success
+    HTTPS RR:
+    1 . ech=AEb+DQBCjQAgACCPS3scOY9usAlr42IN/kwgOt94mhpTlJxaYn/3sXh9cgAEAAEAAQATYXAtcHViLnRlc3QuZGVmby5pZQAA
+    https://ap.test.defo.ie/echstat.php?format=json
+
+    Test: "lighttpd server"
+    Expected result: success
+    HTTPS RR:
+    1 . ech=AEb+DQBC1wAgACDhUNWChDXXfBhwQFySLx7ibTWW12pq0LLZ6+34p32gHwAEAAEAAQATbHktcHViLnRlc3QuZGVmby5pZQAA
+
+    https://ly.test.defo.ie/echstat.php?format=json
+    Test: "OpenSSL s_server"
+    Expected result: success
+    HTTPS RR:
+    1 . ech=AEb+DQBCbwAgACCo6aUdA7y16xiWdAOxAy8QYTompl9EZC0XJTgBC/EzEAAEAAEAAQATc3MtcHViLnRlc3QuZGVmby5pZQAA
+
+    https://ss.test.defo.ie/stats
+    Test: "OpenSSL s_server forcing HRR"
+    Expected result: success
+    HTTPS RR:
+    1 . ech=AEn+DQBFKgAgACA6jN+s2Mc+r+cTrJGIO4/ewXbNQ9vv4TRGM89dqL2UegAEAAEAAQAWc3NocnItcHViLnRlc3QuZGVmby5pZQAA
+    https://sshrr.test.defo.ie/stats
+
+\end{verbatim}
+\normalsize

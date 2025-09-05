@@ -1,0 +1,73 @@
+\section{Recently Fixed Issues with Test Setup}
+\label{app:alongtheway}
+
+The test setup used here was developed some months before this report was
+written.  Over that time, clients changed, and new test clients were added, so
+we had to fix a number of issues, and validate test results before producing
+this report. It may be illustrative to describe some self-caused test failures
+seen as we were preparing this report, and how those were resolved:
+
+\begin{itemize}
+
+\item Line 2 -
+    \url{https://2thenp-ng.test.defo.ie:15443/echstat.php?format=json} works
+        for all clients except Chromium where it never works, yet the same
+        configuration on port 443 works 100\% of the time on all clients. That
+        configuration has an ECHConfigList with two entries - the first an
+        x25519 key and the second a p256 key - and the same ECHConfigList value
+        is published for both ports. The error here however is in the
+        configuration - the targetName for the port 15443 RR is ``.'' rather
+        than the hostname, so Chromium here is correct and our test setup is
+        wrong. We fixed a bug in
+        \url{https://github.com/defo-project/ech-dev-utils/blob/main/test-cases/test_cases_gen.py}
+        addressing this on 20241208.\\
+
+    \item Line 7 and elsewhere - fixed a bug in
+        \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/selenium_test.py}
+        where expected failures from tests using the ``echstat\_stat()''
+        handler were being logged as test failures when they should be logged
+        as expected.
+
+    \item Line 7 and elsewhere - fixed same bug in both
+        \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_py.sh}
+        and
+        \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smoke_ech_rs.sh}
+        where we were assuming all non-zero returns were errors, which didn't match with
+        the configured expected values. (Also tweaked a few of those expected values for
+        rustls and CPython too.)
+
+    \item Line 13 - our ``cf\_check'' result handler hadn't been changed to be
+        applied with the change in Cloudflare's ECH test URL from
+        ``crypto.cloudflare.com'' to ``cloudflare-ech.com'' which caused
+        erroneous failure reports.
+
+    \item Line 20 and similar - our CPython test client needed a tweak to not
+        fail for tests not using the ``echstat.php'' server side script - fix
+        was pushed on 20241209
+
+    \item Line 32 - somehow certbot was no longer installed on test.defo.ie so
+        we got a cert expiry for hidden.hoba.ie - re-instaled certbot to fix,
+        which leads to some redundancy as we end up with more than one cert for
+        some names (more or less all other name on that VM are below
+        *.test.defo.ie)
+
+    \item Line 35 - our CPython test client hits a certificate validation error
+        for this lighttpd server - a change to the server configuration seems
+        to fix this, the change being to send the full cert chain to clients
+        (browsers don't need that but our other test client do).
+
+    \item Lines 51 and 52: these needed an edit for the expected values, which were
+        wrong. (That happened more than once, with the most recent fix being
+        on 2024-12-13.)
+
+\end{itemize}
+
+Line numbers above refer to Table~\ref{tab:itests} as before.
+
+On 2025-01-05 we also fixed some issues with temporary files that were being
+left behind. That had resulted in the ``/tmp'' partition filling up on 2024-12-31
+leading to some tests failing and hence skewing results between those dates.
+
+On 2025-01-13 we updated the packages on test.defo.ie to use OpenSSL-defo rather
+than OpenSSL-sftcd. We also updated all other packages on that VM, e.g. moving
+from FF 133 to FF 134. (So we need to updated the s/w section above to match.)

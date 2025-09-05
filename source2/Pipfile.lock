@@ -1,0 +1,28 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "74ba89629012dcb930d058371d5a504108a302346e6b39a375430167a59ffd4c"
+        },
+        "pipfile-spec": 6,
+        "requires": {
+            "python_version": "3.12"
+        },
+        "sources": [
+            {
+                "name": "pypi",
+                "url": "https://pypi.org/simple",
+                "verify_ssl": true
+            }
+        ]
+    },
+    "default": {
+        "rfcbibtex": {
+            "hashes": [
+                "sha256:738ea5316109ea2f7945c9396686397525d38fd4a72421a2274cfc807ff2afb3"
+            ],
+            "index": "pypi",
+            "version": "==0.3.2"
+        }
+    },
+    "develop": {}
+}
