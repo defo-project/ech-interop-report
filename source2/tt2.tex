@@ -1,0 +1,83 @@
+\tiny
+\begin{longtblr} [
+        caption = {ECH interop tests from 2025-09-15 00:00:00 to 2025-09-21 00:45:12.810524.\\ When less than 95 percent of tests are as expected, the cell is in bold text.},
+        label = {tab:itests2}
+    ] {
+        colspec = {| c | l | c | c | c | c | c | c |},
+        rowhead = 1
+    }
+    \hline
+num & url  & chromium  & curl  & firefox  & golang  & rustls  & python \\ \hline
+1 & \url{https://2thenp-ng.test.defo.ie/echstat.php?format=json}  & \textbf{0.94/145 }  & 1.00/145  & 1.00/145  & 1.00/145  & 0.99/145  & 1.00/145 \\ \hline
+2 & \url{https://2thenp-ng.test.defo.ie:15443/echstat.php?format=json}  & \textbf{0.46/145 }  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145 \\ \hline
+3 & \url{https://ap.test.defo.ie/echstat.php?format=json}  & \textbf{0.94/145 }  & 1.00/145  & 1.00/145  & 0.99/145  & 1.00/145  & 1.00/145 \\ \hline
+4 & \url{https://ap.test.defo.ie:15444/echstat.php?format=json}  & \textbf{0.39/145 }  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145 \\ \hline
+5 & \url{https://badalpn-ng.test.defo.ie/echstat.php?format=json}  & \textbf{0.94/145 }  & 0.99/145  & 1.00/145  & \textbf{0.79/145 }  & 1.00/145  & 1.00/145 \\ \hline
+6 & \url{https://badalpn-ng.test.defo.ie:15443/echstat.php?format=json}  & \textbf{0.44/145 }  & 1.00/145  & 1.00/145  & 0.99/145  & 0.99/145  & 1.00/145 \\ \hline
+7 & \url{https://bk1-ng.test.defo.ie/echstat.php?format=json}  & 1.00/145  & 1.00/145  & 1.00/145  & 0.99/145  & 1.00/145  & 0.99/145 \\ \hline
+8 & \url{https://bk1-ng.test.defo.ie:15443/echstat.php?format=json}  & 1.00/145  & 1.00/145  & 1.00/145  & 0.99/145  & 1.00/145  & 0.98/145 \\ \hline
+9 & \url{https://bk2-ng.test.defo.ie/echstat.php?format=json}  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145 \\ \hline
+10 & \url{https://bk2-ng.test.defo.ie:15443/echstat.php?format=json}  & 1.00/145  & 0.99/145  & 1.00/145  & 0.99/145  & 1.00/145  & 1.00/145 \\ \hline
+11 & \url{https://bv-ng.test.defo.ie/echstat.php?format=json}  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145 \\ \hline
+12 & \url{https://bv-ng.test.defo.ie:15443/echstat.php?format=json}  & 1.00/145  & 0.99/145  & 1.00/145  & 1.00/145  & 1.00/145  & 0.99/145 \\ \hline
+13 & \url{https://cloudflare-ech.com/cdn-cgi/trace}  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145  & 0.99/145 \\ \hline
+14 & \url{https://curves1-ng.test.defo.ie/echstat.php?format=json}  & 0.97/145  & 1.00/145  & 1.00/145  & 0.99/145  & \textbf{0.50/145 }  & 0.99/145 \\ \hline
+15 & \url{https://curves1-ng.test.defo.ie:15443/echstat.php?format=json}  & \textbf{0.45/145 }  & 1.00/145  & 1.00/145  & 1.00/145  & \textbf{0.48/145 }  & 1.00/145 \\ \hline
+16 & \url{https://curves2-ng.test.defo.ie/echstat.php?format=json}  & 0.96/145  & 1.00/145  & 1.00/145  & 1.00/145  & \textbf{0.52/145 }  & 1.00/145 \\ \hline
+17 & \url{https://curves2-ng.test.defo.ie:15443/echstat.php?format=json}  & \textbf{0.43/145 }  & 1.00/145  & 1.00/145  & 1.00/145  & \textbf{0.46/145 }  & 1.00/145 \\ \hline
+18 & \url{https://curves3-ng.test.defo.ie/echstat.php?format=json}  & \textbf{0.00/145 }  & 1.00/145  & \textbf{0.00/145 }  & \textbf{0.00/145 }  & \textbf{0.57/145 }  & 0.99/145 \\ \hline
+19 & \url{https://curves3-ng.test.defo.ie:15443/echstat.php?format=json}  & \textbf{0.00/145 }  & 1.00/145  & \textbf{0.00/145 }  & \textbf{0.00/145 }  & \textbf{0.41/145 }  & 1.00/145 \\ \hline
+20 & \url{https://defo.ie/ech-check.php}  & \textbf{0.94/145 }  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145  & 0.99/145 \\ \hline
+21 & \url{https://draft-13.esni.defo.ie:10413/}  & \textbf{0.44/145 }  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145  & 0.97/145 \\ \hline
+22 & \url{https://draft-13.esni.defo.ie:11413/}  & \textbf{0.39/145 }  & 0.99/145  & 1.00/145  & 1.00/145  & 0.99/145  & 1.00/145 \\ \hline
+23 & \url{https://draft-13.esni.defo.ie:12413/}  & \textbf{0.00/145 }  & 1.00/145  & \textbf{0.00/145 }  & 1.00/145  & 0.99/145  & 1.00/145 \\ \hline
+24 & \url{https://draft-13.esni.defo.ie:12414/}  & \textbf{0.43/145 }  & 1.00/145  & 1.00/145  & 0.99/145  & 1.00/145  & 0.99/145 \\ \hline
+25 & \url{https://draft-13.esni.defo.ie:8413/stats}  & \textbf{0.83/145 }  & 1.00/145  & 0.99/145  & 0.99/145  & 0.99/145  & 1.00/145 \\ \hline
+26 & \url{https://draft-13.esni.defo.ie:8414/stats}  & \textbf{0.41/145 }  & 1.00/145  & 1.00/145  & 0.99/145  & 0.99/145  & 1.00/145 \\ \hline
+27 & \url{https://draft-13.esni.defo.ie:9413/}  & \textbf{0.42/145 }  & 0.99/145  & 1.00/145  & 0.98/145  & 1.00/145  & 1.00/145 \\ \hline
+28 & \url{https://h1alpn-ng.test.defo.ie/echstat.php?format=json}  & \textbf{0.94/145 }  & 1.00/145  & 1.00/145  & 0.99/145  & 1.00/145  & 0.99/145 \\ \hline
+29 & \url{https://h1alpn-ng.test.defo.ie:15443/echstat.php?format=json}  & \textbf{0.42/145 }  & 1.00/145  & 1.00/145  & 0.99/145  & 1.00/145  & 1.00/145 \\ \hline
+30 & \url{https://h2alpn-ng.test.defo.ie/echstat.php?format=json}  & 0.96/145  & 1.00/145  & 1.00/145  & 0.99/145  & 1.00/145  & 1.00/145 \\ \hline
+31 & \url{https://h2alpn-ng.test.defo.ie:15443/echstat.php?format=json}  & \textbf{0.43/145 }  & 1.00/145  & 1.00/145  & 0.99/145  & 1.00/145  & 1.00/145 \\ \hline
+32 & \url{https://hidden.hoba.ie/}  & 0.97/145  & 1.00/145  & 1.00/145  & 0.98/145  & 1.00/145  & 0.99/145 \\ \hline
+33 & \url{https://longalpn-ng.test.defo.ie/echstat.php?format=json}  & \textbf{0.43/145 }  & 1.00/145  & 1.00/145  & 0.99/145  & 0.99/145  & 1.00/145 \\ \hline
+34 & \url{https://longalpn-ng.test.defo.ie:15443/echstat.php?format=json}  & \textbf{0.16/145 }  & 1.00/145  & 1.00/145  & 0.99/145  & 1.00/145  & 0.99/145 \\ \hline
+35 & \url{https://ly.test.defo.ie/echstat.php?format=json}  & \textbf{0.92/145 }  & 0.99/145  & 1.00/145  & 0.99/145  & 1.00/145  & 1.00/145 \\ \hline
+36 & \url{https://many-ng.test.defo.ie/echstat.php?format=json}  & \textbf{0.43/145 }  & 1.00/145  & 1.00/145  & 0.99/145  & 1.00/145  & 1.00/145 \\ \hline
+37 & \url{https://many-ng.test.defo.ie:15443/echstat.php?format=json}  & \textbf{0.22/145 }  & 0.99/145  & \textbf{0.00/145 }  & 1.00/145  & 1.00/145  & 1.00/145 \\ \hline
+38 & \url{https://min-ng.test.defo.ie/echstat.php?format=json}  & \textbf{0.94/145 }  & 1.00/145  & 1.00/145  & 0.98/145  & 1.00/145  & 0.99/145 \\ \hline
+39 & \url{https://min-ng.test.defo.ie:15443/echstat.php?format=json}  & \textbf{0.42/145 }  & 1.00/145  & 1.00/145  & 0.99/145  & 0.99/145  & 1.00/145 \\ \hline
+40 & \url{https://mixedalpn-ng.test.defo.ie/echstat.php?format=json}  & \textbf{0.92/145 }  & 0.99/145  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145 \\ \hline
+41 & \url{https://mixedalpn-ng.test.defo.ie:15443/echstat.php?format=json}  & \textbf{0.40/145 }  & 1.00/145  & 1.00/145  & 0.99/145  & 1.00/145  & 1.00/145 \\ \hline
+42 & \url{https://mixedmode-ng.test.defo.ie/echstat.php?format=json}  & 1.00/145  & 0.99/145  & \textbf{0.00/145 }  & 1.00/145  & \textbf{0.00/145 }  & \textbf{0.00/145 } \\ \hline
+43 & \url{https://mixedmode-ng.test.defo.ie:15443/echstat.php?format=json}  & 1.00/145  & 1.00/145  & \textbf{0.00/145 }  & 1.00/145  & \textbf{0.00/145 }  & \textbf{0.00/145 } \\ \hline
+44 & \url{https://my-own.net/ech-check.php}  & 0.99/145  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145 \\ \hline
+45 & \url{https://my-own.net:8443/ech-check.php}  & \textbf{0.80/145 }  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145  & 0.99/145 \\ \hline
+46 & \url{https://myechtest.site/}  & \textbf{0.00/145 }  & 1.00/145  & \textbf{0.81/145 }  & 0.99/145  & 1.00/145  & 1.00/145 \\ \hline
+47 & \url{https://ng.test.defo.ie/echstat.php?format=json}  & \textbf{0.92/145 }  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145 \\ \hline
+48 & \url{https://ng.test.defo.ie:15443/echstat.php?format=json}  & \textbf{0.41/145 }  & 1.00/145  & 1.00/145  & 1.00/145  & 0.99/145  & 0.99/145 \\ \hline
+49 & \url{https://noaddr-ng.test.defo.ie/echstat.php?format=json}  & 1.00/145  & 1.00/145  & 1.00/145  & 0.99/145  & 1.00/145  & 1.00/145 \\ \hline
+50 & \url{https://noaddr-ng.test.defo.ie:15443/echstat.php?format=json}  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145  & 0.99/145 \\ \hline
+51 & \url{https://p256-ng.test.defo.ie/echstat.php?format=json}  & \textbf{0.00/145 }  & 1.00/145  & \textbf{0.00/145 }  & \textbf{0.00/145 }  & \textbf{0.00/145 }  & 1.00/145 \\ \hline
+52 & \url{https://p256-ng.test.defo.ie:15443/echstat.php?format=json}  & \textbf{0.00/145 }  & 0.99/145  & \textbf{0.00/145 }  & \textbf{0.00/145 }  & \textbf{0.00/145 }  & 0.99/145 \\ \hline
+53 & \url{https://pthen2-ng.test.defo.ie/echstat.php?format=json}  & \textbf{0.92/145 }  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145  & 0.99/145 \\ \hline
+54 & \url{https://pthen2-ng.test.defo.ie:15443/echstat.php?format=json}  & \textbf{0.41/145 }  & 1.00/145  & 1.00/145  & 0.99/145  & 1.00/145  & 1.00/145 \\ \hline
+55 & \url{https://ss.test.defo.ie/stats}  & 0.96/145  & 1.00/145  & 1.00/145  & 0.99/145  & 1.00/145  & 0.98/145 \\ \hline
+56 & \url{https://sshrr.test.defo.ie/stats}  & \textbf{0.91/145 }  & 0.99/145  & 1.00/145  & 0.99/145  & 1.00/145  & 1.00/145 \\ \hline
+57 & \url{https://tls-ech.dev/}  & 0.95/145  & 1.00/145  & 1.00/145  & 0.99/145  & 0.99/145  & 0.99/145 \\ \hline
+58 & \url{https://v1-ng.test.defo.ie/echstat.php?format=json}  & \textbf{0.93/145 }  & 1.00/145  & 1.00/145  & 0.99/145  & 1.00/145  & 0.99/145 \\ \hline
+59 & \url{https://v1-ng.test.defo.ie:15443/echstat.php?format=json}  & \textbf{0.44/145 }  & 1.00/145  & 1.00/145  & 1.00/145  & 0.99/145  & 1.00/145 \\ \hline
+60 & \url{https://v2-ng.test.defo.ie/echstat.php?format=json}  & \textbf{0.92/145 }  & 1.00/145  & 1.00/145  & 1.00/145  & 0.99/145  & 1.00/145 \\ \hline
+61 & \url{https://v2-ng.test.defo.ie:15443/echstat.php?format=json}  & \textbf{0.43/145 }  & 1.00/145  & 1.00/145  & 1.00/145  & 0.98/145  & 0.99/145 \\ \hline
+62 & \url{https://v3-ng.test.defo.ie/echstat.php?format=json}  & \textbf{0.94/145 }  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145 \\ \hline
+63 & \url{https://v3-ng.test.defo.ie:15443/echstat.php?format=json}  & \textbf{0.43/145 }  & 0.99/145  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145 \\ \hline
+64 & \url{https://v4-ng.test.defo.ie/echstat.php?format=json}  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145  & \textbf{0.74/145 }  & \textbf{0.00/145 } \\ \hline
+65 & \url{https://v4-ng.test.defo.ie:15443/echstat.php?format=json}  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145  & \textbf{0.61/145 }  & \textbf{0.00/145 } \\ \hline
+66 & \url{https://withext-ng.test.defo.ie/echstat.php?format=json}  & \textbf{0.90/145 }  & 1.00/145  & 1.00/145  & 0.99/145  & 0.99/145  & 1.00/145 \\ \hline
+67 & \url{https://withext-ng.test.defo.ie:15443/echstat.php?format=json}  & \textbf{0.41/145 }  & 0.99/145  & 1.00/145  & 1.00/145  & 1.00/145  & 1.00/145 \\ \hline
+ & Totals  & \textbf{0.67/9715 }  & 1.00/9715  & \textbf{0.88/9715 }  & \textbf{0.93/9715 }  & \textbf{0.88/9715 }  & \textbf{0.94/9715 } \\ \hline
+ & Count below 95\% threshold  & 47  & 0  & 9  & 5  & 12  & 4 \\ \hline
+ & Overall: \textbf{0.88/58290} \\ \hline
+\hline
+\end{longtblr}
+\normalsize

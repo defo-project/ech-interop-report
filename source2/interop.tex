@@ -157,10 +157,35 @@ Table \ref{tab:itests} below shows, for each test URL and each client,
 the ratio of expected and total results for a recent 
 interval.~\footnote{Table \ref{tab:itests} is produced
 using \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/smokeping-summary-report.py}.}
+Table \ref{tab:itests2} updates that.
+Table \ref{tab:one-v-two} shows the summary lines from both.
 
 \begin{center}
     \input{tt}
 \end{center}
+
+\begin{center}
+    \input{tt2}
+\end{center}
+
+
+\tiny
+\begin{longtblr} [
+        caption = {ECH interop tests compared.},
+        label = {tab:one-v-two}
+    ] {
+        colspec = {| l | c | c | c | c | c | c | c |},
+        rowhead = 1
+    }
+    \hline
+    Time  & chromium  & curl  & firefox  & golang  & rustls  & python & overall \\ \hline
+2025-01  & \textbf{0.85/10653 }  & 1.00/10653  & \textbf{0.82/10653 }  & \textbf{0.94/10586 }  & \textbf{0.88/10586 }  & \textbf{0.91/10653 } & Overall: \textbf{0.90/63784} \\ \hline
+2025-09  & \textbf{0.67/9715 }  & 1.00/9715  & \textbf{0.88/9715 }  & \textbf{0.93/9715 }  & \textbf{0.88/9715 }  & \textbf{0.94/9715 } & Overall: \textbf{0.88/58290} \\ \hline
+\hline
+\end{longtblr}
+\normalsize
+
+
 
 Note that the numbers in Table~\ref{tab:itests} are not a direct measure of the
 ``quality'' of the client - they are a snapshot of counts of how often we see expected
