@@ -8,6 +8,10 @@ The libraries listed in Table \ref{tab:echlibs} have some support for ECH.  Of
 the libraries listed, ECH support for all of the OpenSSL variants, Python,
 libcurl and Conscrypt, were developed by the DEfO project.
 
+\todo{Build each and run local interop confirmation tests}
+
+\todo{build done: OpenSSL/boring/wolf/NSS; others tbd; add AWS-LC.}
+
 \tiny
 \begin{longtblr} [
         caption = {Libraries with ECH},
@@ -21,15 +25,17 @@ libcurl and Conscrypt, were developed by the DEfO project.
 
     \hline
         OpenSSL-feature-branch & Source: \url{https://github.com/openssl/openssl/tree/feature/ech}\\
-        & Version: 3.5.0-dev feature branch in upstream repo\\
-        & ECH support: stub APIs so far, next PR will have ECH client, then server after\\
-        & this is the OpenSSL project's target for ECH PRs, and is where ECH code will end up prior to eventually being merged to master\\
+        & Version: 3.6.0-dev feature branch in upstream repo\\
+        & ECH support: ECH shared-mode client and server\\
+        & very basic ``s\_client'', TLS only (no DTLS, no QUIC)\\
+        & the OpenSSL project's target for ECH PRs\\
+        & ECH code will end up here before being merged to master\\
 
     \hline
         OpenSSL-defo & Source: \url{https://github.com/defo-project/openssl/}\\
-        & Version: 3.5.0-dev fork of master, same APIs as OpenSSL-feature-branch, but almost full ECH code\\
-        & ECH support: client and server, TLS only (no DTLS, no QUIC)\\
-        & this is used for DEfO project CI builds and tests\\
+        & Version: 4.0.0-dev fork of master, same APIs as OpenSSL-feature-branch, but full ECH code\\
+        & ECH support: ECH shared and split mode client and server, TLS only (no DTLS, no QUIC)\\
+        & this is used for DEfO project CI builds and tests, and is rebased to upstream frequently\\
 
     \hline
         OpenSSL-sftcd & Source: \url{https://github.com/sftcd/openssl/tree/ECH-draft-13c}\\
@@ -39,19 +45,19 @@ libcurl and Conscrypt, were developed by the DEfO project.
 
     \hline
         boringssl & Source: \url{https://boringssl.googlesource.com/boringssl}\\
-        & Version: boringssl doesn't do versions, last local build 2024-11-29\\
-        & ECH support: ECH client and server, ECH for TLS, QUIC and (possibly) DTLS\\
-        & in production use (Chromium, et al), a little more limited in HPKE suites than OpenSSL - only KEMs are x25519 and p256\\
+        & Version: boringssl doesn't do versions, last local build 2025-09-21\\
+        & ECH support: ECH shared-mode client and server, ECH for TLS, QUIC and (possibly) DTLS\\
+        & in production use (Chromium, et al), a little more limited in HPKE suites than OpenSSL - only KEM is x25519 \\
 
     \hline
         NSS & Source: \url{https://github.com/nss-dev/nss.git}\\
-        & Version: NSS 3.108\\
+        & Version: NSS 3.116\\
         & ECH support: ECH client and server, ECH for TLS (unsure of DTLS/QUIC)\\
         & in production use (Firefox), a little more limited in HPKE suites than OpenSSL - only KEM is x25519\\
 
     \hline
         WolfSSL & Source: \url{https://github.com/wolfSSL/wolfssl.git}\\
-        & Version: 5.7.4\\
+        & Version: 5.8.2\\
         & ECH support: ECH client and server, ECH for TLS (unsure of DTLS/QUIC)\\
         & - ECH not built by default (needs ``--enable-ech'')\\
         & - fails when HelloRetryRequest seen - \url{https://github.com/wolfSSL/wolfssl/issues/6802}\\
@@ -61,18 +67,17 @@ libcurl and Conscrypt, were developed by the DEfO project.
         & Version: work-in-progress\\
         & ECH support: interop untested (by DEfO-project) at this time\\
         & an ECH merge request exists but has yet to be merged \url{https://gitlab.com/gnutls/gnutls/-/merge_requests/1748}\\
+        & Seemingly no progress since Version 1 of this report\\
 
     \hline
         golang & Source: \url{https://go.googlesource.com/go} or \url{https://github.com/golang/go/}\\
-        & Version: 1.23 or later required\\
-        & ECH support: client only, server coming in 1.24 (server code is merged)\\
-        & - golang tests were just (2024-12-02) added to our smokeping tests\\
+        & Version: 1.23 or later required, current: 1.24.4\\
+        & ECH support: ECH shared-mode client and server\\
 
     \hline
         rustls & Source: \url{https://github.com/rustls/rustls/}\\
-        & Version: 0.23.19 \\
+        & Version: 0.23.19, current: 0.23.32, not yet updated on test.defo.ie \\
         & ECH support: client only\\
-        & - rustls tests were just (2024-12-03) added to our smokeping tests\\
 
     \hline
         CPython & Source: \url{https://github.com/defo-project/cpython}\\
