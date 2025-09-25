@@ -10,7 +10,7 @@ the Interop report, some 8 months after the first version.
 
 \item Although the interop tests were running continuously over the period,
     they were not working continuously for the entire time. We had to do
-        various updates of certificate but also including of the underlying
+        various updates of certificates but also including of the underlying
         operating system over the period and variously broke tests. So the
         first step was to get all tests working again.
 
@@ -27,6 +27,12 @@ the Interop report, some 8 months after the first version.
         to ``False'' in the python script.
 
 \item \url{https://draft-13.esni.defo.ie:12413/} is showing as broken
+
+\item updating the rust tests was an adventure - we base out test on the
+    ``examples/src/bin/ech-client.rs`` script from the rustls repo, but 
+        that seemed to depend on things that weren't in ``standard'' crates
+        yet, so we ended up with a mixture of code from our Decemeber 2024
+        test script and what's in the current rustls repository. (A mess;-)
 
 \end{itemize}
 
