@@ -1,13 +1,15 @@
 \section{Introduction}
 
-Deployments of the Transport Layer Security (TLS~\cite{rfc8446}) protocol
+Deployments of the TLS~\cite{rfc8446} protocol
 expose the name of the server (e.g. the web site DNS name) via the Server Name
 Indication (SNI) field in the first message sent (the ClientHello).  The
 Encrypted Client Hello (ECH)~\cite{draft-ietf-tls-esni} extension to TLS is a
 privacy-enhancing scheme that aims to address this leak.
-This report describes the current state of ECH interoperability.
+
+This report discusses considerations for deploying ECH with the QUIC transport protocol, assuming the QUIC implementation relies on an open-source TLS library, such as OpenSSL.
+
 The primary audience for this document are those implementing and
-deploying ECH. Secondarily, there may be lessons to learn for those
+deploying ECH, as well as those implementing QUIC. Secondarily, there may be lessons to learn for those
 designing protocols like ECH.
 
 The Open Technology Fund (OTF, \url{https://www.opentech.fund/}) have

@@ -1,3 +1,49 @@
 \section{Existing Implementations}
 
-TBD
+Several open-source QUIC implementations exist. This report considers the Open Source implementations that are actively evaluated by the QUIC interoperability runner~\cite{interop}, which performs automated tests to ensure the implementations are compatible with each other. Differences may arise where the standard has not given enough detail on a specific aspect of the protocol design, and this testing is expected to highlight differences in interpretation.
+
+ECH support was determined from analysing the source code for these implementations in Table~\ref{tbl:quics-ech}.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{l|l|l|l}
+QUIC Impl. &  QUIC Developer & TLS Library  & ECH Support  \\
+\hline \hline
+\color{red}{\texttt{mvfst}} & Facebook &  fizz  & \color{red}{Yes} \\
+\hline
+\color{red}{\texttt{neqo}} & Mozilla & NSS  & \color{red}{Yes} \\
+\hline
+\color{red}{\texttt{chrome}} & Google & BoringSSL  & \color{red}{Yes} \\
+\hline
+\texttt{quiche}  & Cloudflare & BoringSSL & No \\
+\hline
+\texttt{msquic}  & Microsoft  & OpenSSL & No \\
+\hline
+\texttt{xquic}  & Alibaba & BoringSSL, BabaSSL & No \\
+\hline
+\texttt{s2n-quic}  & AWS  & rustls, s2n-tls & No \\
+\hline
+\texttt{lsquic} & LiteSpeed  & BoringSSL &  No \\
+\hline
+\color{red}{\texttt{ngtcp2}} & T. Tsujikawa  & BoringSSL &  \color{red}{Yes}  \\
+\hline
+\texttt{picoquic} & C. Huitema  & OpenSSL & No  \\
+\hline
+\texttt{quic-go} & M. Seemann & Go Std. Lib.& No  \\
+\hline
+\texttt{kwik} & P. Doornbosch & Agent15 & No \\
+\hline
+\texttt{aioquic} & J. Lainé   & OpenSSL & No  \\
+\hline
+\texttt{quinn}  & D. Ochtman, B.Saunders & rustls  & No  \\
+
+\end{tabular}
+\caption{ECH Support across QUIC implementations}
+\label{tbl:quics-ech}
+\end{table}
+
+Before starting the handshake, QUIC also has to provide TLS with the transport parameters~\footnote{\url{https://www.iana.org/assignments/quic/quic.xhtml}} that it wishes to carry. This is an additional requirement from TCP~\cite{rfc9000}. As per RFC 9001, the \texttt{quic\_transport\_parameters} extension has to be carried in a TLS ClientHello and the EncryptedExtensions messages during the handshake.
+Differences regarding transport parameter handling exist within the four QUIC implementations that were found to support ECH, with evidence that \texttt{neqo} allows different transport parameters in the inner and outer ClientHello, however cautioning against using this feature unless the ECH configuration has been validated, due to a mechanism that filters sensitive transport parameters in the outer ClientHello (see \href{https://github.com/mozilla/neqo/blob/main/neqo-crypto/src/agent.rs#L1176-L1182}{source code}).
+For the other implementations (\texttt{mvfst}, \texttt{chrome}, and \texttt{ngtcp2}), this behaviour appears to depend on the underlying TLS library, however no mechanism for filtering sensitive transport parameters was noted in the libraries BoringSSL and fizz.
+
+%I think BoringSSL allows the transport parameter extension in the Outer ClientHello (see https://github.com/google/boringssl/blob/main/ssl/extensions.cc#L3640-L3646 and https://github.com/google/boringssl/blob/main/ssl/encrypted_client_hello.cc#L875-L880), but fizz does not.

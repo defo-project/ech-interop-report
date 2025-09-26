@@ -1,3 +1,10 @@
-\section{Issues Arising}
+\section{Considerations Arising}
 
-TBD
+The interface between QUIC and TLS also includes any functions required to configure TLS, and~\cite{rfc9001} notes this step establishes whether the QUIC or TLS implementation is responsible for peer validation (see Section 4.1 of~\cite{rfc9001}). When using ECH, the name that should be validated is present on the inner ClientHello and so the library used must be aware of this to avoid a certificate for the name in the outer ClientHello being considered valid. Especially for the circumvention use case, the name used in the outer Hello may be deliberately chosen as not one under the server operator's control to take advantage of collateral freedom.
+
+Some consideration should also be given to how QUIC transport parameters are to be used within the outer or inner ClientHello when using ECH, and whether any filtering mechanism exists for these in the underlying TLS library that could interact with any technique for falling back to a non-ECH connection.
+%QUIC also requires ALPN (or some other way of negotiating) to agree on an application protocol.
+
+Finally, the QUIC initial handshake message can also establish peer address validation, and in some cases a server must parse the complete ClientHello before deciding whether to accept a new QUIC connection.
+The use of ECH with post-quantum encryption can cause ClientHello messages to exceed the size of a QUIC Initial packet (minimum 1200 Bytes) as well as a standard Ethernet packet (1500 Bytes).  If that ClientHello is split across multiple Initial packets, the server would need to buffer the received fragments. Fragmentation creates a potential attack surface, as an unvalidated client address could force the server to consume excessive resources. QUIC implementers enabling ECH should be aware that where ClientHello messages span multiple packets, servers may refuse to buffer them for reassembly to prevent possible abuse~\cite{rfc9001}. 
+To mitigate this issue, an implementer could use server-side “Retry” packets for address validation, as described in Section 8.1 of~\cite{rfc9000}. These packets contain a token that the client can include in later packets to confirm its address.
