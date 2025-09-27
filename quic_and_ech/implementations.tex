@@ -1,6 +1,6 @@
 \section{Existing Implementations}
 
-Several open-source QUIC implementations exist. This report considers the Open Source implementations that are actively evaluated by the QUIC interoperability runner~\cite{interop}, which performs automated tests to ensure the implementations are compatible with each other. Differences may arise where the standard has not given enough detail on a specific aspect of the protocol design, and this testing is expected to highlight differences in interpretation.
+Several open-source QUIC implementations exist. This report considers the Open Source client implementations that are actively evaluated by the QUIC interoperability runner~\cite{interop}, which performs automated tests to ensure the implementations are compatible with each other. Differences may arise where the standard has not given enough detail on a specific aspect of the protocol design, and this testing is expected to highlight differences in interpretation.
 
 ECH support was determined from analysing the source code for these implementations in Table~\ref{tbl:quics-ech}.
 
@@ -38,7 +38,7 @@ QUIC Impl. &  QUIC Developer & TLS Library  & ECH Support  \\
 \texttt{quinn}  & D. Ochtman, B.Saunders & rustls  & No  \\
 
 \end{tabular}
-\caption{ECH Support across QUIC implementations}
+\caption{ECH Support across QUIC client implementations~\cite{interop}}
 \label{tbl:quics-ech}
 \end{table}
 
