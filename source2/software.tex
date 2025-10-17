@@ -8,10 +8,6 @@ The libraries listed in Table \ref{tab:echlibs} have some support for ECH.  Of
 the libraries listed, ECH support for all of the OpenSSL variants, Python,
 libcurl and Conscrypt, were developed by the DEfO project.
 
-\todo{Build each and run local interop confirmation tests}
-
-\todo{build done: OpenSSL/boring/wolf/NSS; others tbd; add AWS-LC.}
-
 \tiny
 \begin{longtblr} [
         caption = {Libraries with ECH},
@@ -41,13 +37,20 @@ libcurl and Conscrypt, were developed by the DEfO project.
         OpenSSL-sftcd & Source: \url{https://github.com/sftcd/openssl/tree/ECH-draft-13c}\\
         & Version: 3.4.0-dev fork of master\\
         & ECH support: client and server, TLS only (no DTLS, no QUIC)\\
-        & this is the DEfO project's original main development branch, but now obsoleted by OpenSSL-defo\\
+        & this was the DEfO project's original main development branch, but is now obsoleted\\
 
     \hline
         boringssl & Source: \url{https://boringssl.googlesource.com/boringssl}\\
-        & Version: boringssl doesn't do versions, last local build 2025-09-21\\
+        & Version: boringssl doesn't do versions, last local build 2025-10-12\\
         & ECH support: ECH shared-mode client and server, ECH for TLS, QUIC and (possibly) DTLS\\
         & in production use (Chromium, et al), a little more limited in HPKE suites than OpenSSL - only KEM is x25519 \\
+
+    \hline
+        AWS-LC & Source: \url{https://github.com/aws/aws-lc}\\
+        & Version: 1.62.0\\
+        & ECH support: ECH client and server, ECH for TLS (unsure of DTLS/QUIC)\\
+        & A versioned library based on boringssl \\
+        & Seems to work as well in terms of ECH interoperability\\
 
     \hline
         NSS & Source: \url{https://github.com/nss-dev/nss.git}\\
@@ -76,7 +79,7 @@ libcurl and Conscrypt, were developed by the DEfO project.
 
     \hline
         rustls & Source: \url{https://github.com/rustls/rustls/}\\
-        & Version: 0.23.19, current: 0.23.32, not yet updated on test.defo.ie \\
+        & Version: 0.23.32 \\
         & ECH support: client only\\
 
     \hline
@@ -87,9 +90,8 @@ libcurl and Conscrypt, were developed by the DEfO project.
 
     \hline
         libcurl & Source: part of \url{https://github.com/curl/curl}\\
-        & Version:  8.10.0-DEV \\
+        & Version:  8.17.0-DEV \\
         & ECH support: TLS client only \\
-        & not well tested other than via command line curl\\
 
     \hline
         Conscrypt-GP & Source: https://github.com/guardianproject/conscrypt\\
@@ -104,7 +106,7 @@ libcurl and Conscrypt, were developed by the DEfO project.
 
 \subsection{Clients}
 
-Current versions of Firefox (e.g. 133.0, used in our smokeping tests) support
+Current versions of Firefox (e.g. 143.0, used in our smokeping tests) support
 ECH by default.
 Firefox does, however, automatically disable ECH when it detects the presence
 of ``family safety" software
@@ -112,6 +114,7 @@ of ``family safety" software
 We have received anecdotal evidence that this detection mechanism also
 triggers when detecting ISP-level and state-imposed censorship, preventing
 the use of ECH in those situations.
+
 The Tor Browser (a Firefox derivative) doesn't support ECH by default, as it
 is currently built from an older ``Extended Support Release" that only
 enables ECH when DNS-over-HTTPS (DoH) is enabled and Tor Browser prevents
@@ -119,7 +122,7 @@ enabling DoH to prevent that being used as a user fingerprinting vector.
 To test if a browser supports ECH one can visit \url{https://test.defo.ie/}
 or, for much more detail \url{https://test.defo.ie/iframe_tests.html}.
 
-Current versions of Chromium (version 131.0.6778.85 is used in our tests)
+Current versions of Chromium (version 140.0.7339.185 is used in our tests)
 also support ECH by default.
 Other Chromium-derived browsers also support ECH, while we don't include them
 in our ongoing tests described below, we have manually verified that current
@@ -135,6 +138,22 @@ in that they start the TLS session without attempting ECH if that
 delay is too long, and that that happens sufficiently often to be
 noticeable. (Note however, that this report does not in itself yet
 justify that claim, but work is ongoing.)
+
+As this ``impatience'' has seemingly disimproved since version 1 of
+this report we investigated further to see if we could determine for
+sure that our suspiscions were correct. We did this with a variant
+of our smokeping script for chromium that use localhost port 53 for
+it's DNS recursive. In that setup we could see the IMCP error messages
+('port unreachable') when the recursive was attempting to provide HTTPS RR answers.
+This seems to confirm that the browser has given up waiting for the HTTPS
+RR answer. We also confirmed this via chromium ``netlog'' traces where
+we see ``ERR\_DNS\_TIMED\_OUT''. Informal discussion with prople more
+familiar with chromium internals indicates that this situation may be
+a result of balancing contradictory requirements - some scenarios 
+apparently call for failing quickly while others (such as ours) suffer
+from that impatience. As there does not appear to be a way to control
+those chromium-internal DNS timeouts in our tests, we properly report
+these unexpcted test results as failure cases.
 
 The only command line tool supporting ECH of which we're aware is curl. The
 DEfO project
@@ -160,6 +179,8 @@ multi-domain web service would ever run on Android, only the ECH client side is
 relevant.
 
 \subsection{Servers}
+
+\todo{Got here, update away}
 
 The servers listed in Table \ref{tab:servers} support ECH. In each case,
 the ECH integration, using OpenSSL, was developed as part of the DEfO

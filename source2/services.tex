@@ -111,38 +111,149 @@ data, we'd have to enable some form of consent for users, and it's not clear
 that'd be a) easy or b) worthwhile. (We currently take no steps to try record
 who made which requests to this page.)
 
-Figure \ref{fig:qtimes} shows the (small) numbers of queries made since August
-2024. We can see a noticeable uptick in accesses just-before and after Russia
-blocked Cloudflare's ECH service. We also see some usage (at least 15 cases) that
-appear to indicate some web site owners may be using this service to check
-whether or not they have successfully disabled ECH. (The pattern is two quick
-accesses to the same name/port, the first of which indicates ECH worked, and
-the second that the HTTPS RR no longer contains an ``ech='' value.)
+Figure \ref{fig:qtimes2} shows the cululative number of queries made between
+August 2024 and October 2025, with Figure \ref{fig:cpd} showing the number of queries
+per day.  We can see a noticeable uptick in accesses just-before and after
+Russia blocked Cloudflare's ECH service in November 2024.  There was also a
+service outage between 2025-07-18 and 2025-08-19, and a burst of queries on
+2025-09-25 that looks like an automated script, but seems to have no
+interesting pattern in terms of the names queried. Otherwise we see a steady
+rate of a few queries per day as one would expect for a service like this.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.8\textwidth,keepaspectratio]{domainprobequeries.png}
+	\includegraphics[width=0.8\textwidth,keepaspectratio]{domainprobequeries2.png}
 		\caption[clustediag]{Cumulative number of queries seen at 
         \url{https://test.defo.ie/domainechprobe.php} versus time. 
-        The total number of queries was 1244 as of 2024-12-05.} 
-	\label{fig:qtimes}
+        The total number of queries was 4465 as of 2025-10-13.} 
+	\label{fig:qtimes2}
 \end{figure}
 
-The 1244 queries involved 517 unique names (117 of which are under
-the ``.ru'' ccTLD). The most commonly queried name is ``youtube.com'' (131 times),
-for which ECH is not currently enabled. Some 354 names were only queried 
-once, and 86 were queried twice.
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth,keepaspectratio]{cpd.png}
+		\caption[clustediag]{Queries per day seen at 
+        \url{https://test.defo.ie/domainechprobe.php} versus time.
+             Overall average: 13, average over the month to 2025-10-13: 22.}
+	\label{fig:cpd}
+\end{figure}
 
-Of the 1244 queries, 660 referred to a name that had an ``ech='' in
-the relevant HTTPS record, referring to 298 unique names.  Within the 660 HTTPS 
-values that contain an ``ech='' value, we see 276 unique ECHConfigList values (4 of which are
-corrupt values published for our DEfO test services).  Of the 298 unique
-names, 271 seem to be served by Cloudflare (based on the relevant name server
-names), 15 relate to test services described in Table \ref{tab:testservers}. At
-the time of writing, 9 of the names result in an NXDOMAIN or SERVFAIL
-response, 1 seems to correspond to a possible hobbyist site and 2 seem to (now)
-be parked domains or part of some advertising campaign. None of those last
-3 currently publish an HTTPS record.
-
+Table \ref{tab:domainprobe} lists some of the numbers involved with this test.
 So at least for the names entered to our domain probe page, we can seemingly
-conclude that Cloudflare have the only operational service at present.
+conclude that Cloudflare have the by-far dominant service at present with 95\%
+of the most recent successes using ECH likely deployed on the Cloudflare
+network. However, we do see at least a number of other ECH client facing
+servers now whereas in December 2024 there was only Cloudflare plus a few test
+services, including those operated by the DEfO project. Table \ref{tab:notcf}
+breaks down the non-Cloudflare ECH success cases some more - we basically see
+that we've gone from 2 ``hobbyist'' deployments in December 2024 to about 25
+seemingly ECH independent deployments in October 2025 (not counting DEfO
+project deployments). That's still a tiny number but may indicate a good level
+of desire to deploy ECH, given that at the time of writing ECH is not available
+as a standard feature in released web server packages.
+
+\begin{table} 
+    \centering
+        \caption{Counts of Domains Scanned from 2024-07-31 to 2025-10-13.
+                 Version 1 of this document reported on the
+                 queries to this service seen up to December 2024; where
+                 number weren't reported then, we show a ``-''. ``pn'' refers
+                 to the ECH ``public\_name'' field seen. The ``Last access'' rows
+                 sample the queries counting only the last successful use of ECH
+                 for the domain name concerned.}
+		\begin{tabular} { | l | r | r | c | }
+		\hline
+		\hline Count Type & 2024-12 & 2025-10 \\
+		\hline
+            \hline Total Records & 1244 & 4465 \\
+            \hline Unique ECHConfigList & 276 & 1067 \\
+		\hline
+            \hline Unique Names with ech= & 298 & 970 \\
+            \hline ech= and Cloudflare NS & 271 & 794 \\
+            \hline ech= and DEfO Test Site & 15 & 14 \\
+            \hline ech= but now NXDOMAIN/SERVFAIL & 9 & 66 \\
+            \hline ech= and non-DEfO and non-Cloudflare & 1 & 5 \\
+            \hline ech= and other & 3 & 110 \\
+		\hline
+            \hline Records with ech= & 660 & 1916 \\
+            \hline ech= and pn==cloudflare-ech.com & - & 1734 \\
+            \hline ech= and pn!=cloudflare-ech.com & - & 180 \\
+            \hline ech= and bad ECHConfigList & - & 2 \\
+        \hline
+            \hline Last accesses with ech= & - & 953 \\
+            \hline Last accesses with ech= and pn==cloudflare-ech.com & - & 903 \\
+            \hline Last accesses with ech= and pn!=cloudflare-ech.com & - & 50 \\
+        \hline
+		\end{tabular}
+	\label{tab:domainprobe}
+\end{table}
+
+\begin{table} 
+	\centering
+        \caption{Counts of Domains per related ECH ``public\_name'' operator for
+                 the 50 non-Cloudflare ``Last access'' ECH success cases shown
+                 in the last row of Table \ref{tab:domainprobe}. The last row
+                 in this table reflects the DEfO project operated test services but
+                 all the others are independent ECH deployments.}
+		\begin{tabular} { | c | c | }
+		\hline
+            \hline Count of domains ``protected'' & Count of ECH ``operators'' \\
+		\hline
+            \hline 1 & 19 \\
+            \hline 2 & 3 \\
+            \hline 3 & 1 \\
+            \hline 5 & 2 \\
+            \hline 12 & 1 \\
+		\hline
+		\end{tabular}
+	\label{tab:notcf}
+\end{table}
+
+In version 1 of this report we saw some usage (at least 15 cases) that
+appeared to indicate some web site owners may have been using this service to check
+whether or not they have successfully disabled ECH. (The pattern was two quick
+accesses to the same name/port, the first of which indicates ECH worked, and
+the second that the HTTPS RR no longer contains an ``ech='' value.)
+Figure \ref{fig:onoff} shows the first-seen to last-seen times for 119
+deomains that may have ``switched off'' ECH. Table \ref{tab:tldgone} shows the
+counts of the TLDs for the domains concerned, with ``.ru'' domains being
+the clear outlier. The median time for which we saw ECH enabled for these
+domains was only 6198 seconds, so in many cases we see that pattern of a
+quick check where ECH succeeds followed shortly thereafter by a check
+that ECH no longer succeeds. Note though that for example ``crypto.cloudflare.com''
+is a domain that was used for ECH interoperability testing that was subsequently 
+re-purposed for another trial, so not all the ``turn-offs'' here are
+the same. (That domain corresponds to the longest bar in Figure \ref{fig:onoff}.)
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth,keepaspectratio]{turnofftimes.png}
+        \caption[clustediag]{Span of time for which we saw ECH enabled, for
+        domains where the last thing we saw was ECH disabled.}
+	\label{fig:onoff}
+\end{figure}
+
+\begin{table} 
+	\centering
+        \caption{Counts of TLDs for domains that ``turned off'' ECH.}
+		\begin{tabular} { | l | c | l | c |}
+		\hline
+            \hline TLD & Count & TLD & Count  \\
+		\hline
+            \hline by & 1  & nu & 1 \\
+            \hline casino & 1  & online & 5 \\
+            \hline cc & 2  & org & 2 \\
+            \hline click & 1  & qpon & 1 \\
+            \hline com & 16  & ru & 36 \\
+            \hline dev & 2  & services & 1 \\
+            \hline hk & 1  & shop & 3 \\
+            \hline info & 2  & space & 3 \\
+            \hline io & 3  & su & 1 \\
+            \hline me & 2  & tech & 1 \\
+            \hline movie & 1  & top & 24 \\
+            \hline net & 4  & tv & 3 \\
+            \hline nl & 1  & xyz & 1 \\
+		\hline
+		\end{tabular}
+	\label{tab:tldgone}
+\end{table}
