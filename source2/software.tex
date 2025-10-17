@@ -180,8 +180,6 @@ relevant.
 
 \subsection{Servers}
 
-\todo{Got here, update away}
-
 The servers listed in Table \ref{tab:servers} support ECH. In each case,
 the ECH integration, using OpenSSL, was developed as part of the DEfO
 project.
@@ -199,33 +197,37 @@ project.
 
     \hline
         lighttpd-upstream & Source: \url{https://github.com/lighttpd/lighttpd1.4.git}\\
-        & Version: 1.4.78\\
+        & Version: 1.4.83\\
         & Comment: Upstream supports shared-mode ECH if built with ECH-enabled boringssl or OpenSSL\\
 
     \hline
         lighttpd-defo & Source: \url{https://github.com/defo-project/lighttpd}\\
-        & Version: 1.4.78\\
+        & Version: 1.4.83\\
         & Comment: as for lighttpd-upstream but to enable these tests is built with\\
         & ``CFLAGS=-DLIGHTTPD\_OPENSSL\_ECH\_DEBUG'' \\
 
     \hline
         nginx & Source: \url{https://github.com/defo-project/nginx}\\
-        & Version: 1.27.3.4\\
+        & Version: 1.29.2\\
         & Comment: both shared-mode and split-mode ECH\\
 
     \hline
-        apache2 & Source: \url{https://github.com/defo-project/apache-httpd}\\
-        & Version: 2.5.0.ech.351\\
+        apache2-upstream & Source: \url{https://github.com/apache/httpd}\\
+        & Version: 2.4.65\\
+        & Comment: Upstream supports shared-mode ECH if built with ECH-enabled boringssl or OpenSSL\\
+    \hline
+        apache2-defo & Source: \url{https://github.com/defo-project/apache-httpd}\\
+        & Version: 2.5.1.dev\\
         & Comment: only shared-mode ECH\\
 
     \hline
         haproxy & Source: \url{https://github.com/defo-project/haproxy}\\
-        & Version: 3.2.dev0.62\\
+        & Version: 3.3.dev8.197\\
         & Comment: both shared-mode and split-mode ECH\\
 
     \hline
         OpenSSL s\_server & Source: \url{https://github.com/defo-project/openssl}\\
-        & Version: 3.5.0-dev\\
+        & Version: 4.0.0-dev\\
         & Comment: shared-mode only but can easily ``force'' HelloRetryRequest (HRR)\\
         
     \hline

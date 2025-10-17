@@ -13,37 +13,6 @@
     abstract =  {This document specifies version 1.3 of the Transport Layer Security (TLS) protocol. TLS allows client/server applications to communicate over the Internet in a way that is designed to prevent eavesdropping, tampering, and message forgery. This document updates RFCs 5705 and 6066, and obsoletes RFCs 5077, 5246, and 6961. This document also specifies new requirements for TLS 1.2 implementations.},
 }
 
-@techreport{draft-ietf-tls-esni,
-    number =    {draft-ietf-tls-esni-22},
-    type =      {Internet-Draft},
-    institution =   {Internet Engineering Task Force},
-    publisher = {Internet Engineering Task Force},
-    note =      {Work in Progress},
-    url =       {https://datatracker.ietf.org/doc/draft-ietf-tls-esni/22/},
-    author =    {Eric Rescorla and Kazuho Oku and Nick Sullivan and Christopher A. Wood},
-    title =     {{TLS Encrypted Client Hello}},
-    pagetotal = 52,
-    year =      2024,
-    month =     sep,
-    day =       15,
-    abstract =  {This document describes a mechanism in Transport Layer Security (TLS) for encrypting a ClientHello message under a server public key. Discussion Venues This note is to be removed before publishing as an RFC. Source for this draft and an issue tracker can be found at https://github.com/tlswg/draft-ietf-tls-esni (https://github.com/tlswg/draft-ietf-tls-esni).},
-}
-`
-@misc{rfc9180,
-    series =    {Request for Comments},
-    number =    9180,
-    howpublished =  {RFC 9180},
-    publisher = {RFC Editor},
-    doi =       {10.17487/RFC9180},
-    url =       {https://www.rfc-editor.org/info/rfc9180},
-    author =    {Richard Barnes and Karthikeyan Bhargavan and Benjamin Lipp and Christopher A. Wood},
-    title =     {{Hybrid Public Key Encryption}},
-    pagetotal = 107,
-    year =      2022,
-    month =     feb,
-    abstract =  {This document describes a scheme for hybrid public key encryption (HPKE). This scheme provides a variant of public key encryption of arbitrary-sized plaintexts for a recipient public key. It also includes three authenticated variants, including one that authenticates possession of a pre-shared key and two optional ones that authenticate possession of a key encapsulation mechanism (KEM) private key. HPKE works for any combination of an asymmetric KEM, key derivation function (KDF), and authenticated encryption with additional data (AEAD) encryption function. Some authenticated variants may not be supported by all KEMs. We provide instantiations of the scheme using widely used and efficient primitives, such as Elliptic Curve Diffie-Hellman (ECDH) key agreement, HMAC-based key derivation function (HKDF), and SHA2. This document is a product of the Crypto Forum Research Group (CFRG) in the IRTF.},
-}
-
 @techreport{farrell-tls-pemesni,
     number =    {draft-farrell-tls-pemesni-09},
     type =      {Internet-Draft},
@@ -60,3 +29,34 @@
     abstract =  {Encrypted ClientHello (ECH) key pairs need to be configured into TLS servers, that can be built using different TLS libraries, so there is a benefit and little cost in documenting a file format to use for these key pairs, similar to how RFC7468 defines other PEM file formats.},
 }
 
+
+@techreport{ietf-tls-esni,
+    number =    {draft-ietf-tls-esni-25},
+    type =      {Internet-Draft},
+    institution =   {Internet Engineering Task Force},
+    publisher = {Internet Engineering Task Force},
+    note =      {Work in Progress},
+    url =       {https://datatracker.ietf.org/doc/draft-ietf-tls-esni/25/},
+    author =    {Eric Rescorla and Kazuho Oku and Nick Sullivan and Christopher A. Wood},
+    title =     {{TLS Encrypted Client Hello}},
+    pagetotal = 53,
+    year =      2025,
+    month =     jun,
+    day =       14,
+    abstract =  {This document describes a mechanism in Transport Layer Security (TLS) for encrypting a ClientHello message under a server public key. Discussion Venues This note is to be removed before publishing as an RFC. Source for this draft and an issue tracker can be found at https://github.com/tlswg/draft-ietf-tls-esni (https://github.com/tlswg/draft-ietf-tls-esni).},
+}
+
+@misc{rfc9180,
+    series =    {Request for Comments},
+    number =    9180,
+    howpublished =  {RFC 9180},
+    publisher = {RFC Editor},
+    doi =       {10.17487/RFC9180},
+    url =       {https://www.rfc-editor.org/info/rfc9180},
+    author =    {Richard Barnes and Karthikeyan Bhargavan and Benjamin Lipp and Christopher A. Wood},
+    title =     {{Hybrid Public Key Encryption}},
+    pagetotal = 107,
+    year =      2022,
+    month =     feb,
+    abstract =  {This document describes a scheme for hybrid public key encryption (HPKE). This scheme provides a variant of public key encryption of arbitrary-sized plaintexts for a recipient public key. It also includes three authenticated variants, including one that authenticates possession of a pre-shared key and two optional ones that authenticate possession of a key encapsulation mechanism (KEM) private key. HPKE works for any combination of an asymmetric KEM, key derivation function (KDF), and authenticated encryption with additional data (AEAD) encryption function. Some authenticated variants may not be supported by all KEMs. We provide instantiations of the scheme using widely used and efficient primitives, such as Elliptic Curve Diffie-Hellman (ECDH) key agreement, HMAC-based key derivation function (HKDF), and SHA2. This document is a product of the Crypto Forum Research Group (CFRG) in the IRTF.},
+}

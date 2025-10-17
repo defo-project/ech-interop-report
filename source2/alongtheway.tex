@@ -26,13 +26,18 @@ the Interop report, some 8 months after the first version.
         to turn that off by setting the ``devtools.jsonview.enabled'' setting
         to ``False'' in the python script.
 
-\item \url{https://draft-13.esni.defo.ie:12413/} is showing as broken
-
-\item updating the rust tests was an adventure - we base out test on the
+\item Updating the rust tests was an adventure - we base our test on the
     ``examples/src/bin/ech-client.rs`` script from the rustls repo, but 
         that seemed to depend on things that weren't in ``standard'' crates
         yet, so we ended up with a mixture of code from our Decemeber 2024
-        test script and what's in the current rustls repository. (A mess;-)
+        test script and what's in the current rustls repository.
+
+\item We spent a significant amount of time trying to establish for
+    sure that chromium's impatience is the cause of the reduced numbers
+    for those tests.
+
+\item We did some better analysis of the domain probe data, now that we
+    have more of it.
 
 \end{itemize}
 

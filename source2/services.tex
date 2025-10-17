@@ -65,19 +65,14 @@ myechtest.site and my-own.net were setup by the DEfO project.
             and the ECHConfigList published in DNS contains only one public value\\
 
     \hline
-        rfc5746.mywaifu.best & this ECH-enabled web page (\url{https://rfc5746.mywaifu.best/}) seems to have been setup 
-        as an ECH test site by someone using DEfO artefacts (nginx and documentation) but without any contact
-        having happened between the person who set that up and any of the DEfO-project participants\\
-        & the person who set this up documented some of that at \url{https://ckcr4lyf.github.io/tech-notes/services/nginx/nginx-ech.html}\\
-
-    \hline
 \end{longtblr}
 \normalsize
 
 \subsection{Operational Services}
 
-The only operational ECH service we know of is Cloudflare's deployment.
-However, that is non-negligible.  Cloudflare earlier enabled ECH but disabled
+The only operational ECH service we know of is Cloudflare's deployment, though
+our domain probe data in the next sections hints that that may be starting to change.
+However, the Cloudflare deployment is non-negligible.  Cloudflare earlier enabled ECH but disabled
 it soon after in
 October 2023~\footnote{\url{https://community.cloudflare.com/t/early-hints-and-encrypted-client-hello-ech-are-currently-disabled-globally/567730}}
 as it caused some back-end issues. They then re-enabled ECH in October 2024.
@@ -86,7 +81,7 @@ default for their ``free'' tier customers, but that paying customers have to
 take action to enable ECH.
 
 In contrast, non-paying customers are not provided with a control to disable
-only ECH - they have to downgrade to TLSv1.2 in order to disable ECH. This
+only ECH - they reportedly have to downgrade to TLSv1.2 in order to disable ECH. This
 is something that has been seen in recent weeks after the Russian government
 started blocking use of ECH to
 Cloudflare.~\footnote{\url{https://betanews.com/2024/11/20/encrypted-client-hello-didnt-solve-censorship-but-still-may-have-a-role-to-play/}}
@@ -219,8 +214,8 @@ deomains that may have ``switched off'' ECH. Table \ref{tab:tldgone} shows the
 counts of the TLDs for the domains concerned, with ``.ru'' domains being
 the clear outlier. The median time for which we saw ECH enabled for these
 domains was only 6198 seconds, so in many cases we see that pattern of a
-quick check where ECH succeeds followed shortly thereafter by a check
-that ECH no longer succeeds. Note though that for example ``crypto.cloudflare.com''
+check where ECH succeeds followed shortly thereafter by a check
+where ECH no longer succeeds. Note though that for example ``crypto.cloudflare.com''
 is a domain that was used for ECH interoperability testing that was subsequently 
 re-purposed for another trial, so not all the ``turn-offs'' here are
 the same. (That domain corresponds to the longest bar in Figure \ref{fig:onoff}.)
