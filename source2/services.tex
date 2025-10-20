@@ -57,7 +57,7 @@ myechtest.site and my-own.net were setup by the DEfO project.
     \hline
         Cloudflare & \url{https://cloudflare-ech.com/cdn-cgi/trace} is a test page
            setup by cloudflare that reports on ECH success/failure\\
-        & apparently, the server implementation and infrastucrure are part of Cloudflare's normal setup\\
+        & apparently, the server implementation and infrastructure are part of Cloudflare's normal setup\\
         & a similar test service used to be available at \url{https://crypto.cloudflare.com/cdn-cgi/trace} but
         that was turned off around the time that ECH was re-enabled for Cloudflare customers\\
         & based on one test on 2024-12-09, new ECH keys are published roughly hourly with a 300 second TTL;
@@ -106,7 +106,7 @@ data, we'd have to enable some form of consent for users, and it's not clear
 that'd be a) easy or b) worthwhile. (We currently take no steps to try record
 who made which requests to this page.)
 
-Figure \ref{fig:qtimes2} shows the cululative number of queries made between
+Figure \ref{fig:qtimes2} shows the cumulative number of queries made between
 August 2024 and October 2025, with Figure \ref{fig:cpd} showing the number of queries
 per day.  We can see a noticeable uptick in accesses just-before and after
 Russia blocked Cloudflare's ECH service in November 2024.  There was also a
@@ -210,7 +210,7 @@ whether or not they have successfully disabled ECH. (The pattern was two quick
 accesses to the same name/port, the first of which indicates ECH worked, and
 the second that the HTTPS RR no longer contains an ``ech='' value.)
 Figure \ref{fig:onoff} shows the first-seen to last-seen times for 119
-deomains that may have ``switched off'' ECH. Table \ref{tab:tldgone} shows the
+domains that may have ``switched off'' ECH. Table \ref{tab:tldgone} shows the
 counts of the TLDs for the domains concerned, with ``.ru'' domains being
 the clear outlier. The median time for which we saw ECH enabled for these
 domains was only 6198 seconds, so in many cases we see that pattern of a

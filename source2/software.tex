@@ -139,21 +139,21 @@ delay is too long, and that that happens sufficiently often to be
 noticeable. (Note however, that this report does not in itself yet
 justify that claim, but work is ongoing.)
 
-As this ``impatience'' has seemingly disimproved since version 1 of
+As this ``impatience'' has seemingly dis-improved since version 1 of
 this report we investigated further to see if we could determine for
-sure that our suspiscions were correct. We did this with a variant
+sure that our suspicions were correct. We did this with a variant
 of our smokeping script for chromium that use localhost port 53 for
 it's DNS recursive. In that setup we could see the IMCP error messages
 ('port unreachable') when the recursive was attempting to provide HTTPS RR answers.
 This seems to confirm that the browser has given up waiting for the HTTPS
 RR answer. We also confirmed this via chromium ``netlog'' traces where
-we see ``ERR\_DNS\_TIMED\_OUT''. Informal discussion with prople more
+we see ``ERR\_DNS\_TIMED\_OUT''. Informal discussion with people more
 familiar with chromium internals indicates that this situation may be
 a result of balancing contradictory requirements - some scenarios 
 apparently call for failing quickly while others (such as ours) suffer
 from that impatience. As there does not appear to be a way to control
 those chromium-internal DNS timeouts in our tests, we properly report
-these unexpcted test results as failure cases.
+these unexpected test results as failure cases.
 
 The only command line tool supporting ECH of which we're aware is curl. The
 DEfO project

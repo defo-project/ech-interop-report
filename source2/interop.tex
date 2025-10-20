@@ -1,7 +1,7 @@
 \section{Interoperability}
 
 Our primary interoperability testing is based on our ``smokeping''-like tests.
-While smokeping measures latency for names/addreses, our tests aim to establish
+While smokeping measures latency for names/addresses, our tests aim to establish
 whether and which ECH configurations interoperate or fail to do so.
 
 \subsection{Test Clients}
@@ -200,14 +200,14 @@ include:
 \begin{itemize}
 
     \item The numbers for chromium seem to have gotten notably worse, both in
-        terms of the overall pecentage of expected results and the range of
+        terms of the overall percentage of expected results and the range of
         test URLs where we see failures. This seems to be due to the browser's
         ``impatience'' at not waiting for HTTPS RR answers as described earlier.
 
    \item Firefox seems to have improved to a notable degree, though still getting
        less than 90\% of expected results overall.
 
-   \item Performacne in terms of producing our expecte results doesn't seem to
+   \item Performance in terms of producing our expected results doesn't seem to
        have changed for the other test clients.
 
    \item A number of the notes from version 1 of this report on problems with
@@ -228,14 +228,14 @@ include:
         would work for port 443 for browsers but not off port 443.
 
     \item Line 46 - as \url{https://myechtest.site} returns variously malformed
-        retry-configs, sometimes the malformedness is not detected by clients.
+        retry-configs, sometimes the malformed-ness is not detected by clients.
         Our test code does correctly interpret some situations but not all.
 
     \item The test setup for lines 51/52 calls for use of P256-HKDF-SHA256 for
         the KEM, a KDF of HKDF-SHA384 and the CHACHA20-POLY-1305 AEAD.  It
         seems that some implementations (including rustls) don't support that
         combination as their ECH code is compiled/configured on a per-HPKE suite basis
-        so theyh don't support this combination even though they support all the
+        so they don't support this combination even though they support all the
         component algorithms.  In addition, neither the ECH nor HPKE
         specifications nominate one or a small number of HPKE suites as
         mandatory-to-implement (MTI).  Sadly, rather than a small set of MTI
@@ -247,7 +247,7 @@ include:
         \url{https://github.com/defo-project/ech-interop-report/issues/2}.)
 
     \item Lines 51/52 - curl and CPython do work with our oddball P256
-        combination, but Chromium, Firefox, golang and rustls (as expained above)
+        combination, but Chromium, Firefox, golang and rustls (as explained above)
         do not support that choice.
 
 \end{itemize}

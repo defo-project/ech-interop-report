@@ -29,7 +29,7 @@ the Interop report, some 8 months after the first version.
 \item Updating the rust tests was an adventure - we base our test on the
     ``examples/src/bin/ech-client.rs`` script from the rustls repo, but 
         that seemed to depend on things that weren't in ``standard'' crates
-        yet, so we ended up with a mixture of code from our Decemeber 2024
+        yet, so we ended up with a mixture of code from our December 2024
         test script and what's in the current rustls repository.
 
 \item We spent a significant amount of time trying to establish for
@@ -66,7 +66,7 @@ seen as we were preparing this report, and how those were resolved:
 
     \item Line 7 and elsewhere - fixed a bug in
         \url{https://github.com/defo-project/ech-dev-utils/blob/main/scripts/selenium_test.py}
-        where expected failures from tests using the ``echstat\_stat()''
+        where expected failures from tests using the ``echstat\_check()''
         handler were being logged as test failures when they should be logged
         as expected.
 
@@ -88,7 +88,7 @@ seen as we were preparing this report, and how those were resolved:
         was pushed on 20241209
 
     \item Line 32 - somehow certbot was no longer installed on test.defo.ie so
-        we got a cert expiry for hidden.hoba.ie - re-instaled certbot to fix,
+        we got a cert expiry for hidden.hoba.ie - re-installed certbot to fix,
         which leads to some redundancy as we end up with more than one cert for
         some names (more or less all other name on that VM are below
         *.test.defo.ie)
