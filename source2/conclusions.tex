@@ -34,11 +34,13 @@ Based on all the above, we can reach some conclusions:
         Browsers are complex beasts. It is very likely that real browser
         behaviour will be better than indicated in our test results above,
         which all involve accessing one single URL with fully ``cold'' caches.
-        Nonetheless, it seems at this time, that one could not be 100\%
-        confident that ECH will always be used, and always succeed, for browser
-        users, even with the most conservative deployment. However, one can
-        likely be confident that in such scenarios, ECH will typically be used
-        and will typically succeed.
+        However, our ECH trial \cite{echtrial} indicates that one can't be
+        overly confident that ECH will always succeed even if the browser
+        user-agent string indicates use of a browser-version that is capable of
+        ECH success.  So, one cannot be 100\% confident that ECH will always be
+        used, and always succeed, for browser users, even with the most
+        conservative deployment. However, one can likely be confident that in
+        such scenarios, ECH will often be used and will often succeed.
 
 \end{itemize}
 
