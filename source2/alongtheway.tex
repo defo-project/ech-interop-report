@@ -18,10 +18,10 @@ the Interop report, some 8 months after the first version.
     system, perhaps (speculating) due to a change of path name in the virtual
         environment. Re-installing the python virtual environment fixed that.
 
-\item There was also a change in what firefox presents to selenium when we
+\item There was also a change in what Firefox presents to selenium when we
     try to access the JSON HTTP response from our ``echstats.php'' -
         previously we got the clean JSON via an XPath
-        expression for both chromium and firefox but now firefox produces
+        expression for both chromium and Firefox but now Firefox produces
         some additional wrapping HTML that messes things up for us. We need
         to turn that off by setting the ``devtools.jsonview.enabled'' setting
         to ``False'' in the python script.
